@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (component) {
         // Add your component logic here
+        // Note: Remove console.log statements in production
         console.log('Component initialized');
         
         // Example: Add click event

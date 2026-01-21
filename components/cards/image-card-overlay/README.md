@@ -75,7 +75,6 @@ Modify these CSS variables in `style.css`:
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
-- IE 11+ (with limited animation support)
 
 ## Dependencies
 
