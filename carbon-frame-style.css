@@ -1,0 +1,139 @@
+/**
+ * CARBON FRAME STYLE - WordPress Magic
+ * 
+ * Advanced 3D styling system with magma effects for WordPress Elementor widgets
+ * Features: Animated gradient borders, 3D transforms, hover effects, and grid overlays
+ * 
+ * Usage: Apply the .carbon-frame class to any Elementor widget or container
+ */
+
+/* ========================================================================
+   1. THE CARBON FRAME (Original Style + 10px Radius)
+   ======================================================================== */
+.carbon-frame {
+    --magma-primary: #ff6b00;
+    --magma-hot: #ffca00;
+    --frame-bg: #0a0a0a;
+    
+    position: relative !important;
+    background: var(--frame-bg) !important;
+    border-radius: 10px !important; /* Updated to 10px */
+    padding: 3px !important; 
+    overflow: hidden !important;
+    z-index: 1 !important;
+    perspective: 1200px;
+    
+    /* SLOWED TRANSITION */
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* ========================================================================
+   2. THE MOLTEN HEAT CORE (Original Style)
+   ======================================================================== */
+.carbon-frame::before {
+    content: "" !important;
+    position: absolute !important;
+    top: -100% !important;
+    left: -100% !important;
+    width: 300% !important;
+    height: 300% !important;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        transparent 20%,
+        var(--magma-primary) 25%,
+        var(--magma-hot) 26%, 
+        var(--magma-primary) 27%,
+        transparent 32%,
+        transparent 100%
+    ) !important;
+    animation: magmaFlow 8s linear infinite !important;
+    z-index: -2 !important;
+    filter: blur(8px);
+    transition: filter 1.5s ease, brightness 1.5s ease, opacity 1.5s ease !important;
+}
+
+/* ========================================================================
+   3. THE "DARK OBSIDIAN" SHIELD (Adjusted for 10px Frame)
+   ======================================================================== */
+.carbon-frame::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 2px !important;
+    background: linear-gradient(160deg, #151515 0%, #050505 100%) !important;
+    border-radius: 8px !important; /* Slightly smaller to match outer 10px */
+    z-index: -1 !important;
+}
+
+/* ========================================================================
+   4. THE INTERNAL HUD GRID (Original Style)
+   ======================================================================== */
+.carbon-frame .elementor-widget-container {
+    position: relative !important;
+    z-index: 10 !important;
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 50%),
+        repeating-linear-gradient(rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 1px, transparent 1px, transparent 30px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 1px, transparent 1px, transparent 30px) !important;
+    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    transform-style: preserve-3d !important;
+}
+
+/* ========================================================================
+   5. HOVER EFFECTS (Supreme Ascension)
+   ======================================================================== */
+
+.carbon-frame:hover {
+    transform: scale(1.03) translateY(-15px) rotateX(4deg) !important; 
+    box-shadow: 
+        0 50px 100px rgba(0,0,0,0.9), 
+        0 0 40px rgba(255, 107, 0, 0.15) !important;
+}
+
+.carbon-frame:hover::before {
+    animation-duration: 4s !important; 
+    filter: blur(15px) brightness(1.2) !important; 
+    opacity: 0.8 !important;
+}
+
+/* Image Box 3D Pop-Forward */
+.carbon-frame .elementor-image-box-img {
+    transition: all 1s ease !important;
+    transform-style: preserve-3d !important;
+}
+
+.carbon-frame .elementor-image-box-img img {
+    border-radius: 8px !important; /* Matches inner theme */
+    transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.carbon-frame:hover .elementor-image-box-img img {
+    transform: translateZ(60px) translateY(-10px) rotateX(-5deg) !important;
+    filter: grayscale(0) brightness(1.1) !important;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 30px rgba(255, 107, 0, 0.3) !important;
+}
+
+/* Text & Icon Depth Sync */
+.carbon-frame:hover h1, 
+.carbon-frame:hover h2, 
+.carbon-frame:hover h3, 
+.carbon-frame:hover i, 
+.carbon-frame:hover .elementor-icon, 
+.carbon-frame:hover .elementor-image-box-title {
+    color: #fff !important;
+    transform: translateZ(40px) !important;
+    text-shadow: 0 0 15px rgba(255, 107, 0, 0.5) !important;
+}
+
+.carbon-frame:hover .elementor-image-box-description {
+    transform: translateZ(20px) !important;
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* ========================================================================
+   6. ANIMATION ENGINE
+   ======================================================================== */
+@keyframes magmaFlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
