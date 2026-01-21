@@ -4,7 +4,10 @@
  * Advanced 3D styling system with magma effects for WordPress Elementor widgets
  * Features: Animated gradient borders, 3D transforms, hover effects, and grid overlays
  * 
- * Usage: Apply the .carbon-frame class to any Elementor widget or container
+ * @author WordPress Magic Contributors
+ * @version 1.0.0
+ * @created 2026-01-21
+ * @usage Apply the .carbon-frame class to any Elementor widget or container
  */
 
 /* ========================================================================
@@ -14,6 +17,8 @@
     --magma-primary: #ff6b00;
     --magma-hot: #ffca00;
     --frame-bg: #0a0a0a;
+    --blur-amount: 8px;
+    --blur-amount-hover: 15px;
     
     position: relative !important;
     background: var(--frame-bg) !important;
@@ -49,7 +54,7 @@
     ) !important;
     animation: magmaFlow 8s linear infinite !important;
     z-index: -2 !important;
-    filter: blur(8px);
+    filter: blur(var(--blur-amount));
     transition: filter 1.5s ease, brightness 1.5s ease, opacity 1.5s ease !important;
 }
 
@@ -92,7 +97,7 @@
 
 .carbon-frame:hover::before {
     animation-duration: 4s !important; 
-    filter: blur(15px) brightness(1.2) !important; 
+    filter: blur(var(--blur-amount-hover)) brightness(1.2) !important; 
     opacity: 0.8 !important;
 }
 

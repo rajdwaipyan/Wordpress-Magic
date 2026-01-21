@@ -93,13 +93,15 @@ Simply add the `carbon-frame` class to any HTML element:
 ```
 
 ## CSS Variables
-You can customize the colors by modifying these CSS variables:
+You can customize the colors and effects by modifying these CSS variables:
 
 ```css
 .carbon-frame {
-    --magma-primary: #ff6b00;  /* Primary magma color */
-    --magma-hot: #ffca00;      /* Hot accent color */
-    --frame-bg: #0a0a0a;       /* Frame background */
+    --magma-primary: #ff6b00;    /* Primary magma color */
+    --magma-hot: #ffca00;        /* Hot accent color */
+    --frame-bg: #0a0a0a;         /* Frame background */
+    --blur-amount: 8px;          /* Default blur amount */
+    --blur-amount-hover: 15px;   /* Hover blur amount */
 }
 ```
 
@@ -121,6 +123,14 @@ You can customize the colors by modifying these CSS variables:
 
 .carbon-frame:hover::before {
     animation-duration: 6s !important; /* Slower hover */
+}
+```
+
+### Adjust Blur Amount
+```css
+.carbon-frame {
+    --blur-amount: 12px !important;          /* Stronger blur */
+    --blur-amount-hover: 20px !important;    /* More intense hover blur */
 }
 ```
 
@@ -167,7 +177,7 @@ You can customize the colors by modifying these CSS variables:
 - Verify browser support for CSS 3D transforms
 
 ## Credits
-Created for WordPress Magic - Custom Code for Wordpress Magical Development
+Created for WordPress Magic - Custom Code for WordPress Magical Development
 
 ## License
 See LICENSE file in the repository root.
