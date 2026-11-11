@@ -12,7 +12,7 @@ namespace EDShield\Theme;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION = '1.1.0';
+const VERSION = '1.1.3';
 const DIR     = __DIR__;
 
 foreach ( array( 'helpers', 'art', 'content', 'content-pages', 'sections/definitions', 'sections/render', 'layouts', 'setup', 'cleanup', 'assets', 'customizer', 'nav', 'projects', 'contact', 'elementor', 'demo', 'seo', 'templates' ) as $edst_file ) {

@@ -1,7 +1,7 @@
 # ED Shield theme
 
 Multi-page corporate WordPress theme for ED Shield Solutions, with one-click
-demo import. Version 1.1.0.
+demo import. Version 1.1.3.
 
 ## What you get
 
@@ -35,8 +35,10 @@ demo import. Version 1.1.0.
 
 ## Install and import
 
-1. Appearance › Themes › Add New Theme › Upload Theme › `edshield-1.1.0.zip` ›
-   Activate.
+1. Appearance › Themes › Add New Theme › Upload Theme › `edshield-1.1.3.zip` ›
+   Install Now › Activate. **If an older ED Shield is already installed,
+   WordPress says "Destination folder already exists": click
+   Replace active with uploaded**, otherwise nothing changes.
 2. Appearance › **Import Demo Data**.
 3. Under **1. Plugins**, click **Install and activate** for Elementor (or
    activate it if already installed).
@@ -51,7 +53,7 @@ missing, so it can be run again safely. Options on the screen:
 |---|---|---|
 | Pages and their designs | on | Creates the 32 pages (Elementor pages when Elementor is active) |
 | Articles and placeholder case studies | on | 4 starter articles, 6 case studies marked "Placeholder" |
-| Menus | on | Main menu (mega menu), footer company, resources and legal menus |
+| Menus | on | Main menu (mega menu), footer company, resources and legal menus, assigned to the theme's menu locations. A menu that held a location before is kept under Appearance › Menus |
 | Widgets | on | Footer contact column and article sidebar. Widgets already in those areas move to Inactive widgets |
 | Theme settings | on | Header button, announcement bar, mega menu card, footer texts, site icon, Elementor colours and fonts. Settings you already changed are kept |
 | Front page | on | Home becomes the front page, Insights the blog |
@@ -113,9 +115,13 @@ webhook URL and secret: each lead is POSTed as JSON with the header
 
 ## Elementor Pro Theme Builder
 
-Templates assigned to the header, footer, single or archive locations replace
-the theme's own markup. **Create header and footer templates** on the import
-screen makes Pro templates that contain the theme header and footer.
+Theme Builder templates replace the theme's header, footer, single and archive
+templates only when you choose so: Customize › ED Shield › Header and menu ›
+*Use Elementor Pro Theme Builder templates*, or the switch on the import screen.
+This keeps templates left over from a previous theme from hiding the ED Shield
+header and footer. **Create header and footer templates** on the import screen
+makes Pro templates that contain the theme header and footer and turns the
+switch on.
 
 ## Demo package
 

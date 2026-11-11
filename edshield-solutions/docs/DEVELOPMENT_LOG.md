@@ -129,3 +129,21 @@ structure, its visual design and a standard one-click demo import.
 | Industries linked twice in the navigation | Listed under Resources and Company | Kept under Company only |
 | Form on the audit page returned to the wrong place | Redirect anchor fixed to the contact page's form | Each form returns to its own anchor |
 | Style controls seemed missing in a CLI check | Elementor keeps CSS-only controls separately on front-end requests | Verified in the editor context instead; no change needed |
+
+## 11 November 2026 (staging update, theme 1.1.3)
+
+The owner reported that nothing changed after installing 1.1.0. Findings on
+staging (read-only checks first):
+
+| Problem | Cause | Fix |
+|---|---|---|
+| Staging still ran 0.1.0 | The uploaded zip stopped at "Destination folder already exists"; WordPress replaces a theme only after "Replace active with uploaded" | Replaced through staging wp-admin (Hostinger one-time login for installation 31502311), then ran Import Demo Data |
+| Old header and footer around the new pages | Elementor Pro Theme Builder templates 8390 and 8395 with display conditions took over the header and footer locations the theme registers | 1.1.1: Theme Builder templates are used only when the owner turns it on (Customizer or import screen); templates kept unchanged |
+| Old menu in the header | The primary menu location already held "Main Menu"; the importer kept existing assignments | 1.1.2: the import assigns the demo menus to the theme's locations and reports the menu it replaced, which stays under Appearance › Menus |
+| "elementorFrontendConfig is not defined" on articles, blog and case studies | Elementor Pro still loaded the hidden header template's scripts | 1.1.3: while Theme Builder is off, the theme hides header, footer, single and archive conditions from Elementor Pro on the front end (filter on its conditions cache; nothing is changed in the database) |
+
+Staging changes made: theme replaced (0.1.0 → 1.1.3); demo imported (32 pages
+as Elementor pages, 4 articles, 6 placeholder case studies, 4 menus, 5 widgets,
+theme settings, Elementor colours and fonts); front page set to the new Home and
+blog to Insights; the untouched "Sample Page" and the default Privacy Policy
+draft moved to the Trash (restorable). Production was not touched.

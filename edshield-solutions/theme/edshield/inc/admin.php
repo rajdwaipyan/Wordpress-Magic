@@ -164,6 +164,14 @@ function demo_handle(): void {
 			$report = create_pro_templates();
 			break;
 
+		case 'builder_on':
+		case 'builder_off':
+			set_theme_mod( 'edst_theme_builder', 'builder_on' === $task );
+			$report[] = 'builder_on' === $task
+				? __( 'Elementor Pro Theme Builder templates are now used for the header, footer, single and archive locations where their display conditions apply.', 'edshield' )
+				: __( 'The ED Shield header and footer are used again. Your Theme Builder templates are kept unchanged.', 'edshield' );
+			break;
+
 		case 'companions':
 			if ( current_user_can( 'activate_plugins' ) && companion_plugins() ) {
 				$names = companion_plugins();
@@ -336,6 +344,7 @@ function create_pro_templates(): array {
 
 		set_elementor_data( (int) $id, $data, $type );
 		wp_set_object_terms( (int) $id, $type, 'elementor_library_type' );
+		set_theme_mod( 'edst_theme_builder', true );
 		/* translators: %s: template title. */
 		$report[] = sprintf( __( 'Created the template "%s". Open Templates › Theme Builder to set its display conditions.', 'edshield' ), get_the_title( $id ) );
 	}
@@ -520,7 +529,12 @@ function demo_screen(): void {
 				<?php $form( 'build', '<p>' . esc_html__( 'Converts imported pages that are still rendered by the theme (for example because Elementor was activated after the import) into Elementor pages.', 'edshield' ) . '</p>', __( 'Build pages in Elementor', 'edshield' ) ); ?>
 				<?php $form( 'kit', '<p>' . esc_html__( 'Adds the ED Shield colours and fonts to Site Settings › Global Colors and Global Fonts, and turns off Elementor’s default colours and fonts so Elementor widgets match the theme.', 'edshield' ) . '</p>', __( 'Match Elementor to the theme', 'edshield' ) ); ?>
 				<?php if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) : ?>
-					<?php $form( 'pro_templates', '<p>' . esc_html__( 'Creates Theme Builder header and footer templates that contain the theme header (with mega menu) and footer, ready for display conditions and further editing.', 'edshield' ) . '</p>', __( 'Create header and footer templates', 'edshield' ) ); ?>
+					<?php
+					$builder_on = theme_builder_enabled();
+					$builder_p  = '<p><strong>' . esc_html__( 'Header and footer:', 'edshield' ) . '</strong> ' . ( $builder_on ? esc_html__( 'Elementor Pro Theme Builder templates are used where their display conditions apply.', 'edshield' ) : esc_html__( 'the ED Shield header and footer are used. Elementor Pro Theme Builder templates on this site (for example ones left from a previous theme) do not replace them.', 'edshield' ) ) . '</p>';
+					$form( $builder_on ? 'builder_off' : 'builder_on', $builder_p, $builder_on ? __( 'Use the ED Shield header and footer', 'edshield' ) : __( 'Use Theme Builder templates instead', 'edshield' ) );
+					$form( 'pro_templates', '<p>' . esc_html__( 'Creates Theme Builder header and footer templates that contain the theme header (with mega menu) and footer, ready for display conditions and further editing. This also switches the header and footer to Theme Builder templates.', 'edshield' ) . '</p>', __( 'Create header and footer templates', 'edshield' ) );
+					?>
 				<?php endif; ?>
 				<?php
 				if ( $existing ) {

@@ -36,7 +36,45 @@ function register_elementor_locations( $manager ): void {
  * @param string $location header, footer, single or archive.
  */
 function elementor_location( string $location ): bool {
+	// Off by default: templates left over from a previous theme must not
+	// replace the ED Shield header and footer unless the owner chooses so.
+	if ( ! theme_builder_enabled() ) {
+		return false;
+	}
+
 	return function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_location( $location );
+}
+
+/**
+ * Whether Elementor Pro Theme Builder templates may replace the theme's
+ * header, footer, single and archive templates (Customize › ED Shield ›
+ * Header and menu, or the Import Demo Data screen).
+ */
+function theme_builder_enabled(): bool {
+	return (bool) get_theme_mod( 'edst_theme_builder', false );
+}
+
+add_filter( 'option_elementor_pro_theme_builder_conditions', __NAMESPACE__ . '\\theme_builder_conditions' );
+/**
+ * While Theme Builder is off, Elementor Pro should not treat its header,
+ * footer, single and archive templates as active on the front end: they are
+ * not shown, so their styles and scripts must not load either. The templates
+ * and their saved conditions are untouched; admin, AJAX and REST requests
+ * (the Theme Builder screens) see them as usual. Popups are not affected.
+ *
+ * @param mixed $conditions Elementor Pro's display-conditions cache.
+ * @return mixed
+ */
+function theme_builder_conditions( $conditions ) {
+	if ( ! is_array( $conditions ) || theme_builder_enabled() || is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || isset( $_GET['elementor-preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check.
+		return $conditions;
+	}
+
+	foreach ( array( 'header', 'footer', 'single', 'archive' ) as $location ) {
+		unset( $conditions[ $location ] );
+	}
+
+	return $conditions;
 }
 
 add_action( 'elementor/elements/categories_registered', __NAMESPACE__ . '\elementor_category' );

@@ -32,6 +32,7 @@ function customize_register( \WP_Customize_Manager $wp_customize ): void {
 				'announce_text'  => array( 'text', __( 'Announcement text', 'edshield' ), '' ),
 				'announce_label' => array( 'text', __( 'Announcement link label', 'edshield' ), '' ),
 				'announce_url'   => array( 'url', __( 'Announcement link', 'edshield' ), '' ),
+				'theme_builder'  => array( 'checkbox', __( 'Use Elementor Pro Theme Builder templates instead of the ED Shield header and footer', 'edshield' ), false ),
 				'cta_label'      => array( 'text', __( 'Header button label', 'edshield' ), '' ),
 				'cta_url'        => array( 'url', __( 'Header button link (empty: Contact page)', 'edshield' ), '' ),
 				'mega_eyebrow'   => array( 'text', __( 'Mega menu card: eyebrow', 'edshield' ), '' ),

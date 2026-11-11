@@ -628,11 +628,17 @@ function demo_import( array $opts = array() ): array {
 
 	/* Menus -------------------------------------------------------------- */
 	if ( $opts['menus'] ) {
-		$created['menus'] = demo_import_menus( (array) ( $package['menus'] ?? array() ) );
-		$log[]            = $created['menus']
+		$menus            = demo_import_menus( (array) ( $package['menus'] ?? array() ) );
+		$created['menus'] = $menus['created'];
+		$log[]            = $menus['created']
 			/* translators: %d: number of menus. */
-			? sprintf( _n( '%d menu created and assigned.', '%d menus created and assigned.', $created['menus'], 'edshield' ), $created['menus'] )
-			: __( 'Menus already existed and were kept.', 'edshield' );
+			? sprintf( _n( '%d menu created and assigned.', '%d menus created and assigned.', $menus['created'], 'edshield' ), $menus['created'] )
+			: __( 'The demo menus already existed; they are assigned to the theme’s menu locations.', 'edshield' );
+
+		foreach ( $menus['replaced'] as $name ) {
+			/* translators: %s: menu name. */
+			$log[] = sprintf( __( 'The menu "%s" was replaced in its location by the demo menu. It is kept under Appearance › Menus.', 'edshield' ), $name );
+		}
 	}
 
 	/* Widgets ------------------------------------------------------------ */
@@ -669,14 +675,16 @@ function demo_import( array $opts = array() ): array {
 }
 
 /**
- * Create the demo menus and assign their locations.
+ * Create the demo menus and assign them to the theme's menu locations. A menu
+ * that held a location before stays in Appearance › Menus.
  *
  * @param array<string, array<string, mixed>> $menus Menu blueprint.
- * @return int Number of menus created.
+ * @return array{created:int,replaced:string[]}
  */
-function demo_import_menus( array $menus ): int {
+function demo_import_menus( array $menus ): array {
 	$locations = (array) get_theme_mod( 'nav_menu_locations', array() );
 	$count     = 0;
+	$replaced  = array();
 
 	foreach ( $menus as $menu ) {
 		$name     = (string) ( $menu['name'] ?? '' );
@@ -701,14 +709,27 @@ function demo_import_menus( array $menus ): int {
 			++$count;
 		}
 
-		if ( '' !== $location && empty( $locations[ $location ] ) ) {
+		if ( '' !== $location ) {
+			$previous = (int) ( $locations[ $location ] ?? 0 );
+
+			if ( $previous && $previous !== (int) $menu_id ) {
+				$old = wp_get_nav_menu_object( $previous );
+
+				if ( $old ) {
+					$replaced[] = $old->name;
+				}
+			}
+
 			$locations[ $location ] = (int) $menu_id;
 		}
 	}
 
 	set_theme_mod( 'nav_menu_locations', $locations );
 
-	return $count;
+	return array(
+		'created'  => $count,
+		'replaced' => array_values( array_unique( $replaced ) ),
+	);
 }
 
 /**

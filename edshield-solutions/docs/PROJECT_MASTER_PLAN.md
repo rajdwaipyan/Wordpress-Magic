@@ -6,7 +6,7 @@ Last updated: 11 November 2026 (theme 1.1.0).
 
 | # | Project | Status |
 |---|---|---|
-| 01 | Premium corporate website | Theme 1.1.0 complete: one-click demo import of 32 Elementor pages, mega menu, case studies, articles, widgets and settings. Tested locally (theme, Elementor and One Click Demo Import routes); ready for staging |
+| 01 | Premium corporate website | Theme 1.1.0 complete: one-click demo import of 32 Elementor pages, mega menu, case studies, articles, widgets and settings. Tested locally (theme, Elementor and One Click Demo Import routes) and installed on staging (1.1.3, demo imported) |
 | 02 | ED Shield BusinessOS | Not started. Scope question open (see below) |
 | 03 | AI lead generation engine | Not started. The website form already sends signed webhooks for it |
 | 04 | Automated sales system (n8n, GoHighLevel, email, Telegram) | Not started |
@@ -27,8 +27,8 @@ Last updated: 11 November 2026 (theme 1.1.0).
 
 ## Next for the website
 
-1. Owner installs 1.1.0 on staging (Upload Theme › Replace current), then runs
-   Appearance › Import Demo Data.
+1. Done: 1.1.3 installed on staging and the demo imported. Review the site at
+   staging.edshieldsolutions.com.
 2. Fill in Customize › ED Shield: contact details, social links, announcement.
 3. Replace the placeholder case studies and testimonials with approved ones, or
    remove those sections until real content exists.

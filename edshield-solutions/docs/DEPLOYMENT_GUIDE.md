@@ -7,15 +7,20 @@ All work goes to `staging.edshieldsolutions.com`. Production
 
 ## The package
 
-`edshield-solutions/release/edshield-1.1.0.zip` in the repository (also built
+`edshield-solutions/release/edshield-1.1.3.zip` in the repository (also built
 by `tools/zip.sh` into `dist/`). It contains the compiled theme, its sources and
 the demo package; `node_modules` is excluded.
 
-## Installing 1.1.0 on staging (done by the site owner)
+## Installing on staging
+
+Done on 11 November 2026: staging runs 1.1.3 with the demo imported. For
+later versions:
 
 1. Back up staging (files and database).
 2. Staging wp-admin › Appearance › Themes › Add New Theme › Upload Theme,
-   choose `edshield-1.1.0.zip`, then **Replace current with uploaded**.
+   choose the zip, Install Now, then **Replace active with uploaded**.
+   WordPress first says "Destination folder already exists"; without this
+   click the old version stays in place.
 3. Make sure Elementor is active (it is on staging).
 4. Appearance › **Import Demo Data** (called **ED Shield Demo** if the One Click
    Demo Import plugin is active; its own Import Demo Data screen also works).
@@ -37,6 +42,11 @@ the demo package; `node_modules` is excluded.
   visits.
 - Elementor Pro's licence shows "Mismatch" on staging; Theme Builder may be
   limited until it is fixed. The theme header and footer do not need it.
+- Staging has Elementor Pro header and footer templates (IDs 8390 and 8395)
+  from the previous setup. They are kept but no longer replace the ED Shield
+  header and footer (Theme Builder is opt-in from 1.1.1).
+- The previous "Main Menu" is kept under Appearance › Menus; the demo menus
+  hold the theme's menu locations.
 - Elementor › Tools › Regenerate CSS & Data if old styles linger.
 
 ## Rollback
