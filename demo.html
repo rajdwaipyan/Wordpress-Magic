@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Frame Style - Demo</title>
+    <link rel="stylesheet" href="carbon-frame-style.css">
+    <style>
+        body {
+            background: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 50px 20px;
+            color: #fff;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b00, #ffca00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .demo-card {
+            padding: 30px;
+            min-height: 200px;
+        }
+        
+        .elementor-widget-container {
+            padding: 20px;
+        }
+        
+        .elementor-image-box-img {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .elementor-image-box-img img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        
+        .elementor-image-box-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .elementor-image-box-description {
+            color: #999;
+            line-height: 1.6;
+        }
+        
+        .instructions {
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .instructions h2 {
+            margin-top: 0;
+            color: #ff6b00;
+        }
+        
+        .instructions code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #ffca00;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🔥 Carbon Frame Style Demo 🔥</h1>
+        
+        <div class="instructions">
+            <h2>How to Use</h2>
+            <p>Hover over the cards below to see the Carbon Frame effects in action!</p>
+            <p>To use in WordPress: Add the class <code>carbon-frame</code> to any Elementor widget.</p>
+        </div>
+        
+        <div class="grid">
+            <!-- Card 1 -->
+            <div class="carbon-frame demo-card">
+                <div class="elementor-widget-container">
+                    <div class="elementor-image-box-img">
+                        <img src="https://via.placeholder.com/100/ff6b00/ffffff?text=1" alt="Demo 1">
+                    </div>
+                    <h3 class="elementor-image-box-title">Feature One</h3>
+                    <p class="elementor-image-box-description">
+                        Experience the power of 3D transforms with smooth animations and glowing effects.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="carbon-frame demo-card">
+                <div class="elementor-widget-container">
+                    <div class="elementor-image-box-img">
+                        <img src="https://via.placeholder.com/100/ffca00/000000?text=2" alt="Demo 2">
+                    </div>
+                    <h3 class="elementor-image-box-title">Feature Two</h3>
+                    <p class="elementor-image-box-description">
+                        Animated magma borders rotate continuously, creating a mesmerizing effect.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="carbon-frame demo-card">
+                <div class="elementor-widget-container">
+                    <div class="elementor-image-box-img">
+                        <img src="https://via.placeholder.com/100/ff6b00/ffffff?text=3" alt="Demo 3">
+                    </div>
+                    <h3 class="elementor-image-box-title">Feature Three</h3>
+                    <p class="elementor-image-box-description">
+                        Dark obsidian shield with HUD grid overlay for a futuristic appearance.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="carbon-frame demo-card">
+                <div class="elementor-widget-container">
+                    <div class="elementor-image-box-img">
+                        <img src="https://via.placeholder.com/100/ffca00/000000?text=4" alt="Demo 4">
+                    </div>
+                    <h3 class="elementor-image-box-title">Feature Four</h3>
+                    <p class="elementor-image-box-description">
+                        Hover to trigger supreme ascension with enhanced shadows and 3D depth.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Card 5 -->
+            <div class="carbon-frame demo-card">
+                <div class="elementor-widget-container">
+                    <div class="elementor-image-box-img">
+                        <img src="https://via.placeholder.com/100/ff6b00/ffffff?text=5" alt="Demo 5">
+                    </div>
+                    <h3 class="elementor-image-box-title">Feature Five</h3>
+                    <p class="elementor-image-box-description">
+                        Text and icons transform in 3D space with synchronized depth effects.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Card 6 -->
+            <div class="carbon-frame demo-card">
+                <div class="elementor-widget-container">
+                    <div class="elementor-image-box-img">
+                        <img src="https://via.placeholder.com/100/ffca00/000000?text=6" alt="Demo 6">
+                    </div>
+                    <h3 class="elementor-image-box-title">Feature Six</h3>
+                    <p class="elementor-image-box-description">
+                        Fully customizable with CSS variables for colors and animation speeds.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>CSS Variables</h2>
+            <p>Customize the appearance by modifying these CSS variables:</p>
+            <ul>
+                <li><code>--magma-primary: #ff6b00</code> - Primary magma color (orange)</li>
+                <li><code>--magma-hot: #ffca00</code> - Hot accent color (yellow)</li>
+                <li><code>--frame-bg: #0a0a0a</code> - Frame background (dark)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
