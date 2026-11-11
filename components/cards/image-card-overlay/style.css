@@ -1,0 +1,208 @@
+/* Image Card with Overlay - WordPress Magic Component */
+
+/* CSS Variables for easy customization */
+:root {
+    --overlay-gradient: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+    --text-color: #ffffff;
+    --link-color: #4fc3f7;
+    --link-hover-color: #ffffff;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --transition-speed: 0.3s;
+}
+
+/* Demo container styles (remove when using in production) */
+.demo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.demo-container h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.demo-container > p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+/* Main Image Card Component */
+.image-card {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    transition: box-shadow var(--transition-speed) ease;
+}
+
+.image-card:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Image */
+.card-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-speed) ease;
+}
+
+.image-card:hover .card-image {
+    transform: scale(1.1);
+}
+
+/* Card Overlay */
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--overlay-gradient);
+    padding: 30px;
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: transform var(--transition-speed) ease;
+}
+
+.image-card:hover .card-title {
+    transform: translateY(-5px);
+}
+
+/* Card Description */
+.card-description {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Link */
+.card-link {
+    display: inline-block;
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+.card-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--link-hover-color);
+    transition: width var(--transition-speed) ease;
+}
+
+.card-link:hover {
+    color: var(--link-hover-color);
+}
+
+.card-link:hover::after {
+    width: 100%;
+}
+
+/* Grid Layout (Optional - for multiple cards) */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.card-grid .image-card {
+    max-width: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-image {
+        height: 300px;
+    }
+    
+    .card-overlay {
+        padding: 20px;
+    }
+    
+    .card-title {
+        font-size: 22px;
+    }
+    
+    .card-description {
+        font-size: 14px;
+    }
+    
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-image {
+        height: 250px;
+    }
+    
+    .card-overlay {
+        padding: 15px;
+    }
+    
+    .card-title {
+        font-size: 20px;
+    }
+    
+    .card-description {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Accessibility */
+.image-card:focus-within {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .image-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .card-overlay {
+        position: static;
+        background: #f5f5f5;
+        color: #333;
+    }
+    
+    .card-title,
+    .card-description {
+        color: #333;
+        text-shadow: none;
+    }
+}
