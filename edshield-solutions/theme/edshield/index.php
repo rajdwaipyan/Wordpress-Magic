@@ -38,7 +38,12 @@ if ( is_search() ) {
 	?>
 	<section class="edst-s edst-tone-white edst-space-default">
 		<div class="edst-wrap">
-			<?php echo category_pills(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<div class="edst-blog-bar">
+				<?php
+				echo category_pills(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				get_search_form();
+				?>
+			</div>
 			<?php if ( have_posts() ) : ?>
 				<div class="edst-posts edst-cols-3">
 					<?php

@@ -14,17 +14,61 @@
 			"defaultDuotone": false,
 			"customGradient": false,
 			"palette": [
-				{ "slug": "ink", "name": "Ink", "color": "#0E1012" },
-				{ "slug": "charcoal", "name": "Charcoal", "color": "#15181B" },
-				{ "slug": "graphite", "name": "Graphite", "color": "#1E2226" },
-				{ "slug": "slate", "name": "Slate", "color": "#5A6068" },
-				{ "slug": "fog", "name": "Fog", "color": "#9AA0A8" },
-				{ "slug": "mist", "name": "Mist", "color": "#D9D6CF" },
-				{ "slug": "bone", "name": "Bone", "color": "#E9E6DF" },
-				{ "slug": "paper", "name": "Paper", "color": "#F3F1EC" },
-				{ "slug": "white", "name": "White", "color": "#FCFBF9" },
-				{ "slug": "blue", "name": "Electric blue", "color": "#2A4BFF" },
-				{ "slug": "blue-bright", "name": "Electric blue (on dark)", "color": "#7C93FF" }
+				{
+					"slug": "navy",
+					"name": "Navy",
+					"color": "#071533"
+				},
+				{
+					"slug": "navy-raised",
+					"name": "Navy (raised)",
+					"color": "#0C1D44"
+				},
+				{
+					"slug": "navy-light",
+					"name": "Navy (light)",
+					"color": "#13285A"
+				},
+				{
+					"slug": "gold",
+					"name": "Gold",
+					"color": "#D8A848"
+				},
+				{
+					"slug": "gold-light",
+					"name": "Gold (light)",
+					"color": "#E9C46A"
+				},
+				{
+					"slug": "gold-deep",
+					"name": "Gold (text on light)",
+					"color": "#86600F"
+				},
+				{
+					"slug": "slate",
+					"name": "Slate",
+					"color": "#5B6478"
+				},
+				{
+					"slug": "fog",
+					"name": "Fog",
+					"color": "#A9B3C9"
+				},
+				{
+					"slug": "bone",
+					"name": "Cool grey",
+					"color": "#EEF1F6"
+				},
+				{
+					"slug": "paper",
+					"name": "Light grey",
+					"color": "#F6F7F9"
+				},
+				{
+					"slug": "white",
+					"name": "White",
+					"color": "#FFFFFF"
+				}
 			]
 		},
 		"typography": {
@@ -34,54 +78,129 @@
 			"fontFamilies": [
 				{
 					"slug": "display",
-					"name": "Display (Newsreader)",
-					"fontFamily": "\"Newsreader Display\", \"Newsreader Fallback\", Georgia, \"Times New Roman\", serif"
+					"name": "Geist",
+					"fontFamily": "\"Geist\", \"Geist Fallback\", system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
 				},
 				{
 					"slug": "sans",
-					"name": "Text (IBM Plex Sans)",
-					"fontFamily": "\"IBM Plex Sans\", \"Plex Sans Fallback\", system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+					"name": "Geist (text)",
+					"fontFamily": "\"Geist\", \"Geist Fallback\", system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
 				},
 				{
 					"slug": "mono",
-					"name": "Label (IBM Plex Mono)",
+					"name": "IBM Plex Mono",
 					"fontFamily": "\"IBM Plex Mono\", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
 				}
 			],
 			"fontSizes": [
-				{ "slug": "small", "name": "Small", "size": "0.875rem", "fluid": false },
-				{ "slug": "base", "name": "Base", "size": "1.0625rem", "fluid": false },
-				{ "slug": "lede", "name": "Lede", "size": "1.3125rem", "fluid": { "min": "1.125rem", "max": "1.3125rem" } },
-				{ "slug": "h3", "name": "Heading 3", "size": "2rem", "fluid": { "min": "1.5rem", "max": "2rem" } },
-				{ "slug": "h2", "name": "Heading 2", "size": "3.5rem", "fluid": { "min": "2rem", "max": "3.5rem" } },
-				{ "slug": "display", "name": "Display", "size": "5.75rem", "fluid": { "min": "2.75rem", "max": "5.75rem" } }
+				{
+					"slug": "small",
+					"name": "Small",
+					"size": "0.875rem",
+					"fluid": false
+				},
+				{
+					"slug": "base",
+					"name": "Base",
+					"size": "1.0625rem",
+					"fluid": false
+				},
+				{
+					"slug": "lede",
+					"name": "Lede",
+					"size": "1.3125rem",
+					"fluid": {
+						"min": "1.125rem",
+						"max": "1.3125rem"
+					}
+				},
+				{
+					"slug": "h3",
+					"name": "Heading 3",
+					"size": "2rem",
+					"fluid": {
+						"min": "1.5rem",
+						"max": "2rem"
+					}
+				},
+				{
+					"slug": "h2",
+					"name": "Heading 2",
+					"size": "3.5rem",
+					"fluid": {
+						"min": "2rem",
+						"max": "3.5rem"
+					}
+				},
+				{
+					"slug": "display",
+					"name": "Display",
+					"size": "5.75rem",
+					"fluid": {
+						"min": "2.75rem",
+						"max": "5.75rem"
+					}
+				}
 			]
 		},
 		"spacing": {
-			"units": [ "px", "rem", "em", "%", "vw", "vh" ],
+			"units": [
+				"px",
+				"rem",
+				"em",
+				"%",
+				"vw",
+				"vh"
+			],
 			"spacingSizes": [
-				{ "slug": "20", "name": "XS", "size": "0.5rem" },
-				{ "slug": "30", "name": "S", "size": "1rem" },
-				{ "slug": "40", "name": "M", "size": "1.5rem" },
-				{ "slug": "50", "name": "L", "size": "2.5rem" },
-				{ "slug": "60", "name": "XL", "size": "clamp(3rem, 6vw, 5rem)" },
-				{ "slug": "70", "name": "Section", "size": "clamp(4.5rem, 10vw, 9rem)" }
+				{
+					"slug": "20",
+					"name": "XS",
+					"size": "0.5rem"
+				},
+				{
+					"slug": "30",
+					"name": "S",
+					"size": "1rem"
+				},
+				{
+					"slug": "40",
+					"name": "M",
+					"size": "1.5rem"
+				},
+				{
+					"slug": "50",
+					"name": "L",
+					"size": "2.5rem"
+				},
+				{
+					"slug": "60",
+					"name": "XL",
+					"size": "clamp(3rem, 6vw, 5rem)"
+				},
+				{
+					"slug": "70",
+					"name": "Section",
+					"size": "clamp(4.5rem, 10vw, 9rem)"
+				}
 			]
 		}
 	},
 	"styles": {
 		"color": {
-			"background": "var(--wp--preset--color--paper)",
-			"text": "var(--wp--preset--color--ink)"
+			"background": "var(--wp--preset--color--white)",
+			"text": "var(--wp--preset--color--navy)"
 		},
 		"typography": {
 			"fontFamily": "var(--wp--preset--font-family--sans)",
-			"fontSize": "var(--wp--preset--font-size--base)",
+			"fontSize": "1rem",
 			"lineHeight": "1.6"
 		},
 		"elements": {
 			"link": {
-				"color": { "text": "inherit" }
+				"color": {
+					"text": "inherit"
+				}
 			}
 		}
 	}

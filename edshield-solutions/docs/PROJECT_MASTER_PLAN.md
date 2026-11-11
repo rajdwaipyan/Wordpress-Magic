@@ -1,12 +1,12 @@
 # Project master plan
 
-Last updated: 11 November 2026.
+Last updated: 11 November 2026 (theme 1.1.0).
 
 ## The five projects
 
 | # | Project | Status |
 |---|---|---|
-| 01 | Premium corporate website | Theme 1.0.0 complete: 20 pages, mega menu, 23 Elementor-editable sections, case studies, enquiry form. Tested locally; ready for staging |
+| 01 | Premium corporate website | Theme 1.1.0 complete: one-click demo import of 32 Elementor pages, mega menu, case studies, articles, widgets and settings. Tested locally (theme, Elementor and One Click Demo Import routes); ready for staging |
 | 02 | ED Shield BusinessOS | Not started. Scope question open (see below) |
 | 03 | AI lead generation engine | Not started. The website form already sends signed webhooks for it |
 | 04 | Automated sales system (n8n, GoHighLevel, email, Telegram) | Not started |
@@ -21,12 +21,14 @@ Last updated: 11 November 2026.
 - Staging fix: Bravis Addons (a companion of the old Biznax theme) stopped the
   site with the new theme active; it was deactivated on staging only.
 - Theme 1.0.0: complete multi-page site, see `TECHNICAL_ARCHITECTURE.md`.
+- Theme 1.1.0: one-click demo import, reference page structure, ED Shield navy
+  and gold branding, Elementor style controls.
 - Repository: `rajdwaipyan/wordpress-magic`, folder `edshield-solutions/`.
 
 ## Next for the website
 
-1. Owner installs 1.0.0 on staging (Upload Theme › Replace current), then runs
-   Appearance › ED Shield Setup with "Build the new pages in Elementor" ticked.
+1. Owner installs 1.1.0 on staging (Upload Theme › Replace current), then runs
+   Appearance › Import Demo Data.
 2. Fill in Customize › ED Shield: contact details, social links, announcement.
 3. Replace the placeholder case studies and testimonials with approved ones, or
    remove those sections until real content exists.

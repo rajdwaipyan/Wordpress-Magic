@@ -1,114 +1,145 @@
 # ED Shield theme
 
-Multi-page corporate WordPress theme for ED Shield Solutions. Version 1.0.0.
+Multi-page corporate WordPress theme for ED Shield Solutions, with one-click
+demo import. Version 1.1.0.
 
-- 20 ready pages: Home, Services, nine service pages, Work, Industries, About,
-  Process, Engagement models, FAQ, Careers, Contact and Insights (blog).
-- Case studies (Projects), articles, archives, search and 404 templates.
-- Sticky header with a Services mega menu, dropdowns, announcement bar and a
-  full-screen mobile menu. Large footer with the ED SHIELD wordmark.
-- 23 reusable sections. Each one is an Elementor widget ("ED Shield" category)
-  and is also rendered by the theme itself when Elementor is not installed.
-- Elementor Theme Builder locations (header, footer, single, archive), plus
-  Site header and Site footer widgets for Pro templates.
-- Built-in enquiry form with spam protection, saved leads and an optional
-  signed webhook (for n8n, Zapier and similar).
-- No required plugins, no jQuery, no third-party requests. Self-hosted fonts.
-  CSS 12.5 KB and core script 3.7 KB (gzip); the motion layer loads on idle.
+## What you get
+
+- **One-click demo import** (Appearance › Import Demo Data): every page with its
+  design, menus, widgets, articles, placeholder case studies, theme settings,
+  site icon and Elementor design settings.
+- **32 pages** following the structure of the reference site:
+  Home · Services and nine service pages · For Startups · For Growing Businesses ·
+  Work and case studies · Industries and six industry pages · About · Our Process ·
+  Pricing · FAQ · Careers · Contact · Insights (blog) · Website Audit ·
+  Technology · Privacy Policy · Terms of Service.
+- **Header and footer**: announcement bar, sticky header that hides on scroll,
+  Services mega menu, Resources and Company dropdowns, full-screen mobile menu,
+  four-column footer with the ED SHIELD wordmark.
+- **23 reusable sections**, each an Elementor widget ("ED Shield" category) with
+  content controls and a Style tab (colours, typography, background, padding,
+  width, corner radius). Without Elementor the theme renders the same pages.
+- **Elementor Theme Builder** locations, plus Site header and Site footer widgets.
+- **Enquiry form** with spam protection, saved leads (administrators only) and an
+  optional signed webhook for n8n or similar.
+- Navy and gold brand palette, Geist and IBM Plex Mono self-hosted, no
+  third-party requests. CSS about 13 KB and core script 3.7 KB (gzip); the
+  motion layer loads on idle.
 
 ## Requirements
 
-- WordPress 6.6 or later (tested on 7.1.4)
-- PHP 8.0 or later
-- Optional: Elementor 3.5 or later (checked against the 4.0.8 source); Elementor Pro for Theme Builder
+- WordPress 6.6 or later (tested on 7.1.4), PHP 8.0 or later.
+- **Elementor** (free) for visual editing. Tested with Elementor 4.0.
+- Optional: Elementor Pro (Theme Builder templates), One Click Demo Import (the
+  theme has its own importer, and also registers its demo with that plugin).
 
-## Install
+## Install and import
 
-1. Appearance › Themes › Add New Theme › Upload Theme, choose `edshield-1.0.0.zip`.
-2. Live Preview first, then Activate. Activation changes no content.
-3. Appearance › **ED Shield Setup** › **Create pages and menus**.
-   - Creates only pages that do not exist yet (existing pages are never changed).
-   - Optionally sets Home as the front page and Insights as the posts page,
-     creates the primary menu (with the Services mega menu) and footer menus,
-     and adds three clearly marked placeholder case studies.
-   - With Elementor active, the new pages are built in Elementor: every section
-     becomes an editable ED Shield widget.
-   - Sets permalinks to "Post name" when they are still "Plain".
-4. Appearance › Customize › **ED Shield**: contact details, social links,
-   header button, announcement bar, mega menu card and footer texts.
+1. Appearance › Themes › Add New Theme › Upload Theme › `edshield-1.1.0.zip` ›
+   Activate.
+2. Appearance › **Import Demo Data**.
+3. Under **1. Plugins**, click **Install and activate** for Elementor (or
+   activate it if already installed).
+4. Under **2. Import**, keep the defaults and click **Import demo**. It takes a
+   few seconds. Pages are created as Elementor pages.
+5. Customize › ED Shield: add your email, phone, address and social links.
 
-If the site still runs another theme's companion plugins (for example Bravis
-Addons, which stops the site when its own theme is not active), the setup screen
-offers to deactivate them.
+The import never edits or deletes your existing content. It only adds what is
+missing, so it can be run again safely. Options on the screen:
+
+| Option | Default | Effect |
+|---|---|---|
+| Pages and their designs | on | Creates the 32 pages (Elementor pages when Elementor is active) |
+| Articles and placeholder case studies | on | 4 starter articles, 6 case studies marked "Placeholder" |
+| Menus | on | Main menu (mega menu), footer company, resources and legal menus |
+| Widgets | on | Footer contact column and article sidebar. Widgets already in those areas move to Inactive widgets |
+| Theme settings | on | Header button, announcement bar, mega menu card, footer texts, site icon, Elementor colours and fonts. Settings you already changed are kept |
+| Front page | on | Home becomes the front page, Insights the blog |
+| Sample content | on | Moves WordPress's untouched "Hello world!" and "Sample Page" to the Trash |
+| Replace pages with the same address | off | Moves existing pages such as /about/ to the Trash so the demo pages get clean addresses |
+
+WordPress's own unedited "Privacy Policy" draft is moved to the Trash so the
+demo Privacy Policy keeps the /privacy-policy/ address. Everything moved to the
+Trash can be restored.
+
+**With One Click Demo Import active**, its Appearance › Import Demo Data screen
+lists "ED Shield — Complete website" and runs the same importer; the theme's
+own screen is then called **ED Shield Demo**.
+
+**Activated Elementor after importing?** Use **Build pages in Elementor** on the
+import screen.
 
 ## Editing pages
 
-**With Elementor:** open a page in Elementor and edit any ED Shield widget:
-texts, links, images, repeater items (cards, steps, questions), and on the Style
-tab the section tone (ink, charcoal, paper, white, bone), spacing and anchor.
-Drag new ED Shield widgets from the panel; a container holding one needs no
-padding or width settings. **ED Shield Setup › Reset page layout** restores a
-page's starter layout (it asks for confirmation).
+Open any page with **Edit with Elementor**. Every section is an ED Shield widget:
 
-**Without Elementor:** pages created by the setup screen render their starter
-layout until you add your own content in the block editor; from then on the
-page shows the standard page header and your content.
+- **Content tab**: texts, buttons and links, images (each slot replaces the
+  illustration), repeaters for cards, steps, questions, plans and testimonials.
+- **Style tab**: section tone and spacing; colours (background, text, accent,
+  highlighted words, cards, lines, brand accent); typography for headings,
+  titles, body text and labels; background image or gradient; padding; content
+  width; card corner radius.
+- Native Elementor widgets can be placed between sections.
 
-## Sections (Elementor widgets)
+**Reset page layout** on the import screen restores one page's demo design.
 
-Home hero, Page hero, Services grid, Features, Industries, Services list, Work
-(case-study rail or filterable grid), Numbers, Testimonials, Steps, Numbered rows,
-Latest articles, FAQ, FAQ groups, Call to action, Statement with visual, What is
-included, Engagement models, Contact, Case study overview, Gallery, Moving strip,
-Text block.
+## Menus and widgets
 
-Every image slot accepts a photo; without one, the section shows the theme's
-original line illustration.
+- **Primary**: a top-level item with the CSS class `edst-mega` opens a mega
+  panel; other parents open a dropdown. A child with `edst-view-all` becomes the
+  panel's footer link; `edst-icon-<name>` sets an icon (for example
+  `edst-icon-shield`); the description becomes the subtitle. Turn on *CSS
+  Classes* and *Description* in Screen Options.
+- **Footer company**, **Footer resources**, **Footer legal**: flat lists.
+- **Widget areas**: *Footer: get in touch* (replaces the footer contact column)
+  and *Article sidebar* (beside blog articles on wide screens).
 
-## Menus
+## Case studies, testimonials and legal pages
 
-- **Primary**: give a top-level item the CSS class `edst-mega` to open a mega
-  panel (its children show icons and descriptions). Other parents open a
-  dropdown. A child with the class `edst-view-all` becomes the panel's footer
-  link; `edst-icon-<name>` (for example `edst-icon-shield`) sets an icon. Turn
-  on *CSS Classes* and *Description* in Screen Options.
-- **Footer company** and **Legal**: flat lists. The footer services column
-  lists the nine service pages automatically.
-
-## Case studies
-
-Projects › Add New. Fill in the **Case study details** box (client, industry,
-services, year, website, headline result, challenge, goal, objectives, results
-and the illustration used when there is no featured image). Build the body in
-Elementor or the block editor. Placeholders created by the setup screen are
-marked "Placeholder" and should be replaced or deleted before launch.
+Projects › Add New, then fill in the **Case study details** box (client,
+industry, services, year, website, headline result, challenge, goal,
+objectives, results, illustration). Replace or delete the six placeholders
+before launch. Testimonials are placeholders in the Testimonials sections.
+The Privacy Policy and Terms of Service pages are templates to complete.
 
 ## Contact form and leads
 
-The Contact widget, the Contact page and `[edst_contact_form]` show the form.
-Submissions are saved under **Leads** (private) and emailed to the contact email
-set in the Customizer, or to the site admin email. To use a form plugin instead, enter its shortcode in Customize ›
-ED Shield › Contact. For automation, set a webhook URL and secret: each lead is
-POSTed as JSON with the header `X-EDShield-Signature: sha256=<HMAC>`. Developers
-can also hook `edst_lead_submitted`.
+The Contact and Website Audit pages, the Contact widget and `[edst_contact_form]`
+show the form. Submissions are saved under **Leads** and emailed to the contact
+email in the Customizer (or the admin email). To use a form plugin instead,
+enter its shortcode in Customize › ED Shield › Contact. For automation, set a
+webhook URL and secret: each lead is POSTed as JSON with the header
+`X-EDShield-Signature: sha256=<HMAC>`. Developers can hook `edst_lead_submitted`.
 
 ## Elementor Pro Theme Builder
 
 Templates assigned to the header, footer, single or archive locations replace
-the theme's own markup. **ED Shield Setup › Create header and footer templates**
-creates Pro templates that contain the theme header (with mega menu) and footer,
-ready for display conditions. **Match Elementor to the theme** adds the ED Shield
-colours to Global Colors and turns off Elementor's default colours and fonts.
+the theme's own markup. **Create header and footer templates** on the import
+screen makes Pro templates that contain the theme header and footer.
 
-## Filters
+## Demo package
 
-| Filter | Purpose |
+`demo/` holds the package as JSON: `content.json` (pages with their sections,
+articles, case studies), `menus.json`, `widgets.json`, `customizer.json`,
+`settings.json`, `elementor-kit.json`, plus `preview.jpg` and
+`assets/site-icon.png`. Links are stored as tokens (`page:contact`,
+`service:web`) and turned into real addresses on import, so the package works on
+any domain. Regenerate it after changing layouts or content:
+
+```bash
+php tools/export-demo.php /path/to/wordpress
+```
+
+## Filters and hooks
+
+| Name | Purpose |
 |---|---|
-| `edst_services` | Change the nine service definitions (titles, texts, items, FAQs) |
+| `edst_services` | Change the nine service definitions |
 | `edst_enable_projects` | Return false to disable the Projects post type |
 | `edst_meta_description` | Change the generated meta description |
 | `edst_is_app_page` | Give a page the full-width content column |
 | `edst_content_width` | Embed width |
+| `edst_lead_submitted` (action) | After a lead is stored and sent |
 
 ## Development
 
@@ -119,28 +150,28 @@ npm install
 npm run build
 ```
 
-`npm run watch` rebuilds on change. PHP needs no build step.
-
 | Path | Contents |
 |---|---|
-| `inc/content.php` | Company content: services, industries, process, FAQs |
+| `inc/content.php`, `inc/content-pages.php` | Company content: services, audiences, industries, resources, articles |
 | `inc/sections/definitions.php` | Section schemas (fields and defaults) |
 | `inc/sections/render.php` | Section markup |
-| `inc/layouts.php` | Starter layouts for every page |
-| `inc/elementor*.php` | Elementor widgets, locations and data import |
+| `inc/layouts.php` | The layout of every page |
+| `inc/demo.php` | Demo package and importer |
+| `inc/admin.php` | Import Demo Data screen, plugin installer, One Click Demo Import bridge |
+| `inc/elementor*.php` | Elementor widgets, style controls, locations, page data |
 | `inc/nav.php` | Mega menu, dropdowns, mobile menu |
 | `src/css/*.css` | Tokens, base, components, header, sections, footer, content, compat |
 | `src/js/main.js` | Header, menus, sliders, filters, FAQ, counters, anchors |
-| `src/js/motion.js` | GSAP reveal, hero depth and magnetic buttons |
+| `src/js/motion.js` | GSAP reveal, hero depth, magnetic buttons |
 
 ## Content rules
 
 The theme ships with verified company information only. Testimonials, client
-logos and case studies are clearly marked placeholders; engagement models show
-"Scoped after discovery" instead of prices. Replace placeholders with real,
-approved content before launch.
+names and case studies are clearly marked placeholders; pricing shows how work
+is scoped instead of figures. Replace placeholders with real, approved content
+before launch.
 
 ## License
 
-GPL-2.0-or-later. Fonts: Newsreader and IBM Plex (SIL Open Font License 1.1).
+GPL-2.0-or-later. Fonts: Geist and IBM Plex Mono (SIL Open Font License 1.1).
 GSAP is free for commercial use under its standard license.

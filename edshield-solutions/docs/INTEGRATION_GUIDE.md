@@ -9,13 +9,14 @@ Last updated: 11 November 2026.
 | Hostinger | Connected (official connector, OAuth) | Sites, installations, plugins, themes, databases, PHP settings; one-time wp-admin sign-in links. No backup or staging operations for shared hosting |
 | Staging WordPress MCP endpoint | Answers | `/wp-json/mcp/mcp-adapter-default-server`, three read-only abilities |
 | GitHub | Connected | Repository `rajdwaipyan/wordpress-magic`, folder `edshield-solutions/` |
+| One Click Demo Import (plugin, optional) | Supported | The theme registers its demo (`ocdi/import_files`), runs its own importer after import (`ocdi/after_import`) and asks the plugin to install Elementor (`ocdi/register_plugins`) |
 | n8n | Not connected | |
 | GoHighLevel | Not connected | |
 | Telegram | Not connected | |
 
 ## Website lead capture (built in theme 1.0.0)
 
-Every enquiry from the Contact widget, the Contact page or `[edst_contact_form]`:
+Every enquiry from the Contact widget, the Contact and Website Audit pages or `[edst_contact_form]`:
 
 1. passes nonce, honeypot, a 3-second time trap, consent and a limit of five
    messages per hour per visitor;

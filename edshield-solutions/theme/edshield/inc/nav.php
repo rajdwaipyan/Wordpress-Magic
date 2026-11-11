@@ -132,30 +132,7 @@ function primary_items(): array {
 		return $tree;
 	}
 
-	$services = array();
-
-	foreach ( services() as $key => $service ) {
-		$services[] = nav_node( $service['title'], 'service:' . $key, $service['nav'], array(), $service['icon'] );
-	}
-
-	$services[] = nav_node( __( 'View all services', 'edshield' ), 'page:services', '', array( 'edst-view-all' ) );
-
-	$company = array(
-		nav_node( __( 'About', 'edshield' ), 'page:about', __( 'Who we are and how we think', 'edshield' ) ),
-		nav_node( __( 'Process', 'edshield' ), 'page:process', __( 'How a project runs', 'edshield' ) ),
-		nav_node( __( 'Engagement models', 'edshield' ), 'page:engagement', __( 'Ways to work with us', 'edshield' ) ),
-		nav_node( __( 'Careers', 'edshield' ), 'page:careers', __( 'Join the team', 'edshield' ) ),
-		nav_node( __( 'FAQ', 'edshield' ), 'page:faq', __( 'Common questions, answered', 'edshield' ) ),
-		nav_node( __( 'Contact', 'edshield' ), 'page:contact', __( 'Start a conversation', 'edshield' ) ),
-	);
-
-	return array(
-		nav_node( __( 'Services', 'edshield' ), 'page:services', '', array( 'edst-mega' ), '', $services ),
-		nav_node( __( 'Work', 'edshield' ), 'page:work' ),
-		nav_node( __( 'Industries', 'edshield' ), 'page:industries' ),
-		nav_node( __( 'Company', 'edshield' ), 'page:about', '', array(), '', $company ),
-		nav_node( __( 'Insights', 'edshield' ), 'posts' ),
-	);
+	return default_menu_items();
 }
 
 /**
@@ -348,4 +325,33 @@ function footer_links( string $location, array $fallback ): string {
 	}
 
 	return $html . '</ul>';
+}
+
+/**
+ * The default menu (when no primary menu is assigned), built from the same
+ * blueprint the demo import uses.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function default_menu_items(): array {
+	$convert = static function ( array $items ) use ( &$convert ): array {
+		$nodes = array();
+
+		foreach ( $items as $item ) {
+			$classes = array_filter( explode( ' ', (string) ( $item['classes'] ?? '' ) ) );
+			$icon    = '';
+
+			foreach ( $classes as $class ) {
+				if ( 0 === strpos( $class, 'edst-icon-' ) ) {
+					$icon = substr( $class, 10 );
+				}
+			}
+
+			$nodes[] = nav_node( (string) $item['title'], (string) $item['link'], (string) ( $item['description'] ?? '' ), array_values( $classes ), $icon, $convert( (array) ( $item['children'] ?? array() ) ) );
+		}
+
+		return $nodes;
+	};
+
+	return $convert( menu_blueprint()['primary']['items'] );
 }

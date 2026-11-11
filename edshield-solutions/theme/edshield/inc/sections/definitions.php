@@ -262,19 +262,7 @@ function section_definitions(): array {
 						'repeater',
 						'items',
 						__( 'Cards', 'edshield' ),
-						array_map(
-							static function ( array $r ): array {
-								return array(
-									'title'      => $r[0],
-									'text'       => $r[1],
-									'art'        => 'icon:' . $r[2],
-									'image'      => array( 'url' => '', 'id' => '' ),
-									'link_label' => '',
-									'url'        => link_value( '' ),
-								);
-							},
-							industries()
-						),
+						industry_cards(),
 						array(
 							'fields'      => card_fields(),
 							'title_field' => 'title',

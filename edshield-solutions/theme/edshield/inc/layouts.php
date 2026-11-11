@@ -1,11 +1,16 @@
 <?php
 /**
- * Starter page layouts.
+ * Page layouts.
  *
- * Each layout is a list of sections with their settings. The importer turns a
- * layout into an Elementor page (one container per section) and the theme
- * renders the same layout itself when Elementor is not used, so every page
- * looks the same either way.
+ * Each layout is a list of sections with their settings. The demo importer
+ * turns a layout into an Elementor page (one container per section) and the
+ * theme renders the same layout itself when Elementor is not used, so every
+ * page looks the same either way.
+ *
+ * The page structure follows the reference site: home, services and service
+ * pages, audience pages, work and case studies, industries and industry
+ * pages, about, process, pricing, FAQ, insights, contact, resources, careers
+ * and legal pages.
  *
  * @package EDShield\Theme
  */
@@ -15,7 +20,7 @@ namespace EDShield\Theme;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Pages created by the setup screen: layout key => title, path, parent layout.
+ * Every page of the site: layout key => title, path, parent layout.
  *
  * @return array<string, array{title:string,path:string,parent:string}>
  */
@@ -27,8 +32,8 @@ function layouts_index(): array {
 	}
 
 	$index = array(
-		'home'       => array( 'title' => __( 'Home', 'edshield' ), 'path' => 'home', 'parent' => '' ),
-		'services'   => array( 'title' => __( 'Services', 'edshield' ), 'path' => 'services', 'parent' => '' ),
+		'home'     => array( 'title' => __( 'Home', 'edshield' ), 'path' => 'home', 'parent' => '' ),
+		'services' => array( 'title' => __( 'Services', 'edshield' ), 'path' => 'services', 'parent' => '' ),
 	);
 
 	foreach ( services() as $key => $service ) {
@@ -39,16 +44,37 @@ function layouts_index(): array {
 		);
 	}
 
+	foreach ( audience_pages() as $key => $page ) {
+		$index[ 'audience-' . $key ] = array(
+			'title'  => $page['title'],
+			'path'   => $page['slug'],
+			'parent' => '',
+		);
+	}
+
+	$index['work']       = array( 'title' => __( 'Work', 'edshield' ), 'path' => 'work', 'parent' => '' );
+	$index['industries'] = array( 'title' => __( 'Industries', 'edshield' ), 'path' => 'industries', 'parent' => '' );
+
+	foreach ( industry_pages() as $key => $page ) {
+		$index[ 'industry-' . $key ] = array(
+			'title'  => $page['title'],
+			'path'   => 'industries/' . $page['slug'],
+			'parent' => 'industries',
+		);
+	}
+
 	$index += array(
-		'work'       => array( 'title' => __( 'Work', 'edshield' ), 'path' => 'work', 'parent' => '' ),
-		'industries' => array( 'title' => __( 'Industries', 'edshield' ), 'path' => 'industries', 'parent' => '' ),
 		'about'      => array( 'title' => __( 'About', 'edshield' ), 'path' => 'about', 'parent' => '' ),
-		'process'    => array( 'title' => __( 'Process', 'edshield' ), 'path' => 'process', 'parent' => '' ),
-		'engagement' => array( 'title' => __( 'Engagement models', 'edshield' ), 'path' => 'engagement-models', 'parent' => '' ),
+		'process'    => array( 'title' => __( 'Our Process', 'edshield' ), 'path' => 'process', 'parent' => '' ),
+		'engagement' => array( 'title' => __( 'Pricing', 'edshield' ), 'path' => 'pricing', 'parent' => '' ),
 		'faq'        => array( 'title' => __( 'FAQ', 'edshield' ), 'path' => 'faq', 'parent' => '' ),
 		'careers'    => array( 'title' => __( 'Careers', 'edshield' ), 'path' => 'careers', 'parent' => '' ),
 		'contact'    => array( 'title' => __( 'Contact', 'edshield' ), 'path' => 'contact', 'parent' => '' ),
 		'insights'   => array( 'title' => __( 'Insights', 'edshield' ), 'path' => 'insights', 'parent' => '' ),
+		'audit'      => array( 'title' => __( 'Website Audit', 'edshield' ), 'path' => 'website-audit', 'parent' => '' ),
+		'technology' => array( 'title' => __( 'Technology', 'edshield' ), 'path' => 'technology', 'parent' => '' ),
+		'privacy'    => array( 'title' => __( 'Privacy Policy', 'edshield' ), 'path' => 'privacy-policy', 'parent' => '' ),
+		'terms'      => array( 'title' => __( 'Terms of Service', 'edshield' ), 'path' => 'terms-of-service', 'parent' => '' ),
 	);
 
 	return $index;
@@ -62,12 +88,129 @@ function layouts_index(): array {
  */
 function faq_items( int $group ): array {
 	$groups = faq_groups();
-	$items  = array();
 
-	foreach ( $groups[ $group ]['items'] ?? array() as $pair ) {
+	return qa_pairs( $groups[ $group ]['items'] ?? array() );
+}
+
+/**
+ * Question and answer tuples in repeater format.
+ *
+ * @param array<int, array{0:string,1:string}> $pairs Tuples.
+ * @return array<int, array{q:string,a:string}>
+ */
+function qa_pairs( array $pairs ): array {
+	$items = array();
+
+	foreach ( $pairs as $pair ) {
 		$items[] = array(
 			'q' => $pair[0],
 			'a' => $pair[1],
+		);
+	}
+
+	return $items;
+}
+
+/**
+ * Industry cards for the industries grid, linked to their pages.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function industry_cards(): array {
+	$links = array(
+		'rocket'     => 'page:audience-startups',
+		'store'      => 'page:audience-growth',
+		'building'   => 'service:consulting',
+		'factory'    => 'page:industry-manufacturing',
+		'health'     => 'page:industry-healthcare',
+		'education'  => 'page:industry-education',
+		'ngo'        => 'page:industry-ngo',
+		'government' => 'page:industry-government',
+		'cart'       => 'page:industry-retail',
+	);
+	$cards = array();
+
+	foreach ( industries() as $row ) {
+		$url     = $links[ $row[2] ] ?? '';
+		$cards[] = array(
+			'title'      => $row[0],
+			'text'       => $row[1],
+			'art'        => 'icon:' . $row[2],
+			'image'      => array( 'url' => '', 'id' => '' ),
+			'link_label' => '' !== $url ? __( 'Explore industry', 'edshield' ) : '',
+			'url'        => $url,
+		);
+	}
+
+	return $cards;
+}
+
+/**
+ * Card items from title, text, icon tuples.
+ *
+ * @param array<int, array{0:string,1:string,2:string}> $rows Tuples.
+ * @return array<int, array<string, mixed>>
+ */
+function icon_cards( array $rows ): array {
+	$cards = array();
+
+	foreach ( $rows as $row ) {
+		$cards[] = array(
+			'title'      => $row[0],
+			'text'       => $row[1],
+			'art'        => 'icon:' . $row[2],
+			'image'      => array( 'url' => '', 'id' => '' ),
+			'link_label' => '',
+			'url'        => '',
+		);
+	}
+
+	return $cards;
+}
+
+/**
+ * Cards for a list of services, linked to their pages.
+ *
+ * @param string[] $keys Service keys.
+ * @return array<int, array<string, mixed>>
+ */
+function service_cards( array $keys ): array {
+	$cards = array();
+
+	foreach ( $keys as $key ) {
+		$service = service( $key );
+
+		if ( ! $service ) {
+			continue;
+		}
+
+		$cards[] = array(
+			'title'      => $service['title'],
+			'text'       => $service['summary'],
+			'art'        => service_art( $key ),
+			'image'      => array( 'url' => '', 'id' => '' ),
+			'link_label' => __( 'Explore service', 'edshield' ),
+			'url'        => 'service:' . $key,
+		);
+	}
+
+	return $cards;
+}
+
+/**
+ * Step items from title, text, art tuples.
+ *
+ * @param array<int, array{0:string,1:string,2:string}> $rows Tuples.
+ * @return array<int, array{title:string,text:string,art:string}>
+ */
+function step_items( array $rows ): array {
+	$items = array();
+
+	foreach ( $rows as $row ) {
+		$items[] = array(
+			'title' => $row[0],
+			'text'  => $row[1],
+			'art'   => $row[2],
 		);
 	}
 
@@ -85,6 +228,14 @@ function layout_sections( string $key ): array {
 
 	if ( 0 === strpos( $key, 'service-' ) ) {
 		return service_layout( substr( $key, 8 ) );
+	}
+
+	if ( 0 === strpos( $key, 'audience-' ) ) {
+		return audience_layout( substr( $key, 9 ) );
+	}
+
+	if ( 0 === strpos( $key, 'industry-' ) ) {
+		return industry_layout( substr( $key, 9 ) );
 	}
 
 	switch ( $key ) {
@@ -136,6 +287,7 @@ function layout_sections( string $key ): array {
 						'badge'       => __( 'Nine service divisions', 'edshield' ),
 						'heading'     => __( 'Technology services for every stage of <em>growth.</em>', 'edshield' ),
 						'text'        => __( 'Websites, software, automation, CRM, security and cloud from one accountable team, so every part of your digital operation works together.', 'edshield' ),
+						'btn_label'   => __( 'Contact us today', 'edshield' ),
 						'trust_label' => __( 'Technologies we work with', 'edshield' ),
 						'trust_items' => implode( "\n", technologies() ),
 					),
@@ -157,7 +309,7 @@ function layout_sections( string $key ): array {
 						'heading' => __( 'Our services.', 'edshield' ),
 					),
 				),
-				array( 'stats', array() ),
+				array( 'stats', array( 'tone' => 'paper' ) ),
 				array( 'faq', array( 'items' => faq_items( 1 ) ) ),
 				$cta,
 			);
@@ -167,8 +319,9 @@ function layout_sections( string $key ): array {
 				array(
 					'page-hero',
 					array(
-						'heading' => __( 'Selected <em>work.</em>', 'edshield' ),
-						'text'    => __( 'Case studies from our projects across websites, software, automation, CRM and security.', 'edshield' ),
+						'heading'   => __( 'Built carefully. Built to <em>last.</em>', 'edshield' ),
+						'text'      => __( 'Case studies from our projects across websites, software, automation, CRM and security.', 'edshield' ),
+						'btn_label' => __( 'Start a project', 'edshield' ),
 					),
 				),
 				array(
@@ -178,46 +331,39 @@ function layout_sections( string $key ): array {
 						'heading' => '',
 						'layout'  => 'grid',
 						'count'   => 24,
-						'tone'    => 'white',
+						'tone'    => 'paper',
 					),
 				),
-				array( 'stats', array( 'tone' => 'bone' ) ),
+				array( 'features', array() ),
+				array( 'stats', array( 'tone' => 'paper' ) ),
+				array( 'testimonials', array() ),
 				$cta,
 			);
 
 		case 'industries':
-			$industrial = service( 'industrial' );
-
 			return array(
 				array(
 					'page-hero',
 					array(
-						'heading' => __( 'Built for the way your sector <em>works.</em>', 'edshield' ),
-						'text'    => __( 'Every sector has its own buyers, rules and systems. We bring the same engineering discipline to each, adapted to how you operate.', 'edshield' ),
+						'heading'   => __( 'We know your sector. We build for how it <em>works.</em>', 'edshield' ),
+						'text'      => __( 'Every sector has its own buyers, rules and systems. We bring the same engineering discipline to each, adapted to how you operate.', 'edshield' ),
+						'btn_label' => __( 'Book a discovery call', 'edshield' ),
 					),
 				),
 				array(
 					'industries',
 					array(
-						'heading' => __( 'Sectors we serve.', 'edshield' ),
-						'intro'   => __( 'From startups to government institutions, in Bangladesh and internationally.', 'edshield' ),
+						'heading'   => __( 'Every sector has different needs.', 'edshield' ),
+						'intro'     => __( 'From startups to government institutions, in Bangladesh and internationally.', 'edshield' ),
+						'btn_label' => __( 'Book a call', 'edshield' ),
+						'btn_url'   => 'page:contact',
+						'items'     => industry_cards(),
 					),
 				),
-				array(
-					'split',
-					array(
-						'label'     => __( 'Manufacturing & industry', 'edshield' ),
-						'heading'   => $industrial['hero_title'] ?? '',
-						'text'      => '<p>' . ( $industrial['tagline_text'] ?? '' ) . '</p>',
-						'art'       => 'industrial',
-						'btn_label' => __( 'Explore Industrial Digitalization', 'edshield' ),
-						'btn_url'   => 'service:industrial',
-						'tone'      => 'bone',
-						'flip'      => true,
-					),
-				),
-				array( 'steps', array() ),
-				array( 'features', array( 'tone' => 'paper' ) ),
+				array( 'steps', array( 'tone' => 'paper' ) ),
+				array( 'stats', array() ),
+				array( 'testimonials', array() ),
+				array( 'features', array() ),
 				$cta,
 			);
 
@@ -231,7 +377,8 @@ function layout_sections( string $key ): array {
 						'text'           => __( 'ED Shield Solutions designs, builds and secures the systems organisations run on, for startups, enterprises and institutions in Bangladesh and internationally.', 'edshield' ),
 						'media_position' => 'below',
 						'art'            => 'system',
-						'btn_label'      => __( 'Work with us', 'edshield' ),
+						'btn_label'      => __( 'See open roles', 'edshield' ),
+						'btn_url'        => 'page:careers',
 					),
 				),
 				array(
@@ -243,29 +390,31 @@ function layout_sections( string $key ): array {
 						'art'        => 'software',
 						'stat_value' => '9',
 						'stat_label' => __( 'divisions, one accountable team', 'edshield' ),
-						'btn_label'  => __( 'Talk to us', 'edshield' ),
+						'btn_label'  => __( 'Contact us today', 'edshield' ),
 						'btn_url'    => 'page:contact',
 					),
 				),
 				array(
 					'rows',
 					array(
-						'label'   => __( 'Principles', 'edshield' ),
+						'label'   => __( 'How we work', 'edshield' ),
 						'heading' => __( 'The principles behind the work.', 'edshield' ),
+						'tone'    => 'paper',
 					),
 				),
+				array( 'stats', array() ),
 				array(
 					'rows',
 					array(
 						'layout'  => 'split',
 						'label'   => __( 'Working together', 'edshield' ),
-						'heading' => __( 'What it is like to work with us.', 'edshield' ),
+						'heading' => __( 'Work in motion.', 'edshield' ),
 						'intro'   => __( 'We work more like an embedded team than a traditional agency: close to the problem, open about progress and clear about who owns what.', 'edshield' ),
 						'tone'    => 'paper',
 						'items'   => array(
 							array( 'title' => __( 'Direct collaboration', 'edshield' ), 'text' => __( 'You work with the people doing the work, in the tools your team already uses.', 'edshield' ) ),
 							array( 'title' => __( 'Short feedback loops', 'edshield' ), 'text' => __( 'Regular check-ins and reviews keep decisions moving and surprises rare.', 'edshield' ) ),
-							array( 'title' => __( 'Security by default', 'edshield' ), 'text' => __( 'Access, credentials and data are handled carefully from the first day.', 'edshield' ) ),
+							array( 'title' => __( 'Flexible team setup', 'edshield' ), 'text' => __( 'The team grows or shrinks with the work, from a single specialist to a full squad.', 'edshield' ) ),
 							array( 'title' => __( 'Documentation and handover', 'edshield' ), 'text' => __( 'Everything we build is documented so your team is never dependent on memory.', 'edshield' ) ),
 						),
 					),
@@ -280,7 +429,7 @@ function layout_sections( string $key ): array {
 						'tone'    => 'white',
 					),
 				),
-				array( 'steps', array( 'tone' => 'bone' ) ),
+				array( 'steps', array( 'tone' => 'paper' ) ),
 				$cta,
 			);
 
@@ -299,8 +448,9 @@ function layout_sections( string $key ): array {
 				array(
 					'page-hero',
 					array(
-						'heading' => __( 'A clear process, from first call to <em>launch.</em>', 'edshield' ),
-						'text'    => __( 'Every engagement follows the same four stages. You always know what is happening, what comes next and what it costs.', 'edshield' ),
+						'heading'   => __( 'From first call to launch, without <em>surprises.</em>', 'edshield' ),
+						'text'      => __( 'Every engagement follows the same four stages. You always know what is happening, what comes next and what it costs.', 'edshield' ),
+						'btn_label' => __( 'Book a discovery call', 'edshield' ),
 					),
 				),
 				array(
@@ -328,7 +478,8 @@ function layout_sections( string $key ): array {
 					),
 				),
 				array( 'steps', array() ),
-				array( 'faq', array( 'items' => faq_items( 1 ), 'tone' => 'bone' ) ),
+				array( 'stats', array( 'tone' => 'paper' ) ),
+				array( 'testimonials', array() ),
 				$cta,
 			);
 
@@ -337,8 +488,9 @@ function layout_sections( string $key ): array {
 				array(
 					'page-hero',
 					array(
-						'heading' => __( 'Three ways to work with <em>us.</em>', 'edshield' ),
-						'text'    => __( 'Every engagement starts with a conversation. Choose the model that fits your goals and we will tailor the scope to it.', 'edshield' ),
+						'heading'   => __( 'Start. Build. <em>Grow.</em>', 'edshield' ),
+						'text'      => __( 'Three ways to work with us. Every engagement starts with a conversation, and the scope and cost are agreed in writing before work begins.', 'edshield' ),
+						'btn_label' => '',
 					),
 				),
 				array(
@@ -346,10 +498,10 @@ function layout_sections( string $key ): array {
 					array(
 						'items' => array(
 							array(
-								'name'     => __( 'Project', 'edshield' ),
-								'price'    => __( 'Scoped after discovery', 'edshield' ),
-								'summary'  => __( 'A defined outcome, delivered end to end. Best for new websites, applications and integrations.', 'edshield' ),
-								'features' => implode( "\n", array( __( 'Discovery and planning', 'edshield' ), __( 'Design and build', 'edshield' ), __( 'Testing and launch', 'edshield' ), __( 'Documentation and handover', 'edshield' ) ) ),
+								'name'      => __( 'Project', 'edshield' ),
+								'price'     => __( 'Scoped after discovery', 'edshield' ),
+								'summary'   => __( 'A defined outcome, delivered end to end. Best for new websites, applications and integrations.', 'edshield' ),
+								'features'  => implode( "\n", array( __( 'Discovery and planning', 'edshield' ), __( 'Design and build', 'edshield' ), __( 'Testing and launch', 'edshield' ), __( 'Documentation and handover', 'edshield' ) ) ),
 								'btn_label' => __( 'Discuss a project', 'edshield' ),
 							),
 							array(
@@ -370,12 +522,12 @@ function layout_sections( string $key ): array {
 						),
 					),
 				),
+				array( 'testimonials', array( 'tone' => 'paper' ) ),
 				array(
 					'faq',
 					array(
 						'items'   => faq_items( 2 ),
 						'heading' => __( 'Common questions.', 'edshield' ),
-						'tone'    => 'bone',
 					),
 				),
 				$cta,
@@ -386,8 +538,9 @@ function layout_sections( string $key ): array {
 				array(
 					'page-hero',
 					array(
-						'heading' => __( 'Everything you need to know before we <em>start.</em>', 'edshield' ),
-						'text'    => __( 'Answers to the questions we hear most. If yours is not here, ask us directly.', 'edshield' ),
+						'heading'   => __( 'Everything you need to know before we <em>start.</em>', 'edshield' ),
+						'text'      => __( 'Answers to the questions we hear most. If yours is not here, ask us directly.', 'edshield' ),
+						'btn_label' => __( 'Book a discovery call', 'edshield' ),
 					),
 				),
 				array( 'faq-groups', array() ),
@@ -428,7 +581,7 @@ function layout_sections( string $key ): array {
 						'art'       => 'icon:users',
 						'btn_label' => __( 'Send us a message', 'edshield' ),
 						'btn_url'   => 'page:contact',
-						'tone'      => 'bone',
+						'tone'      => 'paper',
 					),
 				),
 				$cta,
@@ -439,18 +592,145 @@ function layout_sections( string $key ): array {
 				array(
 					'page-hero',
 					array(
-						'heading'   => __( 'Start a <em>project.</em>', 'edshield' ),
+						'heading'   => __( 'Get in <em>touch.</em>', 'edshield' ),
 						'text'      => __( 'Tell us what you are building. We will reply with a clear, practical next step.', 'edshield' ),
 						'btn_label' => '',
 					),
 				),
 				array( 'contact', array( 'anchor' => 'contact-form' ) ),
+				array( 'testimonials', array( 'tone' => 'paper' ) ),
 				array(
 					'faq',
 					array(
-						'heading' => __( 'Before you get in touch.', 'edshield' ),
-						'tone'    => 'bone',
+						'heading'   => __( 'Frequently asked questions.', 'edshield' ),
+						'tone'      => 'ink',
 						'btn_label' => '',
+					),
+				),
+			);
+
+		case 'audit':
+			return array(
+				array(
+					'page-hero',
+					array(
+						'badge'          => __( 'Resource', 'edshield' ),
+						'heading'        => __( 'A website audit with a clear <em>action list.</em>', 'edshield' ),
+						'text'           => __( 'We review your website for speed, security, search foundations, accessibility and conversion, then send a prioritised list of what to fix first.', 'edshield' ),
+						'btn_label'      => __( 'Request an audit', 'edshield' ),
+						'btn_url'        => 'page:audit#audit-form',
+						'media_position' => 'aside',
+						'art'            => 'launch',
+					),
+				),
+				array(
+					'services-grid',
+					array(
+						'label'     => __( 'What we check', 'edshield' ),
+						'heading'   => __( 'Six areas, one practical report.', 'edshield' ),
+						'btn_label' => '',
+						'style'     => 'icon',
+						'items'     => icon_cards( audit_checks() ),
+						'tone'      => 'white',
+					),
+				),
+				array(
+					'steps',
+					array(
+						'heading'   => __( 'How the audit works.', 'edshield' ),
+						'btn_label' => '',
+						'tone'      => 'paper',
+						'items'     => step_items(
+							array(
+								array( __( 'Send your website', 'edshield' ), __( 'Share the address and what you want to improve.', 'edshield' ), 'web' ),
+								array( __( 'We review it', 'edshield' ), __( 'Our team checks the six areas with tools and a careful manual review.', 'edshield' ), 'software' ),
+								array( __( 'Get your action list', 'edshield' ), __( 'A short report with priorities, explained in plain language.', 'edshield' ), 'launch' ),
+							)
+						),
+					),
+				),
+				array(
+					'contact',
+					array(
+						'anchor'     => 'audit-form',
+						'label'      => __( 'Request', 'edshield' ),
+						'heading'    => __( 'Request your website audit.', 'edshield' ),
+						'text'       => __( 'Tell us your website address and what matters most to you. We will confirm the scope before we start.', 'edshield' ),
+						'form_title' => __( 'Audit request', 'edshield' ),
+					),
+				),
+				array(
+					'faq',
+					array(
+						'heading' => __( 'Questions about the audit.', 'edshield' ),
+						'tone'    => 'paper',
+						'items'   => qa_pairs(
+							array(
+								array( __( 'What do we need to provide?', 'edshield' ), __( 'Only the website address and your main goals. Access to analytics or hosting is optional and helps us go deeper.', 'edshield' ) ),
+								array( __( 'Will you change anything on our website?', 'edshield' ), __( 'No. The audit only reviews the website; nothing is changed without your approval.', 'edshield' ) ),
+								array( __( 'What happens after the audit?', 'edshield' ), __( 'You can fix the issues yourself with the report, or ask us to propose a plan for them.', 'edshield' ) ),
+							)
+						),
+					),
+				),
+				$cta,
+			);
+
+		case 'technology':
+			return array(
+				array(
+					'page-hero',
+					array(
+						'heading'     => __( 'The platforms we build <em>on.</em>', 'edshield' ),
+						'text'        => __( 'Proven, widely supported technologies chosen for each job, so what we build is fast, secure and maintainable by any capable team.', 'edshield' ),
+						'btn_label'   => __( 'Talk to an engineer', 'edshield' ),
+						'trust_label' => __( 'Technologies we work with', 'edshield' ),
+						'trust_items' => implode( "\n", technologies() ),
+					),
+				),
+				array(
+					'rows',
+					array(
+						'label'   => __( 'Our stack', 'edshield' ),
+						'heading' => __( 'The right tool for each part of the system.', 'edshield' ),
+						'items'   => tech_groups(),
+					),
+				),
+				array(
+					'split',
+					array(
+						'label'   => __( 'Ownership', 'edshield' ),
+						'heading' => __( 'You own everything we build.', 'edshield' ),
+						'text'    => '<p>' . __( 'Code, accounts, domains and data are set up in your name. We document how everything fits together, so you are never locked in to us or to a single person.', 'edshield' ) . '</p>',
+						'art'     => 'system',
+						'tone'    => 'paper',
+						'flip'    => true,
+					),
+				),
+				array( 'features', array() ),
+				$cta,
+			);
+
+		case 'privacy':
+		case 'terms':
+			return array(
+				array(
+					'page-hero',
+					array(
+						'heading'   => 'privacy' === $key ? __( 'Privacy policy', 'edshield' ) : __( 'Terms of service', 'edshield' ),
+						'text'      => '',
+						'btn_label' => '',
+						'spacing'   => 'compact',
+					),
+				),
+				array(
+					'rich-text',
+					array(
+						'label'   => '',
+						'heading' => '',
+						'content' => 'privacy' === $key ? privacy_text() : terms_text(),
+						'width'   => 'narrow',
+						'tone'    => 'white',
 					),
 				),
 			);
@@ -495,15 +775,6 @@ function service_layout( string $key ): array {
 		);
 	}
 
-	$faqs = array();
-
-	foreach ( $service['faqs'] as $qa ) {
-		$faqs[] = array(
-			'q' => $qa[0],
-			'a' => $qa[1],
-		);
-	}
-
 	return array(
 		array(
 			'page-hero',
@@ -543,17 +814,205 @@ function service_layout( string $key ): array {
 			'included',
 			array(
 				'items' => $included,
-				'tone'  => 'bone',
+				'tone'  => 'paper',
 			),
 		),
 		array( 'steps', array() ),
+		array( 'stats', array( 'tone' => 'paper' ) ),
+		array( 'testimonials', array() ),
 		array( 'features', array( 'tone' => 'paper' ) ),
 		array(
 			'faq',
 			array(
 				/* translators: %s: service name. */
 				'heading' => sprintf( __( 'Questions about %s.', 'edshield' ), $service['title'] ),
-				'items'   => $faqs,
+				'items'   => qa_pairs( $service['faqs'] ),
+			),
+		),
+		array( 'cta', array() ),
+	);
+}
+
+/**
+ * Sections of an audience page (for startups, for growing businesses).
+ *
+ * @param string $key Audience key.
+ * @return array<int, array{0:string,1:array<string, mixed>}>
+ */
+function audience_layout( string $key ): array {
+	$page = audience_pages()[ $key ] ?? null;
+
+	if ( ! $page ) {
+		return array();
+	}
+
+	$groups = array();
+
+	foreach ( $page['groups'] as $group ) {
+		$groups[] = array(
+			'title'      => $group[0],
+			'text'       => $group[1],
+			'art'        => 'icon:' . $group[2],
+			'image'      => array( 'url' => '', 'id' => '' ),
+			'link_label' => __( 'Explore service', 'edshield' ),
+			'url'        => 'service:' . $group[3],
+		);
+	}
+
+	return array(
+		array(
+			'page-hero',
+			array(
+				'badge'          => $page['badge'],
+				'heading'        => $page['hero_title'],
+				'text'           => $page['hero_text'],
+				'btn_label'      => __( 'Request a proposal', 'edshield' ),
+				'media_position' => 'aside',
+				'art'            => $page['art'],
+			),
+		),
+		array(
+			'split',
+			array(
+				'label'   => __( 'Why it matters', 'edshield' ),
+				'heading' => $page['tagline'],
+				'text'    => '<p>' . $page['tagline_text'] . '</p>',
+				'art'     => 'icon:' . $page['icon'],
+				'tone'    => 'paper',
+			),
+		),
+		array(
+			'services-grid',
+			array(
+				'label'     => __( 'What you get', 'edshield' ),
+				'heading'   => __( 'Everything you need, from one team.', 'edshield' ),
+				'btn_label' => __( 'Start a project', 'edshield' ),
+				'btn_url'   => 'page:contact',
+				'style'     => 'icon',
+				'columns'   => '2',
+				'items'     => $groups,
+				'tone'      => 'white',
+			),
+		),
+		array(
+			'steps',
+			array(
+				'heading' => __( 'Three simple steps.', 'edshield' ),
+				'items'   => step_items( $page['steps'] ),
+				'tone'    => 'paper',
+			),
+		),
+		array( 'features', array() ),
+		array(
+			'work',
+			array(
+				'heading'   => __( 'Work that moves organisations forward.', 'edshield' ),
+				'btn_label' => __( 'All work', 'edshield' ),
+				'btn_url'   => 'page:work',
+				'tone'      => 'paper',
+			),
+		),
+		array( 'stats', array() ),
+		array(
+			'faq',
+			array(
+				'heading' => __( 'Frequently asked questions.', 'edshield' ),
+				'items'   => qa_pairs( $page['faqs'] ),
+				'tone'    => 'paper',
+			),
+		),
+		array( 'cta', array() ),
+	);
+}
+
+/**
+ * Sections of an industry page.
+ *
+ * @param string $key Industry key.
+ * @return array<int, array{0:string,1:array<string, mixed>}>
+ */
+function industry_layout( string $key ): array {
+	$page = industry_pages()[ $key ] ?? null;
+
+	if ( ! $page ) {
+		return array();
+	}
+
+	$challenges = array();
+
+	foreach ( $page['challenges'] as $row ) {
+		$challenges[] = array(
+			'title' => $row[0],
+			'text'  => $row[1],
+			'tags'  => '',
+		);
+	}
+
+	return array(
+		array(
+			'page-hero',
+			array(
+				'badge'          => __( 'Industries', 'edshield' ),
+				'heading'        => $page['hero_title'],
+				'text'           => $page['hero_text'],
+				'btn_label'      => __( 'Book a discovery call', 'edshield' ),
+				'media_position' => 'aside',
+				'art'            => $page['art'],
+			),
+		),
+		array(
+			'split',
+			array(
+				'label'   => __( 'Why it matters', 'edshield' ),
+				'heading' => $page['tagline'],
+				'text'    => '<p>' . $page['tagline_text'] . '</p>',
+				'art'     => 'icon:' . $page['icon'],
+				'flip'    => true,
+			),
+		),
+		array(
+			'rows',
+			array(
+				'layout'  => 'split',
+				'label'   => __( 'The challenge', 'edshield' ),
+				'heading' => __( 'Where it usually gets hard.', 'edshield' ),
+				'intro'   => __( 'The same problems come up in almost every organisation in this sector. Each one has a practical fix.', 'edshield' ),
+				'items'   => $challenges,
+				'tone'    => 'paper',
+			),
+		),
+		array(
+			'services-grid',
+			array(
+				'label'     => __( 'How we help', 'edshield' ),
+				/* translators: %s: industry name. */
+				'heading'   => sprintf( __( 'What we build for %s.', 'edshield' ), $page['title'] ),
+				'btn_label' => '',
+				'style'     => 'icon',
+				'items'     => icon_cards( $page['solutions'] ),
+				'tone'      => 'white',
+			),
+		),
+		array(
+			'services-grid',
+			array(
+				'label'     => __( 'Services', 'edshield' ),
+				'heading'   => __( 'The services behind it.', 'edshield' ),
+				'btn_label' => __( 'All services', 'edshield' ),
+				'btn_url'   => 'page:services',
+				'columns'   => '4',
+				'items'     => service_cards( $page['services'] ),
+				'tone'      => 'paper',
+			),
+		),
+		array( 'steps', array() ),
+		array( 'testimonials', array( 'tone' => 'paper' ) ),
+		array(
+			'faq',
+			array(
+				/* translators: %s: industry name. */
+				'heading' => sprintf( __( 'Questions from %s teams.', 'edshield' ), $page['title'] ),
+				'items'   => qa_pairs( $page['faqs'] ),
 			),
 		),
 		array( 'cta', array() ),

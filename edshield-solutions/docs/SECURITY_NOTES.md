@@ -32,7 +32,7 @@ setup screen offers to deactivate the Bravis companions if they cause trouble.
 - The lead webhook secret is entered in the Customizer and stored in the
   database (theme mods), never in code.
 
-## Theme 1.0.0
+## Theme 1.1.0
 
 | Area | Measure |
 |---|---|
@@ -40,7 +40,9 @@ setup screen offers to deactivate the Bravis companions if they cause trouble.
 | Enquiry form | Nonce, honeypot field, 3-second time trap, consent, five messages per hour per visitor (hashed IP in a transient), sanitised fields, header-safe Reply-To |
 | Leads | Private posts of a non-public post type, no REST exposure, visible and editable by administrators only |
 | Webhook | Optional; HMAC-SHA256 signature header; URL validated; non-blocking |
-| Admin actions | Setup tasks require `edit_theme_options` (plugin deactivation also `activate_plugins`) and a nonce; page reset needs an explicit confirmation tick |
+| Admin actions | Import and tools require `edit_theme_options` and a nonce; plugin install and activation also need `install_plugins` and `activate_plugins`, and only the listed plugins can be installed; page reset needs an explicit confirmation tick |
+| Demo import | Never edits or deletes content. Only untouched WordPress sample content, the unedited default privacy draft, and (if the owner ticks the option) pages using the same addresses are moved to the Trash, which is reversible. Theme settings already chosen by the owner are kept |
+| Export tool | `tools/export-demo.php` exits unless run from the command line |
 | Remote requests | None, except the webhook the owner configures |
 | Front-end assets | All self-hosted; no third-party fonts, scripts or trackers |
 | Contact details | Printed only when entered in the Customizer |

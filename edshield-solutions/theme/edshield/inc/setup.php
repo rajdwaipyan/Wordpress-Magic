@@ -37,9 +37,10 @@ function setup(): void {
 
 	register_nav_menus(
 		array(
-			'primary' => __( 'Primary navigation (header and mobile)', 'edshield' ),
-			'company' => __( 'Footer: company links', 'edshield' ),
-			'legal'   => __( 'Footer: legal links', 'edshield' ),
+			'primary'   => __( 'Primary navigation (header and mobile)', 'edshield' ),
+			'company'   => __( 'Footer: company links', 'edshield' ),
+			'resources' => __( 'Footer: resources links', 'edshield' ),
+			'legal'     => __( 'Footer: legal links', 'edshield' ),
 		)
 	);
 
@@ -115,4 +116,39 @@ add_filter( 'excerpt_more', __NAMESPACE__ . '\excerpt_more', 20 );
  */
 function excerpt_more(): string {
 	return '&hellip;';
+}
+
+add_action( 'widgets_init', __NAMESPACE__ . '\\widget_areas' );
+/**
+ * Widget areas: the footer contact column and the article sidebar.
+ */
+function widget_areas(): void {
+	$shared = array(
+		'before_widget' => '<div id="%1$s" class="edst-widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<p class="edst-eyebrow edst-widget__title">',
+		'after_title'   => '</p>',
+	);
+
+	register_sidebar(
+		array_merge(
+			$shared,
+			array(
+				'id'          => 'footer-contact',
+				'name'        => __( 'Footer: get in touch', 'edshield' ),
+				'description' => __( 'Replaces the footer contact column. Leave empty to show the contact details from the Customizer.', 'edshield' ),
+			)
+		)
+	);
+
+	register_sidebar(
+		array_merge(
+			$shared,
+			array(
+				'id'          => 'article-sidebar',
+				'name'        => __( 'Article sidebar', 'edshield' ),
+				'description' => __( 'Shown next to blog articles on wide screens. Leave empty for a single centred column.', 'edshield' ),
+			)
+		)
+	);
 }

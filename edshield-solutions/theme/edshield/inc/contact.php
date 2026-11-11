@@ -129,6 +129,7 @@ function contact_form( string $shortcode = '' ): string {
 	<form class="edst-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="<?php echo esc_attr( $id ); ?>">
 		<?php echo $notice; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?>
 		<input type="hidden" name="action" value="edst_contact">
+		<input type="hidden" name="edst_anchor" value="<?php echo esc_attr( $id ); ?>">
 		<input type="hidden" name="edst_return" value="<?php echo esc_url( remove_query_arg( 'edst_sent', home_url( add_query_arg( array() ) ) ) ); ?>">
 		<input type="hidden" name="edst_ts" value="<?php echo esc_attr( (string) time() ); ?>">
 		<?php wp_nonce_field( 'edst_contact', 'edst_nonce' ); ?>
@@ -189,8 +190,12 @@ function handle_contact(): void {
 	$return = isset( $_POST['edst_return'] ) ? esc_url_raw( wp_unslash( $_POST['edst_return'] ) ) : home_url( '/' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified below.
 	$return = wp_validate_redirect( $return, home_url( '/' ) );
 
-	$back = static function ( string $status ) use ( $return ): void {
-		wp_safe_redirect( add_query_arg( 'edst_sent', $status, $return ) . '#contact-form' );
+	// Return to the form that was sent, so its notice is in view.
+	$anchor = isset( $_POST['edst_anchor'] ) ? sanitize_html_class( wp_unslash( $_POST['edst_anchor'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified below.
+	$anchor = '' !== $anchor ? $anchor : 'contact-form';
+
+	$back = static function ( string $status ) use ( $return, $anchor ): void {
+		wp_safe_redirect( add_query_arg( 'edst_sent', $status, $return ) . '#' . $anchor );
 		exit;
 	};
 

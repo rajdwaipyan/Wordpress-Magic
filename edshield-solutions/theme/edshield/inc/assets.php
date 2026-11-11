@@ -53,12 +53,12 @@ function motion_hint( $tag, $handle ) {
 
 add_action( 'wp_head', __NAMESPACE__ . '\preload_fonts', 1 );
 /**
- * Preload the two fonts used above the fold.
+ * Preload the font used above the fold.
  */
 function preload_fonts(): void {
-	foreach ( array( 'newsreader-display-latin.woff2', 'ibm-plex-sans-latin.woff2' ) as $font ) {
+	foreach ( array( 'geist-latin.woff2' ) as $font ) {
 		printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( uri( 'assets/fonts/' . $font ) ) );
 	}
 
-	echo '<meta name="theme-color" content="#0E1012">' . "\n";
+	echo '<meta name="theme-color" content="#071533">' . "\n";
 }

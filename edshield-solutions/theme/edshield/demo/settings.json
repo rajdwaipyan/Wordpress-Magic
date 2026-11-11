@@ -1,0 +1,9 @@
+{
+    "show_on_front": "page",
+    "page_on_front": "home",
+    "page_for_posts": "insights",
+    "wp_page_for_privacy_policy": "privacy",
+    "posts_per_page": 9,
+    "permalink_structure": "/%postname%/",
+    "blogdescription": "Engineering digital growth. Empowering businesses."
+}

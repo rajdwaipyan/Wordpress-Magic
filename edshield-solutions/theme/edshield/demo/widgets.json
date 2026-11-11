@@ -1,0 +1,11 @@
+{
+    "footer-contact": [
+        "<!-- wp:heading {\"level\":3} --><h3 class=\"wp-block-heading\">Get in touch</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Tell us what you are building and we will reply with a clear, practical next step.</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button --><div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"{{page:contact}}\">Start a project</a></div><!-- /wp:button --></div><!-- /wp:buttons -->"
+    ],
+    "article-sidebar": [
+        "<!-- wp:search {\"label\":\"Search articles\",\"buttonText\":\"Search\"} /-->",
+        "<!-- wp:heading {\"level\":3} --><h3 class=\"wp-block-heading\">Latest articles</h3><!-- /wp:heading --><!-- wp:latest-posts {\"postsToShow\":4} /-->",
+        "<!-- wp:heading {\"level\":3} --><h3 class=\"wp-block-heading\">Topics</h3><!-- /wp:heading --><!-- wp:categories /-->",
+        "<!-- wp:heading {\"level\":3} --><h3 class=\"wp-block-heading\">Need a hand?</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Talk to the team about your website, systems or security.</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button --><div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"{{page:contact}}\">Book a discovery call</a></div><!-- /wp:button --></div><!-- /wp:buttons -->"
+    ]
+}

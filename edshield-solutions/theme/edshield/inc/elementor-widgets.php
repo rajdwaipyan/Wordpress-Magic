@@ -203,6 +203,177 @@ abstract class Section_Widget extends Widget_Base {
 		}
 
 		$this->end_controls_section();
+
+		$this->edst_style_controls();
+	}
+
+	/**
+	 * Style tab controls shared by every section: colours, typography,
+	 * background and spacing. Colours are written to the section's design
+	 * tokens, so every card, button and line inside follows them.
+	 */
+	protected function edst_style_controls(): void {
+		$section = '{{WRAPPER}} > .edst-s, {{WRAPPER}} > .edst-s .edst-cta';
+		$colors  = array(
+			'edst_c_bg'      => array( __( 'Background', 'edshield' ), '--edst-bg' ),
+			'edst_c_fg'      => array( __( 'Headings and text', 'edshield' ), '--edst-fg' ),
+			'edst_c_muted'   => array( __( 'Secondary text', 'edshield' ), '--edst-muted' ),
+			'edst_c_accent'  => array( __( 'Accent (labels, numbers, links)', 'edshield' ), '--edst-accent' ),
+			'edst_c_em'      => array( __( 'Highlighted words in headings', 'edshield' ), '--edst-em' ),
+			'edst_c_surface' => array( __( 'Cards and panels', 'edshield' ), '--edst-surface' ),
+			'edst_c_line'    => array( __( 'Lines and borders', 'edshield' ), '--edst-line' ),
+			'edst_c_button'  => array( __( 'Brand accent (buttons and icons)', 'edshield' ), '--edst-gold' ),
+		);
+
+		$this->start_controls_section(
+			'edst_style_colors',
+			array(
+				'label' => __( 'Colours', 'edshield' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'edst_colors_note',
+			array(
+				'type'            => Controls_Manager::RAW_HTML,
+				'raw'             => esc_html__( 'Leave empty to use the section tone. Colours apply to everything inside the section.', 'edshield' ),
+				'content_classes' => 'elementor-descriptor',
+			)
+		);
+
+		foreach ( $colors as $id => $color ) {
+			$this->add_control(
+				$id,
+				array(
+					'label'     => $color[0],
+					'type'      => Controls_Manager::COLOR,
+					'selectors' => array(
+						$section => $color[1] . ': {{VALUE}};',
+					),
+				)
+			);
+		}
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'edst_style_type',
+			array(
+				'label' => __( 'Typography', 'edshield' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'edst_t_heading',
+				'label'    => __( 'Main heading', 'edshield' ),
+				'selector' => '{{WRAPPER}} :is(.edst-display, .edst-h1, .edst-h2)',
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'edst_t_title',
+				'label'    => __( 'Card and item titles', 'edshield' ),
+				'selector' => '{{WRAPPER}} :is(.edst-h3, .edst-card__title, .edst-svc-row__title, .edst-step__title, .edst-row__title, .edst-incl__title, .edst-plan__name, .edst-case__title, .edst-post-card__title, .edst-qa summary)',
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'edst_t_text',
+				'label'    => __( 'Body text', 'edshield' ),
+				'selector' => '{{WRAPPER}} :is(.edst-lede, .edst-head__intro, .edst-rich, .edst-card__text, .edst-svc-row__text, .edst-row__body p, .edst-step__text, .edst-incl__text, .edst-qa__a, .edst-cta__text, .edst-contact__text, .edst-plan__summary)',
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'edst_t_label',
+				'label'    => __( 'Small labels', 'edshield' ),
+				'selector' => '{{WRAPPER}} .edst-eyebrow',
+			)
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'edst_style_box',
+			array(
+				'label' => __( 'Background and spacing', 'edshield' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			array(
+				'name'     => 'edst_bg',
+				'types'    => array( 'classic', 'gradient' ),
+				'selector' => '{{WRAPPER}} > .edst-s',
+			)
+		);
+
+		$this->add_responsive_control(
+			'edst_padding',
+			array(
+				'label'              => __( 'Section padding', 'edshield' ),
+				'type'               => Controls_Manager::DIMENSIONS,
+				'size_units'         => array( 'px', 'rem', 'vh' ),
+				'allowed_dimensions' => 'vertical',
+				'selectors'          => array(
+					'{{WRAPPER}} > .edst-s' => 'padding-top: {{TOP}}{{UNIT}}; padding-bottom: {{BOTTOM}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'edst_width',
+			array(
+				'label'      => __( 'Content width', 'edshield' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'rem', '%' ),
+				'range'      => array(
+					'px'  => array(
+						'min' => 600,
+						'max' => 1800,
+					),
+					'rem' => array(
+						'min' => 40,
+						'max' => 110,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} > .edst-s' => '--edst-max: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'edst_radius',
+			array(
+				'label'      => __( 'Card corner radius', 'edshield' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 40,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} > .edst-s' => '--edst-r-md: {{SIZE}}{{UNIT}}; --edst-r-lg: calc({{SIZE}}{{UNIT}} * 1.5);',
+				),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	protected function render(): void {

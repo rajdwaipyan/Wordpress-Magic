@@ -3,8 +3,8 @@
  */
 
 .edst .edst-btn {
-	--b-bg: var(--edst-blue);
-	--b-fg: #fff;
+	--b-bg: var(--edst-gold);
+	--b-fg: var(--edst-ink);
 	--b-line: transparent;
 
 	position: relative;
@@ -18,11 +18,11 @@
 	border: 1px solid var(--b-line);
 	border-radius: var(--edst-r-sm);
 	background: var(--b-bg);
-	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 10px 24px -12px rgb(42 75 255 / 0.7);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 10px 24px -12px rgb(216 168 72 / 0.6);
 	color: var(--b-fg);
 	font-family: var(--edst-font-sans);
 	font-size: 0.9375rem;
-	font-weight: 500;
+	font-weight: 600;
 	line-height: 1.2;
 	text-decoration: none;
 	white-space: nowrap;
@@ -32,7 +32,7 @@
 
 .edst .edst-btn:hover,
 .edst .edst-btn:focus-visible {
-	--b-bg: var(--edst-blue-deep);
+	--b-bg: var(--edst-gold-bright);
 	color: var(--b-fg);
 }
 
@@ -65,8 +65,8 @@
 }
 
 .edst .edst-btn--light {
-	--b-bg: #f3f1ec;
-	--b-fg: #0e1012;
+	--b-bg: #f5f7fb;
+	--b-fg: #071533;
 
 	box-shadow: none;
 }
@@ -274,10 +274,10 @@
 	height: 100%;
 	min-height: 100%;
 	background:
-		linear-gradient(90deg, rgb(243 241 236 / 0.045) 1px, transparent 1px) 50% 50% / 26px 26px,
-		linear-gradient(0deg, rgb(243 241 236 / 0.045) 1px, transparent 1px) 50% 50% / 26px 26px,
-		radial-gradient(120% 90% at 85% 0%, rgb(42 75 255 / 0.24), transparent 60%),
-		#15181b;
+		linear-gradient(90deg, rgb(245 247 251 / 0.045) 1px, transparent 1px) 50% 50% / 26px 26px,
+		linear-gradient(0deg, rgb(245 247 251 / 0.045) 1px, transparent 1px) 50% 50% / 26px 26px,
+		radial-gradient(120% 90% at 85% 0%, rgb(var(--edst-glow) / 0.24), transparent 60%),
+		#0c1d44;
 }
 
 .edst-art svg {
@@ -292,83 +292,83 @@
 }
 
 .edst-art .a-g {
-	stroke: rgb(243 241 236 / 0.045);
+	stroke: rgb(245 247 251 / 0.045);
 	stroke-width: 1;
 }
 
 .edst-art .a-g2 {
-	stroke: rgb(243 241 236 / 0.08);
+	stroke: rgb(245 247 251 / 0.08);
 	stroke-width: 1;
 }
 
 .edst-art .a-l {
-	stroke: rgb(243 241 236 / 0.78);
+	stroke: rgb(245 247 251 / 0.78);
 	stroke-width: 1.5;
 	stroke-linejoin: round;
 }
 
 .edst-art .a-m {
-	stroke: rgb(243 241 236 / 0.2);
+	stroke: rgb(245 247 251 / 0.2);
 	stroke-width: 1.2;
 }
 
 .edst-art .a-b {
-	stroke: #7c93ff;
+	stroke: #e9c46a;
 	stroke-width: 2;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 }
 
 .edst-art .a-p {
-	stroke: #fff;
+	stroke: #071533;
 	stroke-width: 2;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 }
 
 .edst-art .a-i {
-	stroke: #7c93ff;
+	stroke: #e9c46a;
 }
 
 .edst-art .a-f {
-	fill: #1e2226;
-	stroke: rgb(243 241 236 / 0.1);
+	fill: #13285a;
+	stroke: rgb(245 247 251 / 0.1);
 	stroke-width: 1;
 }
 
 .edst-art .a-f.a-l {
-	stroke: rgb(243 241 236 / 0.7);
+	stroke: rgb(245 247 251 / 0.7);
 	stroke-width: 1.5;
 }
 
 .edst-art .a-f2 {
-	fill: #252a30;
+	fill: #1a3168;
 }
 
 .edst-art .a-fl {
-	fill: rgb(243 241 236 / 0.78);
+	fill: rgb(245 247 251 / 0.78);
 }
 
 .edst-art .a-fm {
-	fill: rgb(243 241 236 / 0.16);
+	fill: rgb(245 247 251 / 0.16);
 }
 
 .edst-art .a-fp {
-	fill: #fff;
+	fill: #071533;
 }
 
 .edst-art .a-fb {
-	fill: #2a4bff;
+	fill: #d8a848;
 }
 
 .edst-art .a-img {
-	fill: rgb(124 147 255 / 0.14);
-	stroke: rgb(124 147 255 / 0.32);
+	fill: rgb(233 196 106 / 0.14);
+	stroke: rgb(233 196 106 / 0.32);
 }
 
 .edst-art .a-chip {
-	fill: rgb(42 75 255 / 0.18);
-	stroke: #7c93ff;
+	fill: rgb(var(--edst-glow) / 0.18);
+	stroke: #e9c46a;
 	stroke-width: 1.5;
 }
 

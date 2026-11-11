@@ -107,7 +107,7 @@
 
 @media (min-width: 64rem) {
 	.edst .edst-footer__cols {
-		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr));
 	}
 
 	.edst .edst-footer__col--wide {
@@ -207,15 +207,65 @@
 .edst .edst-footer__mark span {
 	display: block;
 	padding-inline: var(--edst-gutter);
-	background: linear-gradient(180deg, rgb(243 241 236 / 0.12), rgb(243 241 236 / 0.02) 85%);
+	background: linear-gradient(180deg, rgb(245 247 251 / 0.12), rgb(245 247 251 / 0.02) 85%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
 	font-family: var(--edst-font-display);
 	font-size: clamp(4rem, 17.5vw, 18rem);
-	font-weight: 400;
+	font-weight: 700;
 	letter-spacing: -0.045em;
 	text-align: center;
 	white-space: nowrap;
 	transform: translateY(0.14em);
+}
+
+/* Footer widget area (Appearance › Widgets › Footer: get in touch) */
+.edst .edst-footer__widgets .edst-widget + .edst-widget {
+	margin-top: 1.5rem;
+}
+
+.edst .edst-footer__widgets :is(h2, h3, h4) {
+	margin: 0 0 1.1rem;
+	color: var(--edst-muted);
+	font-family: var(--edst-font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.edst .edst-footer__widgets p,
+.edst .edst-footer__widgets li {
+	margin: 0 0 0.7rem;
+	color: var(--edst-fg);
+	font-size: 0.9688rem;
+	line-height: 1.55;
+	opacity: 0.86;
+}
+
+.edst .edst-footer__widgets ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-footer__widgets a {
+	color: var(--edst-fg);
+	text-decoration: none;
+}
+
+.edst .edst-footer__widgets a:hover {
+	color: var(--edst-accent);
+}
+
+.edst .edst-footer__widgets .wp-block-button__link {
+	display: inline-flex;
+	margin-top: 0.5rem;
+	padding: 0.6rem 1rem;
+	border-radius: var(--edst-r-sm);
+	background: var(--edst-gold);
+	color: var(--edst-ink);
+	font-size: 0.875rem;
+	font-weight: 600;
 }

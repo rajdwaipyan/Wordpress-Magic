@@ -18,7 +18,7 @@ html {
 
 body {
 	margin: 0;
-	background: var(--edst-paper);
+	background: var(--edst-white);
 	color: var(--edst-ink);
 	font-family: var(--edst-font-sans);
 	font-size: 1rem;
@@ -31,7 +31,7 @@ body {
 :where(h1, h2, h3, h4, h5, h6) {
 	margin: 0 0 0.6em;
 	font-family: var(--edst-font-display);
-	font-weight: 400;
+	font-weight: var(--edst-display-weight);
 	line-height: 1.1;
 	letter-spacing: -0.02em;
 	text-wrap: balance;
@@ -63,13 +63,22 @@ body {
 }
 
 :focus-visible {
-	outline: 2px solid var(--edst-blue-bright);
+	outline: 2px solid var(--edst-focus, var(--edst-gold-deep));
 	outline-offset: 3px;
 }
 
+.edst-tone-ink,
+.edst-tone-charcoal,
+.edst-header,
+.edst-announce,
+.edst-mobile,
+.edst-footer {
+	--edst-focus: var(--edst-gold-bright);
+}
+
 ::selection {
-	background: var(--edst-blue);
-	color: #fff;
+	background: var(--edst-gold);
+	color: var(--edst-ink);
 }
 
 .screen-reader-text {
@@ -91,8 +100,8 @@ body {
 	z-index: 300;
 	padding: 0.75rem 1rem;
 	border-radius: var(--edst-r-sm);
-	background: var(--edst-blue);
-	color: #fff;
+	background: var(--edst-gold);
+	color: var(--edst-ink);
 	text-decoration: none;
 	transition: top 0.2s;
 }
@@ -177,13 +186,22 @@ body {
 .edst :is(.edst-display, .edst-h1, .edst-h2, .edst-h3) {
 	color: var(--edst-fg);
 	font-family: var(--edst-font-display);
-	font-weight: 400;
+	font-weight: var(--edst-display-weight);
 	text-wrap: balance;
 }
 
 .edst :is(.edst-display, .edst-h1, .edst-h2, .edst-h3) em {
-	color: var(--edst-accent);
+	padding-inline: 0.04em;
+	background: linear-gradient(transparent 64%, var(--edst-mark, transparent) 64%, var(--edst-mark, transparent) 94%, transparent 94%);
+	color: var(--edst-em, var(--edst-fg));
 	font-style: normal;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+.edst-tone-ink,
+.edst-tone-charcoal {
+	--edst-em: var(--edst-gold-bright);
 }
 
 .edst .edst-display {

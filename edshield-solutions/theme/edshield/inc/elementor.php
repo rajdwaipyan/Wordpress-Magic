@@ -111,7 +111,7 @@ add_action( 'elementor/editor/after_enqueue_styles', __NAMESPACE__ . '\elementor
 function elementor_editor_styles(): void {
 	wp_add_inline_style(
 		'elementor-editor',
-		'.elementor-panel .elementor-element .icon .eicon-site-identity,.elementor-panel [class*="elementor-element--edst"] .icon{color:#2a4bff}'
+		'.elementor-panel .elementor-element .icon .eicon-site-identity,.elementor-panel [class*="elementor-element--edst"] .icon{color:#d8a848}'
 	);
 }
 
@@ -187,10 +187,36 @@ function resolve_tokens( $value ) {
  * @return array<int, array<string, mixed>>
  */
 function elementor_layout_data( string $layout ): array {
-	$data = array();
+	$sections = array();
 
 	foreach ( layout_sections( $layout ) as $section ) {
-		$data[] = elementor_section_data( $section[0], resolve_tokens( section_settings( $section[0], $section[1] ) ) );
+		$sections[] = array(
+			'type'     => $section[0],
+			'settings' => $section[1],
+		);
+	}
+
+	return elementor_sections_data( $sections );
+}
+
+/**
+ * Elementor data for a list of sections (type and settings), with link
+ * tokens resolved to this site's addresses.
+ *
+ * @param array<int, array{type:string,settings:array<string, mixed>}> $sections Sections.
+ * @return array<int, array<string, mixed>>
+ */
+function elementor_sections_data( array $sections ): array {
+	$data = array();
+
+	foreach ( $sections as $section ) {
+		$type = (string) ( $section['type'] ?? '' );
+
+		if ( '' === $type ) {
+			continue;
+		}
+
+		$data[] = elementor_section_data( $type, resolve_tokens( section_settings( $type, (array) ( $section['settings'] ?? array() ) ) ) );
 	}
 
 	return $data;
@@ -240,12 +266,12 @@ function elementor_add_colors(): bool {
 	$custom   = isset( $settings['custom_colors'] ) && is_array( $settings['custom_colors'] ) ? $settings['custom_colors'] : array();
 	$have     = wp_list_pluck( $custom, '_id' );
 	$ours     = array(
-		'edstink'    => array( __( 'ED Shield Ink', 'edshield' ), '#0E1012' ),
-		'edstchar'   => array( __( 'ED Shield Charcoal', 'edshield' ), '#15181B' ),
-		'edstpaper'  => array( __( 'ED Shield Paper', 'edshield' ), '#F3F1EC' ),
-		'edstslate'  => array( __( 'ED Shield Slate', 'edshield' ), '#5A6068' ),
-		'edstblue'   => array( __( 'ED Shield Blue', 'edshield' ), '#2A4BFF' ),
-		'edstbright' => array( __( 'ED Shield Blue on dark', 'edshield' ), '#7C93FF' ),
+		'edstnavy'  => array( __( 'ED Shield Navy', 'edshield' ), '#071533' ),
+		'edstnavy2' => array( __( 'ED Shield Navy (raised)', 'edshield' ), '#0C1D44' ),
+		'edstgold'  => array( __( 'ED Shield Gold', 'edshield' ), '#D8A848' ),
+		'edstgold2' => array( __( 'ED Shield Gold (light)', 'edshield' ), '#E9C46A' ),
+		'edstpaper' => array( __( 'ED Shield Light grey', 'edshield' ), '#F6F7F9' ),
+		'edstslate' => array( __( 'ED Shield Slate', 'edshield' ), '#5B6478' ),
 	);
 
 	foreach ( $ours as $id => $color ) {

@@ -1,0 +1,16 @@
+{
+    "edst_announce_on": true,
+    "edst_announce_text": "From websites to AI automation: one accountable technology partner.",
+    "edst_announce_label": "Book a discovery call",
+    "edst_announce_url": "{{page:contact}}",
+    "edst_cta_label": "Start a project",
+    "edst_cta_url": "{{page:contact}}",
+    "edst_mega_eyebrow": "Not sure where to start?",
+    "edst_mega_title": "Book a discovery call",
+    "edst_mega_text": "A focused conversation about your goals, systems and constraints, and the most sensible first step.",
+    "edst_mega_label": "Book a call",
+    "edst_mega_url": "{{page:contact}}",
+    "edst_footer_tagline": "A technology and digital transformation partner for organisations of every size, in Bangladesh and internationally.",
+    "edst_footer_status": "Engineering digital growth. Empowering businesses.",
+    "edst_footer_wordmark": true
+}

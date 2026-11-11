@@ -1,0 +1,96 @@
+{
+    "system_colors": [
+        {
+            "_id": "primary",
+            "title": "Primary",
+            "color": "#071533"
+        },
+        {
+            "_id": "secondary",
+            "title": "Secondary",
+            "color": "#D8A848"
+        },
+        {
+            "_id": "text",
+            "title": "Text",
+            "color": "#5B6478"
+        },
+        {
+            "_id": "accent",
+            "title": "Accent",
+            "color": "#E9C46A"
+        }
+    ],
+    "custom_colors": [
+        {
+            "_id": "edstnavy",
+            "title": "ED Shield Navy",
+            "color": "#071533"
+        },
+        {
+            "_id": "edstnavy2",
+            "title": "ED Shield Navy (raised)",
+            "color": "#0C1D44"
+        },
+        {
+            "_id": "edstgold",
+            "title": "ED Shield Gold",
+            "color": "#D8A848"
+        },
+        {
+            "_id": "edstgold2",
+            "title": "ED Shield Gold (light)",
+            "color": "#E9C46A"
+        },
+        {
+            "_id": "edstpaper",
+            "title": "ED Shield Light grey",
+            "color": "#F6F7F9"
+        },
+        {
+            "_id": "edstslate",
+            "title": "ED Shield Slate",
+            "color": "#5B6478"
+        }
+    ],
+    "system_typography": [
+        {
+            "_id": "primary",
+            "title": "Primary",
+            "typography_typography": "custom",
+            "typography_font_family": "Geist",
+            "typography_font_weight": "600"
+        },
+        {
+            "_id": "secondary",
+            "title": "Secondary",
+            "typography_typography": "custom",
+            "typography_font_family": "Geist",
+            "typography_font_weight": "500"
+        },
+        {
+            "_id": "text",
+            "title": "Text",
+            "typography_typography": "custom",
+            "typography_font_family": "Geist",
+            "typography_font_weight": "400"
+        },
+        {
+            "_id": "accent",
+            "title": "Accent",
+            "typography_typography": "custom",
+            "typography_font_family": "Geist",
+            "typography_font_weight": "600"
+        }
+    ],
+    "container_width": {
+        "unit": "px",
+        "size": 1312,
+        "sizes": []
+    },
+    "options": {
+        "elementor_disable_color_schemes": "yes",
+        "elementor_disable_typography_schemes": "yes",
+        "elementor_google_font": "0"
+    }
+}

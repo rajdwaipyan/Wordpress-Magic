@@ -139,6 +139,14 @@ function resolve_url( $value ): string {
 		return $posts_page ? (string) get_permalink( $posts_page ) : home_url( '/?post_type=post' );
 	}
 
+	// A token may carry an anchor: page:contact#contact-form.
+	$hash = '';
+
+	if ( preg_match( '/^(page|service):[^#]+(#.+)$/', $value, $match ) ) {
+		$hash  = $match[2];
+		$value = substr( $value, 0, -strlen( $hash ) );
+	}
+
 	if ( 0 === strpos( $value, 'service:' ) ) {
 		$value = 'page:service-' . substr( $value, 8 );
 	}
@@ -148,12 +156,12 @@ function resolve_url( $value ): string {
 		$id     = layout_page_id( $layout );
 
 		if ( $id ) {
-			return (string) get_permalink( $id );
+			return (string) get_permalink( $id ) . $hash;
 		}
 
 		$fallback = layouts_index()[ $layout ]['path'] ?? $layout;
 
-		return home_url( '/' . trim( $fallback, '/' ) . '/' );
+		return home_url( '/' . trim( $fallback, '/' ) . '/' ) . $hash;
 	}
 
 	return $value;
@@ -236,7 +244,7 @@ function brand( string $class = '' ): string {
 	}
 
 	return sprintf(
-		'<a class="%1$s" href="%2$s" rel="home"><svg class="edst-brand__mark" viewBox="0 0 28 32" width="28" height="32" aria-hidden="true" focusable="false"><path d="M14 1.5 26 5.6v10.2c0 7.3-5 12.6-12 15.7C7 28.4 2 23.1 2 15.8V5.6Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 10h7.5M9 16h6M9 22h7.5M9 10v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="20" cy="16" r="2.2" fill="currentColor"/></svg><span class="edst-brand__name">ED Shield<span class="edst-brand__sub">Solutions</span></span></a>',
+		'<a class="%1$s" href="%2$s" rel="home"><svg class="edst-brand__mark" viewBox="0 0 28 32" width="28" height="32" aria-hidden="true" focusable="false"><path d="M14 1.2 26.6 5.4v10.4c0 7.5-5.2 12.9-12.6 16-7.4-3.1-12.6-8.5-12.6-16V5.4Z" fill="#0C1D44" stroke="currentColor" stroke-width="1.6"/><path d="M14 4.4 23.6 7.6v8.2c0 5.8-3.9 10-9.6 12.6-5.7-2.6-9.6-6.8-9.6-12.6V7.6Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.55"/><path d="M8.2 10.4h5.2M8.2 15.6h4.2M8.2 20.8h5.2M8.2 10.4v10.4M15.6 10.4h1.6c2.6 0 4.2 2.1 4.2 5.2s-1.6 5.2-4.2 5.2h-1.6Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="edst-brand__name">ED Shield<span class="edst-brand__sub">Solutions</span></span></a>',
 		esc_attr( $class ),
 		$home
 	);

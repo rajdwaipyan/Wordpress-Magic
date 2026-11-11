@@ -15,7 +15,7 @@ body {
 :where(h1, h2, h3, h4, h5, h6) {
 	color: var(--edst-ink);
 	font-family: var(--edst-font-display);
-	font-weight: 400;
+	font-weight: 600;
 	line-height: 1.12;
 	letter-spacing: -0.02em;
 }
@@ -30,20 +30,20 @@ body {
 .wp-block-post-title {
 	font-family: var(--edst-font-display);
 	font-size: clamp(2.2rem, 1.6rem + 2vw, 3.25rem);
-	font-weight: 400;
+	font-weight: 600;
 	line-height: 1.05;
 	letter-spacing: -0.028em;
 }
 
 a {
-	color: var(--edst-blue);
+	color: var(--edst-gold-deep);
 	text-underline-offset: 0.2em;
 }
 
 blockquote,
 .wp-block-quote {
 	padding-left: 1.4em;
-	border-left: 3px solid var(--edst-blue);
+	border-left: 3px solid var(--edst-gold);
 	font-family: var(--edst-font-display);
 	font-size: 1.35em;
 	line-height: 1.45;
@@ -63,14 +63,14 @@ pre,
 	padding: 1.25rem 1.4rem;
 	border-radius: 14px;
 	background: var(--edst-ink);
-	color: #f3f1ec;
+	color: #f5f7fb;
 	font-size: 0.875rem;
 }
 
 .wp-block-button__link {
 	border-radius: 8px;
-	background: var(--edst-blue);
-	color: #fff;
+	background: var(--edst-gold);
+	color: var(--edst-ink);
 	font-size: 0.9375rem;
 	font-weight: 500;
 }

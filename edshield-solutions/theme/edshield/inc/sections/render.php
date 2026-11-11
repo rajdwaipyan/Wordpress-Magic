@@ -833,8 +833,10 @@ function post_card( int $post_id ): string {
 	$cats  = get_the_category( $post_id );
 	$cat   = $cats ? $cats[0]->name : '';
 	$thumb = get_the_post_thumbnail( $post_id, 'edst-card', array( 'class' => 'edst-img', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(min-width: 64rem) 30vw, 90vw' ) );
+	$art   = (string) get_post_meta( $post_id, '_edst_art', true );
+	$art   = '' !== $art ? $art : array( 'web', 'ai', 'security', 'crm', 'cloud', 'software' )[ $post_id % 6 ];
 
-	return '<article class="edst-post-card edst-rv"><div class="edst-post-card__media">' . ( $thumb ? $thumb : art( array( 'web', 'ai', 'security', 'crm', 'cloud', 'software' )[ $post_id % 6 ] ) ) . '</div><div class="edst-post-card__body"><p class="edst-post-card__meta">' . ( '' !== $cat ? '<span>' . esc_html( $cat ) . '</span>' : '' ) . '<time datetime="' . esc_attr( get_the_date( DATE_W3C, $post_id ) ) . '">' . esc_html( get_the_date( 'M Y', $post_id ) ) . '</time></p><h3 class="edst-post-card__title"><a class="edst-stretch" href="' . esc_url( get_permalink( $post_id ) ) . '">' . esc_html( get_the_title( $post_id ) ) . '</a></h3><p class="edst-post-card__text">' . esc_html( summary( $post_id, 20 ) ) . '</p></div></article>';
+	return '<article class="edst-post-card edst-rv"><div class="edst-post-card__media">' . ( $thumb ? $thumb : art( $art ) ) . '</div><div class="edst-post-card__body"><p class="edst-post-card__meta">' . ( '' !== $cat ? '<span>' . esc_html( $cat ) . '</span>' : '' ) . '<time datetime="' . esc_attr( get_the_date( DATE_W3C, $post_id ) ) . '">' . esc_html( get_the_date( 'M Y', $post_id ) ) . '</time></p><h3 class="edst-post-card__title"><a class="edst-stretch" href="' . esc_url( get_permalink( $post_id ) ) . '">' . esc_html( get_the_title( $post_id ) ) . '</a></h3><p class="edst-post-card__text">' . esc_html( summary( $post_id, 20 ) ) . '</p></div></article>';
 }
 
 /**

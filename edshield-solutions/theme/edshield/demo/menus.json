@@ -1,0 +1,316 @@
+{
+    "primary": {
+        "name": "ED Shield main menu",
+        "location": "primary",
+        "items": [
+            {
+                "title": "Work",
+                "link": "page:work",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Services",
+                "link": "page:services",
+                "description": "",
+                "classes": "edst-mega",
+                "children": [
+                    {
+                        "title": "Website Development",
+                        "link": "service:web",
+                        "description": "Fast sites that win customers",
+                        "classes": "edst-icon-web",
+                        "children": []
+                    },
+                    {
+                        "title": "E-commerce Solutions",
+                        "link": "service:commerce",
+                        "description": "Stores built to sell and scale",
+                        "classes": "edst-icon-cart",
+                        "children": []
+                    },
+                    {
+                        "title": "AI & Business Automation",
+                        "link": "service:ai",
+                        "description": "Workflows that run themselves",
+                        "classes": "edst-icon-ai",
+                        "children": []
+                    },
+                    {
+                        "title": "Custom Software & Web Apps",
+                        "link": "service:software",
+                        "description": "Apps, portals and dashboards",
+                        "classes": "edst-icon-code",
+                        "children": []
+                    },
+                    {
+                        "title": "CRM & ERP Integration",
+                        "link": "service:crm",
+                        "description": "One source of truth for your business",
+                        "classes": "edst-icon-crm",
+                        "children": []
+                    },
+                    {
+                        "title": "Cybersecurity",
+                        "link": "service:security",
+                        "description": "Protect data, systems and reputation",
+                        "classes": "edst-icon-shield",
+                        "children": []
+                    },
+                    {
+                        "title": "Cloud & Infrastructure",
+                        "link": "service:cloud",
+                        "description": "Reliable, cost-aware foundations",
+                        "classes": "edst-icon-cloud",
+                        "children": []
+                    },
+                    {
+                        "title": "Industrial Digitalization",
+                        "link": "service:industrial",
+                        "description": "Connected operations for industry",
+                        "classes": "edst-icon-factory",
+                        "children": []
+                    },
+                    {
+                        "title": "Digital Transformation Consulting",
+                        "link": "service:consulting",
+                        "description": "Roadmaps you can act on",
+                        "classes": "edst-icon-compass",
+                        "children": []
+                    },
+                    {
+                        "title": "For Startups",
+                        "link": "page:audience-startups",
+                        "description": "Built for launch speed",
+                        "classes": "edst-icon-rocket",
+                        "children": []
+                    },
+                    {
+                        "title": "For Growing Businesses",
+                        "link": "page:audience-growth",
+                        "description": "Systems that scale with you",
+                        "classes": "edst-icon-chart",
+                        "children": []
+                    },
+                    {
+                        "title": "View all services",
+                        "link": "page:services",
+                        "description": "",
+                        "classes": "edst-view-all",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Resources",
+                "link": "posts",
+                "description": "",
+                "classes": "",
+                "children": [
+                    {
+                        "title": "Website audit",
+                        "link": "page:audit",
+                        "description": "Your website’s weak spots, prioritised",
+                        "classes": "edst-icon-chart",
+                        "children": []
+                    },
+                    {
+                        "title": "Technology",
+                        "link": "page:technology",
+                        "description": "The platforms we build on",
+                        "classes": "edst-icon-layers",
+                        "children": []
+                    },
+                    {
+                        "title": "Insights",
+                        "link": "posts",
+                        "description": "Notes on technology and growth",
+                        "classes": "edst-icon-spark",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Company",
+                "link": "page:about",
+                "description": "",
+                "classes": "",
+                "children": [
+                    {
+                        "title": "About us",
+                        "link": "page:about",
+                        "description": "The team behind the work",
+                        "classes": "edst-icon-users",
+                        "children": []
+                    },
+                    {
+                        "title": "Our process",
+                        "link": "page:process",
+                        "description": "How we take you to launch",
+                        "classes": "edst-icon-flag",
+                        "children": []
+                    },
+                    {
+                        "title": "Pricing",
+                        "link": "page:engagement",
+                        "description": "Ways to work with us",
+                        "classes": "edst-icon-compass",
+                        "children": []
+                    },
+                    {
+                        "title": "FAQ",
+                        "link": "page:faq",
+                        "description": "Common questions, answered",
+                        "classes": "edst-icon-chat",
+                        "children": []
+                    },
+                    {
+                        "title": "Careers",
+                        "link": "page:careers",
+                        "description": "Join the team",
+                        "classes": "edst-icon-rocket",
+                        "children": []
+                    },
+                    {
+                        "title": "Contact",
+                        "link": "page:contact",
+                        "description": "Start a conversation",
+                        "classes": "edst-icon-mail",
+                        "children": []
+                    },
+                    {
+                        "title": "Industries we work with",
+                        "link": "page:industries",
+                        "description": "",
+                        "classes": "edst-view-all",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "company": {
+        "name": "ED Shield footer: company",
+        "location": "company",
+        "items": [
+            {
+                "title": "About",
+                "link": "page:about",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Our process",
+                "link": "page:process",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Work",
+                "link": "page:work",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Industries",
+                "link": "page:industries",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Pricing",
+                "link": "page:engagement",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Careers",
+                "link": "page:careers",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Contact",
+                "link": "page:contact",
+                "description": "",
+                "classes": "",
+                "children": []
+            }
+        ]
+    },
+    "resources": {
+        "name": "ED Shield footer: resources",
+        "location": "resources",
+        "items": [
+            {
+                "title": "Insights",
+                "link": "posts",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Website audit",
+                "link": "page:audit",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Technology",
+                "link": "page:technology",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "For startups",
+                "link": "page:audience-startups",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "For growing businesses",
+                "link": "page:audience-growth",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "FAQ",
+                "link": "page:faq",
+                "description": "",
+                "classes": "",
+                "children": []
+            }
+        ]
+    },
+    "legal": {
+        "name": "ED Shield footer: legal",
+        "location": "legal",
+        "items": [
+            {
+                "title": "Privacy policy",
+                "link": "page:privacy",
+                "description": "",
+                "classes": "",
+                "children": []
+            },
+            {
+                "title": "Terms of service",
+                "link": "page:terms",
+                "description": "",
+                "classes": "",
+                "children": []
+            }
+        ]
+    }
+}

@@ -1,61 +1,64 @@
 # QA report
 
-## Theme 1.0.0, tested 11 November 2026
+## Theme 1.1.0, tested 11 November 2026
 
-Local WordPress 7.1.4 (PHP 8.3, MariaDB 10.11) in the build sandbox, fresh
-install, setup screen run with pages, menus and placeholders. Chromium only.
-**Not yet tested on staging.**
+Local WordPress 7.1.4 (PHP 8.3, MariaDB 10.11) in the build sandbox, each run on
+a fresh install. Chromium only. **Not yet tested on staging.**
 
-### Passed
+### One-click import
 
-| Area | Check | Result |
+| Route | Result |
+|---|---|
+| Appearance › Import Demo Data, Elementor not active | 32 pages, 4 articles, 6 placeholder case studies, 4 menus assigned, 5 widgets, theme settings, site icon, front page and blog set; about 1 second |
+| Same screen with Elementor 4.0 active | 31 pages built as Elementor pages (Insights is the blog), Elementor Site Settings updated (ED Shield global colours and fonts) |
+| One Click Demo Import 3.4 screen with Elementor active | "Import Complete!"; identical result through the theme's importer |
+| Second run | Nothing duplicated; reports what already existed |
+| Default WordPress content | Untouched "Hello world!", "Sample Page" and the Privacy Policy draft moved to the Trash (restorable); default widgets moved to Inactive widgets |
+
+### Every imported page
+
+All 48 addresses (32 pages, 4 articles, 6 case studies, 5 category archives,
+search, 404) at 1440 px and 390 px:
+
+| Check | Theme rendering | Elementor rendering |
 |---|---|---|
-| PHP | `php -l` on every PHP file | no syntax errors |
-| PHP | 20 pages, 3 case studies, article, blog, category, search, 404, feed with `WP_DEBUG` on | no notices or warnings from the theme; 404 page returns 404 |
-| Importer | Setup screen on an empty site | 20 pages, primary menu with mega menu, footer menus, 3 placeholder case studies, permalinks set to Post name |
-| Elementor data | Every page's Elementor data (JSON round trip) rendered through the widgets' render path | 19 pages, 126 widgets: same section structure as the theme's own rendering, no warnings |
-| Elementor widgets | Every section type rendered with only its defaults (a freshly dropped widget) | all 23 render |
-| Elementor API | Overridden methods against Elementor 4.0.8 base classes | signatures compatible |
-| Layout | Horizontal overflow at 1440 px and 390 px on all page types | none (one FAQ overflow on phones found and fixed) |
-| Front end | Console errors on all page types | none |
-| Motion | Elements hidden by the reveal after scrolling every page | 0 |
-| Navigation | Mega menu: hover open and close, keyboard open, Tab into panel, Escape returns focus | pass |
-| Navigation | Dropdown: click open, outside click closes | pass |
-| Navigation | Header hides on scroll down, returns on scroll up | pass |
-| Navigation | Mobile menu: opens under the header (also after scrolling), locks page scroll, nested group, closes | pass |
-| Announcement | Close persists across reloads without a flash | pass |
-| Sliders | Next button, progress bar, controls hidden when nothing overflows | pass |
-| Work | Industry filter and "All" | pass |
-| FAQ | Accordion; category navigation jumps and highlights | pass |
-| Anchors | Back to top and in-page links scroll smoothly | pass |
-| Form | Submission stored as a private lead and redirected with a success notice | pass |
-| Admin | Setup screen, Customizer panel, Leads, Projects, case-study details box, Menus | load without PHP messages or script errors |
+| HTTP status | 200 (404 page returns 404) | 200 |
+| PHP notices or warnings from the theme | none | none |
+| Browser errors from the theme | none | none |
+| Horizontal overflow | none (one article-sidebar overflow found and fixed) | none |
+| Content left hidden by animations | none | none |
+| One h1 per page | yes | yes |
+| Internal links | 48 checked, none broken | 49 checked, none broken |
 
-### Lighthouse 13.6, home page, local server
+The Elementor runs used Elementor's source code, which has no compiled
+front-end files. Each Elementor page therefore logged 404s for Elementor's own
+`frontend.min.css` and three of its scripts; those requests are not made by the
+theme and resolve on a normal Elementor install.
 
-| Performance | Accessibility | Best practices | SEO | LCP | TBT | CLS |
-|---|---|---|---|---|---|---|
-| 99 | 100 | 96 | 63 | 1.7 s | 80 ms | 0 |
+### Elementor
 
-SEO and best practices are lowered by local artefacts: the test site is set to
-discourage search engines, and it has no favicon. The local server sends
-uncompressed files; with gzip the stylesheet is 12.5 KB and the core script
-3.7 KB. Measure on staging before quoting figures.
+| Check | Result |
+|---|---|
+| Widgets registered | 25 in the "ED Shield" category |
+| Controls in the editor context | content controls and the Style tab (colours, typography, background, padding, width, radius) on every section widget |
+| CSS generated from style controls | correct rules for colour tokens and padding |
+| Saving a page through Elementor's document API | new heading and background colour shown on the live page |
+| Page data | 32 pages, 238 widgets: same structure as the theme rendering, every link resolved to a real address |
+
+### Interactions
+
+Mega menu (hover, keyboard, Escape), dropdowns, header hide and show, mobile
+menu (under the header, scroll lock), announcement close persisting across
+reloads, sliders, work filter, FAQ accordion and category navigation, smooth
+anchors, contact form and website audit form (stored as leads, success notice
+shown at the form that was sent): all pass.
 
 ### Not tested
 
-- The Elementor editor itself: Elementor could not be downloaded into the
-  sandbox (network policy), and its source checkout has no built editor assets.
-  Widget code was verified against the Elementor source and through the render
-  path above. Check the editor on staging.
-- Elementor Pro Theme Builder templates (same reason).
-- Staging: PHP 8.5, MariaDB 11.8, LiteSpeed, the four ED Shield plugins.
-- Email delivery (the sandbox has no mail server) and a live webhook receiver.
-- Safari, Firefox, real devices, screen readers.
-
-### Known limitations
-
-- Case studies and testimonials are placeholders until real ones are supplied.
-- Pages built without Elementor show their starter layout only while the page
-  content is empty; once content is added in the block editor, that content is
-  shown instead.
+- The Elementor editor interface itself (no compiled editor assets in the
+  sandbox); the controls, rendering and saving behind it were tested.
+- Installing plugins from wordpress.org through the screen (no access to
+  wordpress.org from the sandbox).
+- Staging (PHP 8.5, LiteSpeed, Elementor 4.3.6, Elementor Pro 4.2.3).
+- Email delivery, a live webhook receiver, Safari, Firefox, real devices,
+  screen readers.

@@ -14,7 +14,7 @@
 | Builders | Elementor 4.3.6, Elementor Pro 4.2.3 (licence mismatch on staging) |
 | Own plugins | EDShield Attendance Pro 4.8.3, ED Shield Cost Manager 1.0.0, EDShield Dashboard 1.0.0, EDS Smart Analytics 1.0.0 |
 
-## Website: theme 1.0.0
+## Website: theme 1.1.0
 
 ```
 Browser
@@ -24,15 +24,19 @@ Browser
 
 WordPress theme "edshield"
   inc/content.php            company content: 9 services, industries, process, FAQs
+  inc/content-pages.php      audience pages, 6 industry pages, audit, technology, legal, articles, case studies
   inc/sections/definitions   23 section schemas: fields, defaults, common style fields
   inc/sections/render        one renderer per section
-  inc/layouts.php            starter layouts for 20 pages (lists of sections + overrides)
+  inc/layouts.php            layouts for 32 pages (lists of sections + overrides)
+  inc/demo.php               demo package (demo/*.json) and the one-click importer
   inc/elementor.php          locations, category, widget registration, page data import
   inc/elementor-widgets.php  one widget per section, controls generated from the schema
   inc/nav.php                mega menu, dropdowns, mobile menu (from WordPress menus)
   inc/projects.php           post type edst_project (/work/<slug>/) + details box
   inc/contact.php            enquiry form, post type edst_lead, mail, signed webhook
-  inc/admin.php              ED Shield Setup screen (import, Elementor tools)
+  inc/admin.php              Import Demo Data screen, plugin installer, Elementor tools,
+                             One Click Demo Import bridge
+  demo/                      content, menus, widgets, customizer, settings, Elementor kit (JSON)
   templates                  front-page, page, single, single-edst_project, index, 404, Full width
 ```
 
@@ -45,12 +49,29 @@ produces:
    switch, repeater) and their defaults;
 2. the theme's own rendering when Elementor is absent or a page is not built
    in Elementor;
-3. the Elementor data written by the importer (one full-width container per
-   section, zero padding and gap).
+3. the Elementor data written by the demo importer (one full-width container
+   per section, zero padding and gap).
+
+### One-click demo import
+
+`tools/export-demo.php` writes the package in `demo/` from the theme's layouts.
+Links are stored as tokens (`page:contact`, `service:web`) and resolved on the
+target site after its pages exist. The importer (`demo_import()`):
+
+1. creates pages in order (parents first), skipping any that already exist;
+2. writes Elementor data when Elementor is active, otherwise the theme renders
+   each page from its layout key;
+3. adds articles, placeholder case studies, menus (assigned to locations), block
+   widgets, theme settings that are still empty, site options, site icon and
+   Elementor Site Settings (global colours, global fonts, content width);
+4. is idempotent: a second run only adds what is missing.
+
+One Click Demo Import (if active) lists the demo through `ocdi/import_files`
+without files and runs the same importer from `ocdi/after_import`.
 
 A test renders every page's Elementor data through the section renderers and
-compares it with the theme's own output: identical structure for all 19 pages
-and 126 widgets.
+compares it with the theme's own output: identical structure for all 32 pages
+and 238 widgets.
 
 ### Decisions
 
@@ -58,8 +79,8 @@ and 126 widgets.
   fit with Elementor Pro's Theme Builder.
 - **Sections, not page templates**: every page is a list of sections, so a page
   edited in Elementor uses exactly the components the theme renders.
-- **Tokens on `body` with Elementor fallbacks**: `--edst-blue:
-  var(--e-global-color-edstblue, #2a4bff)`. Changing the ED Shield colours in
+- **Tokens on `body` with Elementor fallbacks**: `--edst-gold:
+  var(--e-global-color-edstgold, #d8a848)`. Changing the ED Shield colours in
   Elementor's Global Colors recolours the theme.
 - **Component selectors prefixed with `.edst`** (body class) so Elementor kit
   styles cannot override them; form fields use `.edst.edst` to beat kit field

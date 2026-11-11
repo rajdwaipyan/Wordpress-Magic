@@ -1,10 +1,8 @@
 <?php
 /**
- * Setup screen (Appearance › ED Shield Setup), importer and admin notices.
- *
- * Nothing runs automatically. Every action is a button press by an
- * administrator, and existing pages are never overwritten: the importer only
- * creates pages that do not exist yet (pages are matched by their layout key).
+ * Appearance › Import Demo Data: required plugins, one-click demo import and
+ * the theme's Elementor tools. Also registers the demo with the One Click
+ * Demo Import plugin when that plugin is active.
  *
  * @package EDShield\Theme
  */
@@ -13,10 +11,37 @@ namespace EDShield\Theme;
 
 defined( 'ABSPATH' ) || exit;
 
+const DEMO_PAGE = 'edshield-demo-import';
+
+/**
+ * Plugins the demo works with. Only Elementor is required, and only for
+ * visual editing: without it the theme renders every page itself.
+ *
+ * @return array<string, array{name:string,file:string,required:bool,text:string,repo:bool}>
+ */
+function demo_plugins(): array {
+	return array(
+		'elementor'     => array(
+			'name'     => 'Elementor',
+			'file'     => 'elementor/elementor.php',
+			'required' => true,
+			'repo'     => true,
+			'text'     => __( 'Required for visual editing. Every imported page is built from ED Shield widgets you can edit, move and restyle.', 'edshield' ),
+		),
+		'elementor-pro' => array(
+			'name'     => 'Elementor Pro',
+			'file'     => 'elementor-pro/elementor-pro.php',
+			'required' => false,
+			'repo'     => false,
+			'text'     => __( 'Optional. Adds Theme Builder header and footer templates; the theme header and footer work without it.', 'edshield' ),
+		),
+	);
+}
+
 /**
  * Plugins that belong to the previous Biznax theme and break other themes.
  *
- * @return array<string, string> plugin file => name
+ * @return array<string, string> Plugin file => name.
  */
 function companion_plugins(): array {
 	if ( ! function_exists( 'is_plugin_active' ) ) {
@@ -37,64 +62,81 @@ function companion_plugins(): array {
 	return $found;
 }
 
-add_action( 'admin_menu', __NAMESPACE__ . '\setup_menu' );
 /**
- * Add the setup screen.
+ * Whether One Click Demo Import is active (it then owns the menu label).
  */
-function setup_menu(): void {
-	add_theme_page( __( 'ED Shield Setup', 'edshield' ), __( 'ED Shield Setup', 'edshield' ), 'edit_theme_options', 'edshield-setup', __NAMESPACE__ . '\setup_screen' );
+function ocdi_active(): bool {
+	return class_exists( '\OCDI\OneClickDemoImport' );
 }
 
-add_action( 'admin_notices', __NAMESPACE__ . '\setup_notices' );
+add_action( 'admin_menu', __NAMESPACE__ . '\demo_menu' );
 /**
- * Notices: finish setup, and Biznax companion plugins still active.
+ * Appearance › Import Demo Data.
  */
-function setup_notices(): void {
+function demo_menu(): void {
+	$title = ocdi_active() ? __( 'ED Shield Demo', 'edshield' ) : __( 'Import Demo Data', 'edshield' );
+
+	add_theme_page( __( 'Import Demo Data', 'edshield' ), $title, 'edit_theme_options', DEMO_PAGE, __NAMESPACE__ . '\demo_screen' );
+}
+
+add_action( 'admin_notices', __NAMESPACE__ . '\demo_notices' );
+/**
+ * Point new installs to the importer, and warn about Biznax companions.
+ */
+function demo_notices(): void {
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 
-	if ( $screen && 'appearance_page_edshield-setup' === $screen->id ) {
+	if ( $screen && in_array( $screen->id, array( 'appearance_page_' . DEMO_PAGE, 'appearance_page_one-click-demo-import' ), true ) ) {
 		return;
 	}
 
-	$link = esc_url( admin_url( 'themes.php?page=edshield-setup' ) );
+	$link = esc_url( admin_url( 'themes.php?page=' . DEMO_PAGE ) );
 
 	if ( companion_plugins() ) {
-		echo '<div class="notice notice-error"><p><strong>' . esc_html__( 'ED Shield:', 'edshield' ) . '</strong> ' . esc_html( implode( ', ', companion_plugins() ) ) . ' ' . esc_html__( 'only work with the Biznax theme and can break pages under any other theme.', 'edshield' ) . ' <a href="' . $link . '">' . esc_html__( 'Review in ED Shield Setup', 'edshield' ) . '</a></p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<div class="notice notice-error"><p><strong>' . esc_html__( 'ED Shield:', 'edshield' ) . '</strong> ' . esc_html( implode( ', ', companion_plugins() ) ) . ' ' . esc_html__( 'only work with the Biznax theme and can break pages under any other theme.', 'edshield' ) . ' <a href="' . $link . '">' . esc_html__( 'Review', 'edshield' ) . '</a></p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
-	if ( ! get_option( 'edst_setup_done' ) ) {
-		echo '<div class="notice notice-info"><p><strong>' . esc_html__( 'ED Shield is active.', 'edshield' ) . '</strong> ' . esc_html__( 'Create the starter pages, menus and placeholder case studies in one step.', 'edshield' ) . ' <a class="button button-primary" style="margin-left:8px" href="' . $link . '">' . esc_html__( 'Open ED Shield Setup', 'edshield' ) . '</a></p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	if ( ! get_option( 'edst_demo_imported' ) ) {
+		echo '<div class="notice notice-info"><p><strong>' . esc_html__( 'ED Shield is active.', 'edshield' ) . '</strong> ' . esc_html__( 'Import the complete website (all pages, menus, widgets and settings) in one click.', 'edshield' ) . ' <a class="button button-primary" style="margin-left:8px" href="' . $link . '">' . esc_html__( 'Import Demo Data', 'edshield' ) . '</a></p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
 
-add_action( 'admin_post_edst_setup', __NAMESPACE__ . '\handle_setup' );
+add_action( 'admin_post_edst_demo', __NAMESPACE__ . '\demo_handle' );
 /**
- * Run a setup action.
+ * Run an action from the screen.
  */
-function handle_setup(): void {
+function demo_handle(): void {
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		wp_die( esc_html__( 'You are not allowed to do this.', 'edshield' ) );
 	}
 
-	check_admin_referer( 'edst_setup' );
+	check_admin_referer( 'edst_demo' );
 
 	$task   = isset( $_POST['edst_task'] ) ? sanitize_key( wp_unslash( $_POST['edst_task'] ) ) : '';
 	$report = array();
+	$pages  = array();
 
 	switch ( $task ) {
 		case 'import':
-			$report = import_site(
-				array(
-					'front'     => ! empty( $_POST['edst_front'] ),
-					'menus'     => ! empty( $_POST['edst_menus'] ),
-					'projects'  => ! empty( $_POST['edst_projects'] ),
-					'elementor' => ! empty( $_POST['edst_elementor'] ) && elementor_active(),
-				)
-			);
+			$opts = array();
+
+			foreach ( array_keys( demo_import_defaults() ) as $key ) {
+				$opts[ $key ] = ! empty( $_POST[ 'edst_' . $key ] );
+			}
+
+			$result = demo_import( $opts );
+			$report = $result['log'];
+			$pages  = $result['pages'];
+			break;
+
+		case 'build':
+			$count = demo_build_elementor_pages();
+			/* translators: %d: number of pages. */
+			$report[] = $count ? sprintf( _n( '%d page is now built in Elementor.', '%d pages are now built in Elementor.', $count, 'edshield' ), $count ) : __( 'Every imported page is already built in Elementor (or Elementor is not active).', 'edshield' );
 			break;
 
 		case 'rebuild':
@@ -105,17 +147,17 @@ function handle_setup(): void {
 				set_elementor_data( $id, elementor_layout_data( $layout ) );
 				elementor_clear_cache();
 				/* translators: %s: page title. */
-				$report[] = sprintf( __( 'Rebuilt "%s" from the starter layout.', 'edshield' ), get_the_title( $id ) );
+				$report[] = sprintf( __( 'Reset "%s" to its demo layout.', 'edshield' ), get_the_title( $id ) );
 			} else {
 				$report[] = __( 'Nothing was changed. Choose a page, tick the confirmation box, and make sure Elementor is active.', 'edshield' );
 			}
 			break;
 
-		case 'colors':
-			$report[] = elementor_add_colors() ? __( 'ED Shield colours were added to Elementor › Site Settings › Global Colors.', 'edshield' ) : __( 'No active Elementor kit was found.', 'edshield' );
-			update_option( 'elementor_disable_color_schemes', 'yes' );
-			update_option( 'elementor_disable_typography_schemes', 'yes' );
-			$report[] = __( 'Elementor’s default colours and fonts were switched off, so Elementor’s own widgets use the theme’s fonts and colours.', 'edshield' );
+		case 'kit':
+			$report[] = demo_apply_elementor_kit( demo_package()['elementor'] )
+				? __( 'Elementor Site Settings updated: ED Shield colours, fonts and layout width.', 'edshield' )
+				: __( 'No active Elementor kit was found.', 'edshield' );
+			elementor_clear_cache();
 			break;
 
 		case 'pro_templates':
@@ -132,268 +174,138 @@ function handle_setup(): void {
 			break;
 	}
 
-	set_transient( 'edst_setup_report_' . get_current_user_id(), $report, 5 * MINUTE_IN_SECONDS );
-	wp_safe_redirect( admin_url( 'themes.php?page=edshield-setup&done=1' ) );
+	set_transient(
+		'edst_demo_report_' . get_current_user_id(),
+		array(
+			'task'  => $task,
+			'log'   => $report,
+			'pages' => $pages,
+		),
+		10 * MINUTE_IN_SECONDS
+	);
+	wp_safe_redirect( admin_url( 'themes.php?page=' . DEMO_PAGE . '&done=' . $task ) );
+	exit;
+}
+
+add_action( 'admin_post_edst_plugin', __NAMESPACE__ . '\demo_plugin_handle' );
+/**
+ * Install and/or activate a plugin from the screen, then come back.
+ */
+function demo_plugin_handle(): void {
+	$slug    = isset( $_GET['plugin'] ) ? sanitize_key( wp_unslash( $_GET['plugin'] ) ) : '';
+	$plugins = demo_plugins();
+
+	if ( ! isset( $plugins[ $slug ] ) || ! current_user_can( 'install_plugins' ) || ! current_user_can( 'activate_plugins' ) ) {
+		wp_die( esc_html__( 'You are not allowed to do this.', 'edshield' ) );
+	}
+
+	check_admin_referer( 'edst_plugin_' . $slug );
+
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+	$file    = $plugins[ $slug ]['file'];
+	$message = '';
+
+	if ( ! file_exists( WP_PLUGIN_DIR . '/' . $file ) && $plugins[ $slug ]['repo'] ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+		$api = plugins_api(
+			'plugin_information',
+			array(
+				'slug'   => $slug,
+				'fields' => array( 'sections' => false ),
+			)
+		);
+
+		if ( is_wp_error( $api ) ) {
+			$message = $api->get_error_message();
+		} else {
+			$upgrader = new \Plugin_Upgrader( new \WP_Ajax_Upgrader_Skin() );
+			$result   = $upgrader->install( $api->download_link );
+
+			if ( is_wp_error( $result ) ) {
+				$message = $result->get_error_message();
+			} elseif ( ! $result ) {
+				$message = __( 'WordPress could not write the plugin files. Install the plugin from Plugins › Add New instead.', 'edshield' );
+			}
+		}
+	}
+
+	if ( '' === $message && file_exists( WP_PLUGIN_DIR . '/' . $file ) && ! is_plugin_active( $file ) ) {
+		$result = activate_plugin( $file );
+
+		if ( is_wp_error( $result ) ) {
+			$message = $result->get_error_message();
+		}
+
+		// Stay on this screen instead of the plugin's welcome page.
+		delete_transient( 'elementor_activation_redirect' );
+	}
+
+	set_transient(
+		'edst_demo_report_' . get_current_user_id(),
+		array(
+			'task'  => 'plugin',
+			/* translators: 1: plugin name, 2: error. */
+			'log'   => array( '' === $message ? sprintf( __( '%s is installed and active.', 'edshield' ), $plugins[ $slug ]['name'] ) : sprintf( __( '%1$s could not be installed automatically: %2$s', 'edshield' ), $plugins[ $slug ]['name'], $message ) ),
+			'pages' => array(),
+		),
+		10 * MINUTE_IN_SECONDS
+	);
+	wp_safe_redirect( admin_url( 'themes.php?page=' . DEMO_PAGE ) );
 	exit;
 }
 
 /**
- * Create the starter pages, menus and placeholder projects.
+ * Status and action link for one plugin.
  *
- * @param array<string, bool> $opts Options: front, menus, projects, elementor.
- * @return string[] Report lines.
+ * @param string $slug Plugin slug.
+ * @return array{status:string,label:string,url:string}
  */
-function import_site( array $opts ): array {
-	$report  = array();
-	$ids     = array();
-	$created = array();
+function demo_plugin_state( string $slug ): array {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-	foreach ( layouts_index() as $key => $meta ) {
-		$id = layout_page_id( $key );
+	$plugin = demo_plugins()[ $slug ];
+	$file   = $plugin['file'];
+	$action = wp_nonce_url( admin_url( 'admin-post.php?action=edst_plugin&plugin=' . $slug ), 'edst_plugin_' . $slug );
 
-		if ( ! $id ) {
-			$id = wp_insert_post(
-				array(
-					'post_type'      => 'page',
-					'post_status'    => 'publish',
-					'post_title'     => $meta['title'],
-					'post_name'      => basename( $meta['path'] ),
-					'post_parent'    => '' !== $meta['parent'] ? (int) ( $ids[ $meta['parent'] ] ?? 0 ) : 0,
-					'post_content'   => '',
-					'comment_status' => 'closed',
-					'menu_order'     => count( $ids ),
-				),
-				true
-			);
-
-			if ( is_wp_error( $id ) ) {
-				/* translators: 1: page title, 2: error. */
-				$report[] = sprintf( __( 'Could not create "%1$s": %2$s', 'edshield' ), $meta['title'], $id->get_error_message() );
-				continue;
-			}
-
-			update_post_meta( $id, '_edst_layout', $key );
-			$created[] = $key;
-		}
-
-		$ids[ $key ] = (int) $id;
-	}
-
-	// Later lookups must see the pages just created.
-	layout_page_id( '', true );
-
-	if ( $opts['elementor'] ) {
-		foreach ( $created as $key ) {
-			if ( 'insights' !== $key ) {
-				set_elementor_data( $ids[ $key ], elementor_layout_data( $key ) );
-			}
-		}
-
-		elementor_clear_cache();
-	}
-
-	/* translators: %d: number of pages. */
-	$report[] = sprintf( _n( '%d page created.', '%d pages created.', count( $created ), 'edshield' ), count( $created ) );
-
-	if ( count( $created ) < count( $ids ) ) {
-		$report[] = __( 'Pages that already existed were left unchanged.', 'edshield' );
-	}
-
-	if ( $opts['front'] && isset( $ids['home'], $ids['insights'] ) ) {
-		update_option( 'show_on_front', 'page' );
-		update_option( 'page_on_front', $ids['home'] );
-		update_option( 'page_for_posts', $ids['insights'] );
-		$report[] = __( 'Home is now the front page and Insights is the posts page.', 'edshield' );
-	}
-
-	if ( $opts['menus'] ) {
-		$report = array_merge( $report, create_menus( $ids ) );
-	}
-
-	if ( $opts['projects'] ) {
-		$report[] = create_sample_projects();
-	}
-
-	if ( '' === (string) get_option( 'permalink_structure' ) ) {
-		global $wp_rewrite;
-
-		$wp_rewrite->set_permalink_structure( '/%postname%/' );
-		$report[] = __( 'Permalinks set to "Post name" so page addresses are readable.', 'edshield' );
-	}
-
-	flush_rewrite_rules( false );
-	update_option( 'edst_setup_done', time(), false );
-
-	return $report;
-}
-
-/**
- * Add one item to a menu.
- *
- * @param int    $menu        Menu ID.
- * @param int    $page        Page ID (0 for a custom link).
- * @param string $title       Title.
- * @param int    $parent      Parent item ID.
- * @param string $classes     CSS classes.
- * @param string $description Description.
- * @param string $url         Custom URL when no page is given.
- */
-function add_menu_item( int $menu, int $page, string $title, int $parent = 0, string $classes = '', string $description = '', string $url = '' ): int {
-	$args = array(
-		'menu-item-title'       => $title,
-		'menu-item-status'      => 'publish',
-		'menu-item-parent-id'   => $parent,
-		'menu-item-classes'     => $classes,
-		'menu-item-description' => $description,
-	);
-
-	if ( $page ) {
-		$args['menu-item-object']    = 'page';
-		$args['menu-item-object-id'] = $page;
-		$args['menu-item-type']      = 'post_type';
-	} else {
-		$args['menu-item-type'] = 'custom';
-		$args['menu-item-url']  = $url;
-	}
-
-	$id = wp_update_nav_menu_item( $menu, 0, $args );
-
-	return is_wp_error( $id ) ? 0 : (int) $id;
-}
-
-/**
- * Create the primary and footer menus (only for locations still empty).
- *
- * @param array<string, int> $ids Page IDs by layout key.
- * @return string[] Report lines.
- */
-function create_menus( array $ids ): array {
-	$locations = get_theme_mod( 'nav_menu_locations', array() );
-	$locations = is_array( $locations ) ? $locations : array();
-	$report    = array();
-	$page      = static function ( string $key ) use ( $ids ): int {
-		return (int) ( $ids[ $key ] ?? 0 );
-	};
-
-	if ( empty( $locations['primary'] ) ) {
-		$menu = wp_create_nav_menu( __( 'ED Shield main', 'edshield' ) . ' ' . gmdate( 'Y-m-d H:i' ) );
-
-		if ( ! is_wp_error( $menu ) ) {
-			$services = add_menu_item( $menu, $page( 'services' ), __( 'Services', 'edshield' ), 0, 'edst-mega' );
-
-			foreach ( services() as $key => $service ) {
-				add_menu_item( $menu, $page( 'service-' . $key ), $service['title'], $services, 'edst-icon-' . $service['icon'], $service['nav'] );
-			}
-
-			add_menu_item( $menu, $page( 'services' ), __( 'View all services', 'edshield' ), $services, 'edst-view-all' );
-			add_menu_item( $menu, $page( 'work' ), __( 'Work', 'edshield' ) );
-			add_menu_item( $menu, $page( 'industries' ), __( 'Industries', 'edshield' ) );
-
-			$company = add_menu_item( $menu, $page( 'about' ), __( 'Company', 'edshield' ) );
-
-			foreach ( array(
-				'about'      => array( __( 'About', 'edshield' ), __( 'Who we are and how we think', 'edshield' ) ),
-				'process'    => array( __( 'Process', 'edshield' ), __( 'How a project runs', 'edshield' ) ),
-				'engagement' => array( __( 'Engagement models', 'edshield' ), __( 'Ways to work with us', 'edshield' ) ),
-				'careers'    => array( __( 'Careers', 'edshield' ), __( 'Join the team', 'edshield' ) ),
-				'faq'        => array( __( 'FAQ', 'edshield' ), __( 'Common questions, answered', 'edshield' ) ),
-				'contact'    => array( __( 'Contact', 'edshield' ), __( 'Start a conversation', 'edshield' ) ),
-			) as $key => $item ) {
-				add_menu_item( $menu, $page( $key ), $item[0], $company, '', $item[1] );
-			}
-
-			add_menu_item( $menu, $page( 'insights' ), __( 'Insights', 'edshield' ) );
-			$locations['primary'] = $menu;
-			$report[]             = __( 'Primary menu created with the Services mega menu.', 'edshield' );
-		}
-	}
-
-	if ( empty( $locations['company'] ) ) {
-		$menu = wp_create_nav_menu( __( 'ED Shield company', 'edshield' ) . ' ' . gmdate( 'Y-m-d H:i' ) );
-
-		if ( ! is_wp_error( $menu ) ) {
-			foreach ( array( 'about', 'process', 'work', 'engagement', 'careers', 'insights', 'contact' ) as $key ) {
-				if ( $page( $key ) ) {
-					add_menu_item( $menu, $page( $key ), get_the_title( $page( $key ) ) );
-				}
-			}
-
-			$locations['company'] = $menu;
-			$report[]             = __( 'Footer company menu created.', 'edshield' );
-		}
-	}
-
-	$privacy = (int) get_option( 'wp_page_for_privacy_policy' );
-
-	if ( empty( $locations['legal'] ) && $privacy && 'publish' === get_post_status( $privacy ) ) {
-		$menu = wp_create_nav_menu( __( 'ED Shield legal', 'edshield' ) . ' ' . gmdate( 'Y-m-d H:i' ) );
-
-		if ( ! is_wp_error( $menu ) ) {
-			add_menu_item( $menu, $privacy, get_the_title( $privacy ) );
-			$locations['legal'] = $menu;
-		}
-	}
-
-	set_theme_mod( 'nav_menu_locations', $locations );
-
-	return $report;
-}
-
-/**
- * Create three clearly marked placeholder case studies when none exist.
- */
-function create_sample_projects(): string {
-	if ( get_posts( array( 'post_type' => 'edst_project', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) ) ) {
-		return __( 'Projects already exist, so no placeholder case studies were added.', 'edshield' );
-	}
-
-	$samples = array(
-		array( __( 'Placeholder case study: corporate website and CRM', 'edshield' ), __( 'Corporate', 'edshield' ), 'Website Development, CRM & ERP Integration', 'web' ),
-		array( __( 'Placeholder case study: patient booking automation', 'edshield' ), __( 'Healthcare', 'edshield' ), 'AI & Business Automation, Cybersecurity', 'ai' ),
-		array( __( 'Placeholder case study: production dashboard', 'edshield' ), __( 'Manufacturing', 'edshield' ), 'Industrial Digitalization, Custom Software', 'industrial' ),
-	);
-
-	foreach ( $samples as $sample ) {
-		$id = wp_insert_post(
-			array(
-				'post_type'    => 'edst_project',
-				'post_status'  => 'publish',
-				'post_title'   => $sample[0],
-				'post_excerpt' => __( 'Placeholder: replace with a one-sentence summary of a real project.', 'edshield' ),
-				'post_content' => '<!-- wp:paragraph --><p>' . __( 'Placeholder: describe what was built, how it was delivered and what changed for the client. Add images in a gallery below.', 'edshield' ) . '</p><!-- /wp:paragraph -->',
-			)
+	if ( is_plugin_active( $file ) ) {
+		return array(
+			'status' => __( 'Active', 'edshield' ),
+			'label'  => '',
+			'url'    => '',
 		);
-
-		if ( $id && ! is_wp_error( $id ) ) {
-			update_post_meta(
-				$id,
-				'_edst_project',
-				array(
-					'client'       => __( 'Client name', 'edshield' ),
-					'industry'     => $sample[1],
-					'services'     => $sample[2],
-					'year'         => '',
-					'website'      => '',
-					'metric_value' => '—',
-					'metric_label' => __( 'Add a measured result', 'edshield' ),
-					'challenge'    => __( 'Placeholder: the problem the client faced and why it mattered.', 'edshield' ),
-					'goal'         => __( 'Placeholder: what success looked like.', 'edshield' ),
-					'objectives'   => implode( "\n", array( __( 'Placeholder objective one', 'edshield' ), __( 'Placeholder objective two', 'edshield' ), __( 'Placeholder objective three', 'edshield' ) ) ),
-					'results'      => implode( "\n", array( '— | ' . __( 'Result placeholder', 'edshield' ), '— | ' . __( 'Result placeholder', 'edshield' ), '— | ' . __( 'Result placeholder', 'edshield' ) ) ),
-					'art'          => $sample[3],
-				)
-			);
-		}
 	}
 
-	return __( 'Three placeholder case studies were added under Projects.', 'edshield' );
+	if ( file_exists( WP_PLUGIN_DIR . '/' . $file ) ) {
+		return array(
+			'status' => __( 'Installed, not active', 'edshield' ),
+			'label'  => current_user_can( 'activate_plugins' ) ? __( 'Activate', 'edshield' ) : '',
+			'url'    => $action,
+		);
+	}
+
+	if ( ! $plugin['repo'] ) {
+		return array(
+			'status' => __( 'Not installed', 'edshield' ),
+			'label'  => __( 'Get it from elementor.com', 'edshield' ),
+			'url'    => 'https://elementor.com/pro/',
+		);
+	}
+
+	return array(
+		'status' => __( 'Not installed', 'edshield' ),
+		'label'  => current_user_can( 'install_plugins' ) ? __( 'Install and activate', 'edshield' ) : '',
+		'url'    => $action,
+	);
 }
 
 /**
- * Create Elementor Pro header and footer templates holding the theme's
- * header and footer widgets. Display conditions are left for the user.
+ * Pro header and footer templates holding the theme header and footer.
  *
- * @return string[] Report lines.
+ * @return string[]
  */
 function create_pro_templates(): array {
 	if ( ! defined( 'ELEMENTOR_PRO_VERSION' ) || ! post_type_exists( 'elementor_library' ) ) {
@@ -432,15 +344,22 @@ function create_pro_templates(): array {
 }
 
 /**
- * The setup screen.
+ * The screen.
  */
-function setup_screen(): void {
-	$report     = get_transient( 'edst_setup_report_' . get_current_user_id() );
-	$companions = companion_plugins();
-	$existing   = array();
+function demo_screen(): void {
+	$report   = get_transient( 'edst_demo_report_' . get_current_user_id() );
+	$imported = get_option( 'edst_demo_imported' );
+	$package  = demo_package();
+	$counts   = array(
+		'pages'    => count( (array) ( $package['content']['pages'] ?? array() ) ),
+		'posts'    => count( (array) ( $package['content']['posts'] ?? array() ) ),
+		'projects' => count( (array) ( $package['content']['projects'] ?? array() ) ),
+		'menus'    => count( (array) ( $package['menus'] ?? array() ) ),
+	);
+	$existing = array();
 
 	if ( $report ) {
-		delete_transient( 'edst_setup_report_' . get_current_user_id() );
+		delete_transient( 'edst_demo_report_' . get_current_user_id() );
 	}
 
 	foreach ( layouts_index() as $key => $meta ) {
@@ -452,80 +371,241 @@ function setup_screen(): void {
 	}
 
 	$action = esc_url( admin_url( 'admin-post.php' ) );
-	$form   = static function ( string $task, string $inner, string $label, string $class = 'button button-primary' ) use ( $action ): void {
+	$form   = static function ( string $task, string $inner, string $label, string $class = 'button' ) use ( $action ): void {
 		echo '<form method="post" action="' . $action . '">'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		wp_nonce_field( 'edst_setup' );
-		echo '<input type="hidden" name="action" value="edst_setup"><input type="hidden" name="edst_task" value="' . esc_attr( $task ) . '">' . $inner . '<p><button type="submit" class="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</button></p></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		wp_nonce_field( 'edst_demo' );
+		echo '<input type="hidden" name="action" value="edst_demo"><input type="hidden" name="edst_task" value="' . esc_attr( $task ) . '">' . $inner . '<p><button type="submit" class="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</button></p></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	};
+	$check  = static function ( string $key, string $label, bool $checked ): string {
+		return '<label class="edst-demo__check"><input type="checkbox" name="edst_' . esc_attr( $key ) . '" value="1"' . ( $checked ? ' checked' : '' ) . '> ' . esc_html( $label ) . '</label>';
 	};
 	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'ED Shield Setup', 'edshield' ); ?></h1>
+	<div class="wrap edst-demo">
+		<style>
+			.edst-demo{max-width:1080px}
+			.edst-demo__hero{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:32px;align-items:center;margin:20px 0 24px;padding:28px;border-radius:12px;background:#071533;color:#f5f7fb}
+			.edst-demo__hero h2{margin:0 0 8px;color:#fff;font-size:24px}
+			.edst-demo__hero p{margin:0 0 12px;color:#c9d1e3;font-size:14px;line-height:1.6}
+			.edst-demo__hero img{display:block;width:100%;border-radius:8px;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+			.edst-demo__chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+			.edst-demo__chips li{margin:0;padding:4px 10px;border:1px solid rgba(233,196,106,.45);border-radius:99px;color:#e9c46a;font-size:12px}
+			.edst-demo__card{margin:0 0 20px;padding:20px 24px;border:1px solid #dcdcde;border-radius:10px;background:#fff}
+			.edst-demo__card h2{margin-top:0}
+			.edst-demo__check{display:block;margin:8px 0}
+			.edst-demo__plugins td,.edst-demo__plugins th{vertical-align:middle}
+			.edst-demo__go{padding:6px 22px!important;font-size:15px!important;height:auto!important}
+			.edst-demo .button-primary{background:#071533;border-color:#071533}
+			.edst-demo .button-primary:hover{background:#13285a;border-color:#13285a}
+			@media (max-width:900px){.edst-demo__hero{grid-template-columns:1fr}}
+		</style>
+
+		<h1><?php esc_html_e( 'Import Demo Data', 'edshield' ); ?></h1>
 
 		<?php if ( $report ) : ?>
-			<div class="notice notice-success"><ul>
-				<?php foreach ( (array) $report as $line ) : ?>
+			<div class="notice notice-success is-dismissible"><ul style="list-style:disc;padding-left:18px">
+				<?php foreach ( (array) $report['log'] as $line ) : ?>
 					<li><?php echo esc_html( $line ); ?></li>
 				<?php endforeach; ?>
-			</ul></div>
-		<?php endif; ?>
-
-		<table class="widefat striped" style="max-width:900px;margin:16px 0 24px"><tbody>
-			<tr><th style="width:280px"><?php esc_html_e( 'Theme version', 'edshield' ); ?></th><td><?php echo esc_html( VERSION ); ?></td></tr>
-			<tr><th><?php esc_html_e( 'Elementor', 'edshield' ); ?></th><td><?php echo elementor_active() ? esc_html( 'Active ' . ( defined( 'ELEMENTOR_VERSION' ) ? ELEMENTOR_VERSION : '' ) ) : esc_html__( 'Not active (pages are rendered by the theme)', 'edshield' ); ?></td></tr>
-			<tr><th><?php esc_html_e( 'Elementor Pro', 'edshield' ); ?></th><td><?php echo defined( 'ELEMENTOR_PRO_VERSION' ) ? esc_html( 'Active ' . ELEMENTOR_PRO_VERSION ) : esc_html__( 'Not active', 'edshield' ); ?></td></tr>
-			<tr><th><?php esc_html_e( 'Starter pages', 'edshield' ); ?></th><td><?php echo esc_html( count( $existing ) . ' / ' . count( layouts_index() ) ); ?></td></tr>
-			<tr><th><?php esc_html_e( 'Front page', 'edshield' ); ?></th><td><?php echo 'page' === get_option( 'show_on_front' ) ? esc_html( get_the_title( (int) get_option( 'page_on_front' ) ) ) : esc_html__( 'Latest posts', 'edshield' ); ?></td></tr>
-		</tbody></table>
-
-		<?php if ( $companions ) : ?>
-			<div style="max-width:900px;padding:12px 16px;border-left:4px solid #d63638;background:#fff;margin-bottom:24px">
-				<h2 style="margin-top:0"><?php esc_html_e( 'Biznax companion plugins are active', 'edshield' ); ?></h2>
-				<p><?php echo esc_html( implode( ', ', $companions ) ); ?> <?php esc_html_e( 'belong to the Biznax theme. Bravis Addons stops every front-end page from loading under any other theme. Deactivate them; they can be reactivated at any time.', 'edshield' ); ?></p>
-				<?php $form( 'companions', '', __( 'Deactivate Biznax companion plugins', 'edshield' ), 'button' ); ?>
+			</ul>
+			<?php if ( 'import' === ( $report['task'] ?? '' ) ) : ?>
+				<p><a class="button button-primary" href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'View the website', 'edshield' ); ?></a> <a class="button" href="#edst-pages"><?php esc_html_e( 'See every imported page', 'edshield' ); ?></a></p>
+			<?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<h2><?php esc_html_e( 'Create pages, menus and placeholders', 'edshield' ); ?></h2>
-		<p style="max-width:760px"><?php esc_html_e( 'Creates Home, Services and nine service pages, Work, Industries, About, Process, Engagement models, FAQ, Careers, Contact and Insights. Pages that already exist are never changed.', 'edshield' ); ?></p>
-		<?php
-		$fields  = '<p><label><input type="checkbox" name="edst_front" value="1" checked> ' . esc_html__( 'Set Home as the front page and Insights as the posts page', 'edshield' ) . '</label></p>';
-		$fields .= '<p><label><input type="checkbox" name="edst_menus" value="1" checked> ' . esc_html__( 'Create the main menu (with the Services mega menu) and footer menus for empty locations', 'edshield' ) . '</label></p>';
-		$fields .= '<p><label><input type="checkbox" name="edst_projects" value="1" checked> ' . esc_html__( 'Add three clearly marked placeholder case studies', 'edshield' ) . '</label></p>';
-		$fields .= elementor_active()
-			? '<p><label><input type="checkbox" name="edst_elementor" value="1" checked> ' . esc_html__( 'Build the new pages in Elementor (every section becomes an editable ED Shield widget)', 'edshield' ) . '</label></p>'
-			: '<p><em>' . esc_html__( 'Elementor is not active: pages will be rendered by the theme. Activate Elementor first to get Elementor-editable pages.', 'edshield' ) . '</em></p>';
-		$form( 'import', $fields, __( 'Create pages and menus', 'edshield' ) );
-		?>
+		<div class="edst-demo__hero">
+			<div>
+				<h2><?php esc_html_e( 'ED Shield: complete website', 'edshield' ); ?></h2>
+				<p><?php esc_html_e( 'Imports the whole site in one click: every page with its design, the mega menu and footer menus, widgets, articles, placeholder case studies, theme settings and Elementor colours and fonts.', 'edshield' ); ?></p>
+				<p><?php esc_html_e( 'Existing content is never edited or deleted. Running the import again only adds what is missing.', 'edshield' ); ?></p>
+				<ul class="edst-demo__chips">
+					<?php /* translators: %d: count. */ ?>
+					<li><?php echo esc_html( sprintf( __( '%d pages', 'edshield' ), $counts['pages'] ) ); ?></li>
+					<?php /* translators: %d: count. */ ?>
+					<li><?php echo esc_html( sprintf( __( '%d articles', 'edshield' ), $counts['posts'] ) ); ?></li>
+					<?php /* translators: %d: count. */ ?>
+					<li><?php echo esc_html( sprintf( __( '%d case studies (placeholders)', 'edshield' ), $counts['projects'] ) ); ?></li>
+					<?php /* translators: %d: count. */ ?>
+					<li><?php echo esc_html( sprintf( __( '%d menus', 'edshield' ), $counts['menus'] ) ); ?></li>
+					<li><?php esc_html_e( 'Widgets', 'edshield' ); ?></li>
+					<li><?php esc_html_e( 'Theme settings', 'edshield' ); ?></li>
+					<li><?php esc_html_e( 'Elementor design settings', 'edshield' ); ?></li>
+				</ul>
+			</div>
+			<img src="<?php echo esc_url( uri( 'demo/preview.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Preview of the ED Shield demo homepage', 'edshield' ); ?>">
+		</div>
 
-		<?php if ( elementor_active() ) : ?>
-			<h2><?php esc_html_e( 'Elementor tools', 'edshield' ); ?></h2>
-			<?php $form( 'colors', '<p>' . esc_html__( 'Adds the ED Shield palette to Site Settings › Global Colors (changing those colours in Elementor recolours the theme) and switches off Elementor’s default colours and fonts, so Elementor’s own widgets match the theme.', 'edshield' ) . '</p>', __( 'Match Elementor to the theme', 'edshield' ), 'button' ); ?>
-
-			<?php if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) : ?>
-				<?php $form( 'pro_templates', '<p>' . esc_html__( 'Creates Theme Builder header and footer templates that contain the theme header (with mega menu) and footer, ready for display conditions and further editing.', 'edshield' ) . '</p>', __( 'Create header and footer templates', 'edshield' ), 'button' ); ?>
-			<?php endif; ?>
-
-			<?php if ( $existing ) : ?>
-				<?php
-				$options = '';
-
-				foreach ( $existing as $key => $id ) {
-					if ( 'insights' !== $key ) {
-						$options .= '<option value="' . esc_attr( $key ) . '">' . esc_html( get_the_title( $id ) ) . '</option>';
-					}
-				}
-
-				$form( 'rebuild', '<p>' . esc_html__( 'Reset one page to its starter layout. This replaces the page’s current Elementor content.', 'edshield' ) . '</p><p><select name="edst_layout">' . $options . '</select> <label><input type="checkbox" name="edst_confirm" value="1"> ' . esc_html__( 'I understand the current content of this page will be replaced', 'edshield' ) . '</label></p>', __( 'Reset page layout', 'edshield' ), 'button' );
-				?>
-			<?php endif; ?>
+		<?php if ( companion_plugins() ) : ?>
+			<div class="edst-demo__card" style="border-left:4px solid #d63638">
+				<h2><?php esc_html_e( 'Biznax companion plugins are active', 'edshield' ); ?></h2>
+				<p><?php echo esc_html( implode( ', ', companion_plugins() ) ); ?> <?php esc_html_e( 'belong to the Biznax theme. Bravis Addons stops front-end pages from loading under any other theme. Deactivate them; they can be reactivated at any time.', 'edshield' ); ?></p>
+				<?php $form( 'companions', '', __( 'Deactivate Biznax companion plugins', 'edshield' ) ); ?>
+			</div>
 		<?php endif; ?>
 
-		<h2><?php esc_html_e( 'Finish setting up', 'edshield' ); ?></h2>
-		<ul style="list-style:disc;padding-left:20px">
-			<li><a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[panel]=edst' ) ); ?>"><?php esc_html_e( 'Add contact details, social links and the header button in the Customizer', 'edshield' ); ?></a></li>
-			<li><a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>"><?php esc_html_e( 'Review the menus', 'edshield' ); ?></a></li>
-			<li><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=edst_project' ) ); ?>"><?php esc_html_e( 'Replace the placeholder case studies', 'edshield' ); ?></a></li>
-		</ul>
+		<div class="edst-demo__card">
+			<h2><?php esc_html_e( '1. Plugins', 'edshield' ); ?></h2>
+			<table class="widefat striped edst-demo__plugins"><tbody>
+				<?php foreach ( demo_plugins() as $slug => $plugin ) : ?>
+					<?php $state = demo_plugin_state( $slug ); ?>
+					<tr>
+						<th style="width:170px"><strong><?php echo esc_html( $plugin['name'] ); ?></strong><br><span style="color:<?php echo $plugin['required'] ? '#b32d2e' : '#646970'; ?>"><?php echo $plugin['required'] ? esc_html__( 'Required', 'edshield' ) : esc_html__( 'Optional', 'edshield' ); ?></span></th>
+						<td><?php echo esc_html( $plugin['text'] ); ?></td>
+						<td style="width:150px"><?php echo esc_html( $state['status'] ); ?></td>
+						<td style="width:190px;text-align:right">
+							<?php if ( '' !== $state['label'] ) : ?>
+								<a class="button<?php echo $plugin['required'] ? ' button-primary' : ''; ?>" href="<?php echo esc_url( $state['url'] ); ?>"<?php echo $plugin['repo'] ? '' : ' target="_blank" rel="noopener"'; ?>><?php echo esc_html( $state['label'] ); ?></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody></table>
+			<?php if ( ! elementor_active() ) : ?>
+				<p><?php esc_html_e( 'Activate Elementor before importing so every page is created as an Elementor page. The import also works without it: the theme then renders the same designs, and the pages can be converted to Elementor later.', 'edshield' ); ?></p>
+			<?php endif; ?>
+		</div>
+
+		<div class="edst-demo__card">
+			<h2><?php esc_html_e( '2. Import', 'edshield' ); ?></h2>
+			<?php if ( $imported ) : ?>
+				<?php /* translators: %s: date. */ ?>
+				<p><?php echo esc_html( sprintf( __( 'The demo was imported on %s. Importing again only adds what is missing.', 'edshield' ), wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $imported['time'] ) ) ); ?></p>
+			<?php endif; ?>
+			<?php
+			$fields  = $check( 'pages', __( 'Pages and their designs', 'edshield' ), true );
+			$fields .= $check( 'posts', __( 'Articles and placeholder case studies', 'edshield' ), true );
+			$fields .= $check( 'menus', __( 'Menus (main menu with Services mega menu, footer menus)', 'edshield' ), true );
+			$fields .= $check( 'widgets', __( 'Widgets (footer contact column, article sidebar)', 'edshield' ), true );
+			$fields .= $check( 'settings', __( 'Theme settings, site icon and Elementor colours and fonts', 'edshield' ), true );
+			$fields .= $check( 'front', __( 'Make Home the front page and Insights the blog', 'edshield' ), true );
+			$fields .= $check( 'samples', __( 'Move WordPress’s untouched sample content ("Hello world!" and "Sample Page") to the Trash', 'edshield' ), true );
+			$fields .= $check( 'replace', __( 'Move existing pages that use the same addresses (for example /about/) to the Trash, so the demo pages get clean addresses. Trashed pages can be restored.', 'edshield' ), false );
+			$fields .= '<p style="margin-top:14px"><strong>' . esc_html__( 'Elementor:', 'edshield' ) . '</strong> ' . ( elementor_active() ? esc_html__( 'active, pages will be built in Elementor.', 'edshield' ) : esc_html__( 'not active, pages will be rendered by the theme.', 'edshield' ) ) . '</p>';
+			$form( 'import', $fields, __( 'Import demo', 'edshield' ), 'button button-primary edst-demo__go' );
+			?>
+		</div>
+
+		<?php if ( $existing ) : ?>
+			<div class="edst-demo__card" id="edst-pages">
+				<h2><?php esc_html_e( '3. Your pages', 'edshield' ); ?></h2>
+				<table class="widefat striped"><thead><tr>
+					<th><?php esc_html_e( 'Page', 'edshield' ); ?></th>
+					<th><?php esc_html_e( 'Address', 'edshield' ); ?></th>
+					<th><?php esc_html_e( 'Edited with', 'edshield' ); ?></th>
+					<th></th>
+				</tr></thead><tbody>
+					<?php foreach ( $existing as $key => $id ) : ?>
+						<?php $elementor_built = built_with_elementor( $id ); ?>
+						<tr>
+							<td><strong><?php echo esc_html( get_the_title( $id ) ); ?></strong></td>
+							<td><code><?php echo esc_html( wp_make_link_relative( (string) get_permalink( $id ) ) ); ?></code></td>
+							<td><?php echo $elementor_built ? 'Elementor' : ( 'insights' === $key ? esc_html__( 'Blog (posts page)', 'edshield' ) : esc_html__( 'Theme layout', 'edshield' ) ); ?></td>
+							<td style="text-align:right">
+								<a class="button button-small" href="<?php echo esc_url( (string) get_permalink( $id ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'View', 'edshield' ); ?></a>
+								<?php if ( $elementor_built && elementor_active() ) : ?>
+									<a class="button button-small button-primary" href="<?php echo esc_url( admin_url( 'post.php?post=' . $id . '&action=elementor' ) ); ?>"><?php esc_html_e( 'Edit with Elementor', 'edshield' ); ?></a>
+								<?php else : ?>
+									<a class="button button-small" href="<?php echo esc_url( (string) get_edit_post_link( $id ) ); ?>"><?php esc_html_e( 'Edit', 'edshield' ); ?></a>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody></table>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( elementor_active() ) : ?>
+			<div class="edst-demo__card">
+				<h2><?php esc_html_e( 'Elementor tools', 'edshield' ); ?></h2>
+				<?php $form( 'build', '<p>' . esc_html__( 'Converts imported pages that are still rendered by the theme (for example because Elementor was activated after the import) into Elementor pages.', 'edshield' ) . '</p>', __( 'Build pages in Elementor', 'edshield' ) ); ?>
+				<?php $form( 'kit', '<p>' . esc_html__( 'Adds the ED Shield colours and fonts to Site Settings › Global Colors and Global Fonts, and turns off Elementor’s default colours and fonts so Elementor widgets match the theme.', 'edshield' ) . '</p>', __( 'Match Elementor to the theme', 'edshield' ) ); ?>
+				<?php if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) : ?>
+					<?php $form( 'pro_templates', '<p>' . esc_html__( 'Creates Theme Builder header and footer templates that contain the theme header (with mega menu) and footer, ready for display conditions and further editing.', 'edshield' ) . '</p>', __( 'Create header and footer templates', 'edshield' ) ); ?>
+				<?php endif; ?>
+				<?php
+				if ( $existing ) {
+					$options = '';
+
+					foreach ( $existing as $key => $id ) {
+						if ( 'insights' !== $key ) {
+							$options .= '<option value="' . esc_attr( $key ) . '">' . esc_html( get_the_title( $id ) ) . '</option>';
+						}
+					}
+
+					$form( 'rebuild', '<p>' . esc_html__( 'Reset one page to its demo layout. This replaces the page’s current Elementor content.', 'edshield' ) . '</p><p><select name="edst_layout">' . $options . '</select> <label><input type="checkbox" name="edst_confirm" value="1"> ' . esc_html__( 'I understand the current content of this page will be replaced', 'edshield' ) . '</label></p>', __( 'Reset page layout', 'edshield' ) );
+				}
+				?>
+			</div>
+		<?php endif; ?>
+
+		<div class="edst-demo__card">
+			<h2><?php esc_html_e( 'After the import', 'edshield' ); ?></h2>
+			<ul style="list-style:disc;padding-left:18px">
+				<li><a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[panel]=edst' ) ); ?>"><?php esc_html_e( 'Add your email, phone, address and social links (Customize › ED Shield)', 'edshield' ); ?></a></li>
+				<li><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=edst_project' ) ); ?>"><?php esc_html_e( 'Replace the placeholder case studies with real projects', 'edshield' ); ?></a></li>
+				<li><?php esc_html_e( 'Replace the placeholder testimonials in the Testimonials sections, or remove those sections', 'edshield' ); ?></li>
+				<li><?php esc_html_e( 'Complete the Privacy Policy and Terms of Service pages', 'edshield' ); ?></li>
+				<li><a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>"><?php esc_html_e( 'Review the menus', 'edshield' ); ?></a> · <a href="<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>"><?php esc_html_e( 'Review the widgets', 'edshield' ); ?></a></li>
+			</ul>
+		</div>
 	</div>
 	<?php
 }
+
+/* One Click Demo Import ---------------------------------------------------- */
+
+add_filter( 'ocdi/import_files', __NAMESPACE__ . '\ocdi_import_files' );
+/**
+ * Offer the ED Shield demo on One Click Demo Import's screen. The import is
+ * done by the theme's own importer (see ocdi_after_import), so the demo is
+ * identical whichever screen is used.
+ *
+ * @param mixed $files Registered imports.
+ * @return mixed
+ */
+function ocdi_import_files( $files ) {
+	$files   = is_array( $files ) ? $files : array();
+	$files[] = array(
+		'import_file_name'         => 'ED Shield — Complete website',
+		'categories'               => array( 'Business' ),
+		'import_preview_image_url' => uri( 'demo/preview.jpg' ),
+		'preview_url'              => home_url( '/' ),
+		'import_notice'            => __( 'Imports every page with its design, menus, widgets, articles, placeholder case studies, theme settings and Elementor colours and fonts. Activate Elementor first so the pages are built in Elementor.', 'edshield' ),
+	);
+
+	return $files;
+}
+
+add_action( 'ocdi/after_import', __NAMESPACE__ . '\ocdi_after_import' );
+/**
+ * Run the theme importer when the ED Shield demo is chosen in OCDI.
+ *
+ * @param mixed $selected Selected import.
+ */
+function ocdi_after_import( $selected ): void {
+	if ( is_array( $selected ) && 0 === strpos( (string) ( $selected['import_file_name'] ?? '' ), 'ED Shield' ) ) {
+		demo_import();
+	}
+}
+
+add_filter( 'ocdi/register_plugins', __NAMESPACE__ . '\ocdi_plugins' );
+/**
+ * Ask One Click Demo Import to install Elementor before importing.
+ *
+ * @param mixed $plugins Registered plugins.
+ * @return mixed
+ */
+function ocdi_plugins( $plugins ) {
+	$plugins   = is_array( $plugins ) ? $plugins : array();
+	$plugins[] = array(
+		'name'        => 'Elementor',
+		'description' => __( 'Required for visual editing of the imported pages.', 'edshield' ),
+		'slug'        => 'elementor',
+		'required'    => true,
+		'preselected' => true,
+	);
+
+	return $plugins;
+}
+
+add_filter( 'ocdi/regenerate_thumbnails_in_content_import', '__return_false' );

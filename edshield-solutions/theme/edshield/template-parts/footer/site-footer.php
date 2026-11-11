@@ -26,11 +26,20 @@ foreach ( services() as $edst_key => $edst_service ) {
 
 $edst_company = array(
 	nav_node( __( 'About', 'edshield' ), 'page:about' ),
-	nav_node( __( 'Process', 'edshield' ), 'page:process' ),
+	nav_node( __( 'Our process', 'edshield' ), 'page:process' ),
 	nav_node( __( 'Work', 'edshield' ), 'page:work' ),
-	nav_node( __( 'Engagement models', 'edshield' ), 'page:engagement' ),
+	nav_node( __( 'Industries', 'edshield' ), 'page:industries' ),
+	nav_node( __( 'Pricing', 'edshield' ), 'page:engagement' ),
 	nav_node( __( 'Careers', 'edshield' ), 'page:careers' ),
+	nav_node( __( 'Contact', 'edshield' ), 'page:contact' ),
+);
+
+$edst_resources = array(
 	nav_node( __( 'Insights', 'edshield' ), 'posts' ),
+	nav_node( __( 'Website audit', 'edshield' ), 'page:audit' ),
+	nav_node( __( 'Technology', 'edshield' ), 'page:technology' ),
+	nav_node( __( 'For startups', 'edshield' ), 'page:audience-startups' ),
+	nav_node( __( 'For growing businesses', 'edshield' ), 'page:audience-growth' ),
 	nav_node( __( 'FAQ', 'edshield' ), 'page:faq' ),
 );
 ?>
@@ -63,6 +72,15 @@ $edst_company = array(
 				<p class="edst-eyebrow"><?php esc_html_e( 'Company', 'edshield' ); ?></p>
 				<?php echo footer_links( 'company', $edst_company ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</nav>
+			<nav class="edst-footer__col" aria-label="<?php esc_attr_e( 'Resources', 'edshield' ); ?>">
+				<p class="edst-eyebrow"><?php esc_html_e( 'Resources', 'edshield' ); ?></p>
+				<?php echo footer_links( 'resources', $edst_resources ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</nav>
+			<?php if ( is_active_sidebar( 'footer-contact' ) ) : ?>
+				<div class="edst-footer__col edst-footer__widgets">
+					<?php dynamic_sidebar( 'footer-contact' ); ?>
+				</div>
+			<?php else : ?>
 			<div class="edst-footer__col">
 				<p class="edst-eyebrow"><?php esc_html_e( 'Get in touch', 'edshield' ); ?></p>
 				<ul class="edst-footer__links">
@@ -81,12 +99,24 @@ $edst_company = array(
 					<li><a href="<?php echo esc_url( resolve_url( 'page:contact' ) ); ?>"><?php esc_html_e( 'Contact form', 'edshield' ); ?></a></li>
 				</ul>
 			</div>
+			<?php endif; ?>
 		</div>
 
 		<div class="edst-footer__bottom">
 			<p>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> ED Shield Solutions</p>
 			<?php
-			$edst_legal = footer_links( 'legal', get_privacy_policy_url() ? array( nav_node( __( 'Privacy policy', 'edshield' ), get_privacy_policy_url() ) ) : array() );
+			$edst_legal_links = array();
+			$edst_privacy_url = get_privacy_policy_url() ? get_privacy_policy_url() : ( layout_page_id( 'privacy' ) ? 'page:privacy' : '' );
+
+			if ( '' !== $edst_privacy_url ) {
+				$edst_legal_links[] = nav_node( __( 'Privacy policy', 'edshield' ), $edst_privacy_url );
+			}
+
+			if ( layout_page_id( 'terms' ) ) {
+				$edst_legal_links[] = nav_node( __( 'Terms of service', 'edshield' ), 'page:terms' );
+			}
+
+			$edst_legal = footer_links( 'legal', $edst_legal_links );
 			echo $edst_legal; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 			<a class="edst-footer__top-link" href="#main"><?php esc_html_e( 'Back to top', 'edshield' ); ?><?php echo icon( 'arrow-up-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>

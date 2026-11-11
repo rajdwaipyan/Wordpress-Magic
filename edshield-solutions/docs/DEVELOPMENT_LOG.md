@@ -92,3 +92,40 @@ Not yet installed or measured on staging.
 | Contact text pointed to details that were not set | Fixed default copy | Copy no longer refers to them |
 | Work and Insights not highlighted on case studies and articles | Menu context unknown for those views | Section page marked current |
 | Leads visible to editors | Post capabilities | Administrators only |
+
+## 11 November 2026 (theme 1.1.0)
+
+### Feedback
+
+The owner saw only a homepage after installing 1.0.0 (the pages were created by
+a setup screen they had not found) and asked for the reference site's complete
+structure, its visual design and a standard one-click demo import.
+
+### Changes
+
+- One-click demo import at Appearance › Import Demo Data: required-plugin
+  install and activation, import options, results with view and Elementor edit
+  links. Demo package in `demo/` (JSON), written by `tools/export-demo.php`.
+- One Click Demo Import bridge: the demo appears on that plugin's screen and runs
+  the same importer.
+- Page inventory matched to the reference: audience pages, six industry pages,
+  pricing, website audit, technology, privacy and terms (32 pages); six
+  placeholder case studies; four starter articles.
+- Navigation matched to the reference: Work, Services (mega), Resources, Company.
+- Rebrand to the ED Shield logo colours (navy and gold) with Geist type and the
+  reference's navy hero with a diagonal band; reference-style blog cards.
+- Elementor Style tab on every section widget (colours, typography, background,
+  padding, width, radius).
+- Widget areas (footer contact column, article sidebar), with demo widgets.
+
+### Problems found and fixed during testing
+
+| Problem | Cause | Fix |
+|---|---|---|
+| Demo Privacy Policy got /privacy-policy-2/ | WordPress's default draft holds the address | The untouched default draft moves to the Trash first |
+| Demo widgets not added | WordPress put its default widgets into the theme's first widget area | Existing widgets move to Inactive widgets, once |
+| "Uncategorized" pill and "Hello world!" in the blog | WordPress sample content | Untouched sample post and page move to the Trash (option, on by default) |
+| Articles scrolled sideways by 30 px | Article sidebar grid track sized to its widest widget | `minmax(0, 1fr)` track |
+| Industries linked twice in the navigation | Listed under Resources and Company | Kept under Company only |
+| Form on the audit page returned to the wrong place | Redirect anchor fixed to the contact page's form | Each form returns to its own anchor |
+| Style controls seemed missing in a CLI check | Elementor keeps CSS-only controls separately on front-end requests | Verified in the editor context instead; no change needed |

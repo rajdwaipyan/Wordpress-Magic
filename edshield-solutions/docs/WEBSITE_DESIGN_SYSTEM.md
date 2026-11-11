@@ -1,13 +1,15 @@
 # Website design system
 
-Status: v1.0, implemented in `theme/edshield`. Tokens live in
+Status: v1.1, implemented in `theme/edshield`. Tokens live in
 `src/css/tokens.css` and are mirrored in `theme.json` for the block editor.
 
 ## Direction
 
-A premium technology partner: dark, confident opening sections, warm light
-content bands, serif display type with a technical mono label system, one
-electric blue, and original line illustrations instead of stock photography.
+A premium technology partner in ED Shield's own brand colours: deep navy and
+shield gold, taken from the company logo. Dark navy opening sections with a
+lighter diagonal band (as on the reference site), white and cool grey content
+bands, Geist for headings and text, IBM Plex Mono for labels, and original line
+illustrations instead of stock photography.
 
 ## Taken from the reference (carrilagency.com) as structure
 
@@ -23,28 +25,40 @@ process, pricing, FAQ, blog, contact, header, mega menu, mobile menu, footer.
 | Case-study cards with a headline metric, rail with progress bar | Same layout; placeholders until real results exist |
 | Numbers band, testimonials rail, three steps, FAQ, closing call to action | Same order of persuasion, original styling |
 | Service page: hero, why it matters, deliverables, outcomes, process, FAQ | Same page skeleton for all nine services |
-| Oversized footer wordmark | "ED SHIELD" in Newsreader, fading into the footer |
+| Oversized footer wordmark | "ED SHIELD" in Geist, fading into the footer |
+| Navy hero with a lighter diagonal band | Same treatment in the ED Shield navy |
+| Navigation: Work, Services (mega), Resources, Company | Same structure; Services lists the nine divisions and two audience pages |
+| Audience pages (founders, marketers) | For Startups, For Growing Businesses |
+| Industries page with industry detail pages | Industries page and six industry pages |
+| Pricing page with three offers | Pricing page with three engagement models, scoped after discovery (no invented prices) |
+| Blog with category pills, search and illustrated overlay cards | Same layout with gold spine cards |
+| Contact page with form, testimonials and dark FAQ | Same order |
 
-Not copied: colours, typefaces, copy, illustrations, photography, logos or code.
+Not copied: copy, illustrations, photography, logos or code. The colours come from the ED Shield logo (navy and gold) and the typefaces differ from the reference's.
 
 ## Colour
 
 | Token | Hex | Use |
 |---|---|---|
-| ink | `#0E1012` | dark sections, text on light |
-| charcoal | `#15181B` | illustrations, raised dark surfaces |
-| graphite | `#1E2226` | surfaces inside dark sections |
-| slate | `#5A6068` | secondary text on light |
-| fog | `#A3A9B1` | secondary text on dark |
-| bone | `#EDECE8` | alternate light band |
-| paper | `#F3F1EC` | default light band |
-| white | `#FCFBF9` | raised light surfaces, white band |
-| blue | `#2A4BFF` | buttons, accents on light |
-| blue-bright | `#7C93FF` | accents on dark |
+| ink (navy) | `#071533` | dark sections, text on light |
+| charcoal (navy raised) | `#0C1D44` | illustrations, raised dark surfaces |
+| graphite (navy light) | `#13285A` | surfaces inside dark sections |
+| slate | `#5B6478` | secondary text on light |
+| fog | `#A9B3C9` | secondary text on dark |
+| bone | `#EEF1F6` | alternate light band |
+| paper | `#F6F7F9` | light grey band, cards on white |
+| white | `#FFFFFF` | default light band |
+| gold | `#D8A848` | buttons (navy text), icons, highlights |
+| gold light | `#E9C46A` | accent text on navy |
+| gold deep | `#86600F` | accent text on light bands |
 | green | `#34D399` | status dots only |
 
-Contrast (measured): ink on paper 16.9, slate on paper 5.6, blue on paper 5.2,
-white on blue 5.9, fog on ink 8.1, blue-bright on ink 6.8.
+Contrast (measured): navy on white 18.0, navy on light grey 16.8, slate on light
+grey 5.5, navy text on gold buttons 8.3, gold light on navy 10.8, fog on navy
+8.6, gold deep on light grey 5.3.
+
+Headline highlights: on navy, highlighted words are gold; on light bands they
+stay navy with a gold marker underline.
 
 ## Tones
 
@@ -57,13 +71,13 @@ read only the local roles `--edst-bg`, `--edst-fg`, `--edst-muted`,
 
 | Role | Family | Size |
 |---|---|---|
-| Display | Newsreader (300 to 600) | display `clamp(2.75rem, 1.3rem + 4.6vw, 5.5rem)`, h1 to 4.25rem, h2 to 3.25rem, h3 to 1.85rem |
-| Text | IBM Plex Sans (400 to 600) | 17 px base, line height 1.6 |
+| Display and headings | Geist (variable, weight 600) | display `clamp(2.6rem, 1.4rem + 4.2vw, 5.25rem)`, h1 to 4rem, h2 to 3rem, h3 to 1.75rem |
+| Text | Geist (400 to 600) | 16 to 17 px, line height 1.6 |
 | Label | IBM Plex Mono 500 | 11 to 12 px, uppercase, tracking 0.08 to 0.1em |
 
-A highlighted phrase in a heading is written `<em>…</em>` and shows in the
-accent colour. Fonts are self-hosted latin subsets with metric-matched
-fallbacks, so text does not reflow when they load.
+A highlighted phrase in a heading is written `<em>…</em>`. Fonts are
+self-hosted latin subsets (Geist 29 KB, Plex Mono 15 KB) with a metric-matched
+fallback, so text does not reflow when they load.
 
 ## Layout
 
