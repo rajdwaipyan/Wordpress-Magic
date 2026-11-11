@@ -1,0 +1,76 @@
+/*
+ * Block editor canvas: the theme's fonts, colours and article typography,
+ * so posts look in the editor as they do on the site.
+ */
+@import "./tokens.css";
+
+body {
+	background: var(--edst-white);
+	color: var(--edst-ink);
+	font-family: var(--edst-font-sans);
+	font-size: 1.0625rem;
+	line-height: 1.75;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+	color: var(--edst-ink);
+	font-family: var(--edst-font-display);
+	font-weight: 400;
+	line-height: 1.12;
+	letter-spacing: -0.02em;
+}
+
+:where(h4, h5, h6) {
+	font-family: var(--edst-font-sans);
+	font-weight: 600;
+	letter-spacing: 0;
+}
+
+.editor-post-title__input,
+.wp-block-post-title {
+	font-family: var(--edst-font-display);
+	font-size: clamp(2.2rem, 1.6rem + 2vw, 3.25rem);
+	font-weight: 400;
+	line-height: 1.05;
+	letter-spacing: -0.028em;
+}
+
+a {
+	color: var(--edst-blue);
+	text-underline-offset: 0.2em;
+}
+
+blockquote,
+.wp-block-quote {
+	padding-left: 1.4em;
+	border-left: 3px solid var(--edst-blue);
+	font-family: var(--edst-font-display);
+	font-size: 1.35em;
+	line-height: 1.45;
+}
+
+code,
+kbd {
+	padding: 0.15em 0.35em;
+	border-radius: 4px;
+	background: var(--edst-bone);
+	font-family: var(--edst-font-mono);
+	font-size: 0.85em;
+}
+
+pre,
+.wp-block-code {
+	padding: 1.25rem 1.4rem;
+	border-radius: 14px;
+	background: var(--edst-ink);
+	color: #f3f1ec;
+	font-size: 0.875rem;
+}
+
+.wp-block-button__link {
+	border-radius: 8px;
+	background: var(--edst-blue);
+	color: #fff;
+	font-size: 0.9375rem;
+	font-weight: 500;
+}

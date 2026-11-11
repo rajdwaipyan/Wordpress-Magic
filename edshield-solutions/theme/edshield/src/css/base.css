@@ -1,0 +1,312 @@
+/*
+ * Base. Element defaults use :where() and carry no specificity, so Elementor
+ * kit styles and plugins can override them. Component styles are prefixed
+ * with the body class (.edst) so Elementor's theme style cannot recolour them.
+ */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	scroll-padding-top: 6rem;
+}
+
+body {
+	margin: 0;
+	background: var(--edst-paper);
+	color: var(--edst-ink);
+	font-family: var(--edst-font-sans);
+	font-size: 1rem;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: clip;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+	margin: 0 0 0.6em;
+	font-family: var(--edst-font-display);
+	font-weight: 400;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+:where(h4, h5, h6) {
+	font-family: var(--edst-font-sans);
+	font-weight: 600;
+	letter-spacing: 0;
+}
+
+:where(p) {
+	margin: 0 0 1em;
+}
+
+:where(a) {
+	color: inherit;
+	text-underline-offset: 0.2em;
+}
+
+:where(img, svg, video, canvas) {
+	max-width: 100%;
+	height: auto;
+}
+
+:where(button, input, select, textarea) {
+	font: inherit;
+	color: inherit;
+}
+
+:focus-visible {
+	outline: 2px solid var(--edst-blue-bright);
+	outline-offset: 3px;
+}
+
+::selection {
+	background: var(--edst-blue);
+	color: #fff;
+}
+
+.screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	border: 0;
+	white-space: nowrap;
+}
+
+.edst-skip {
+	position: absolute;
+	top: -5rem;
+	left: 1rem;
+	z-index: 300;
+	padding: 0.75rem 1rem;
+	border-radius: var(--edst-r-sm);
+	background: var(--edst-blue);
+	color: #fff;
+	text-decoration: none;
+	transition: top 0.2s;
+}
+
+.edst-skip:focus {
+	top: 1rem;
+}
+
+.edst-wrap {
+	width: 100%;
+	max-width: calc(var(--edst-max) + 2 * var(--edst-gutter));
+	margin-inline: auto;
+	padding-inline: var(--edst-gutter);
+}
+
+.edst-main {
+	display: block;
+}
+
+.edst-icon {
+	display: inline-block;
+	flex: none;
+	width: 1em;
+	height: 1em;
+}
+
+.edst-icon--flip {
+	transform: scaleX(-1);
+}
+
+/* Section shell */
+.edst-s {
+	position: relative;
+	background: var(--edst-bg);
+	color: var(--edst-fg);
+}
+
+.edst-space-default {
+	padding-block: var(--edst-space);
+}
+
+.edst-space-compact {
+	padding-block: calc(var(--edst-space) * 0.6);
+}
+
+.edst-space-large {
+	padding-block: calc(var(--edst-space) * 1.3);
+}
+
+.edst-space-flush {
+	padding-block: 0 var(--edst-space);
+}
+
+.edst-space-none {
+	padding-block: 0;
+}
+
+/* Type */
+.edst .edst-eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	margin: 0;
+	color: var(--edst-muted);
+	font-family: var(--edst-font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.3;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.edst .edst-eyebrow::before {
+	content: "";
+	flex: none;
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: 1px;
+	background: var(--edst-accent);
+}
+
+.edst :is(.edst-display, .edst-h1, .edst-h2, .edst-h3) {
+	color: var(--edst-fg);
+	font-family: var(--edst-font-display);
+	font-weight: 400;
+	text-wrap: balance;
+}
+
+.edst :is(.edst-display, .edst-h1, .edst-h2, .edst-h3) em {
+	color: var(--edst-accent);
+	font-style: normal;
+}
+
+.edst .edst-display {
+	margin: 0;
+	font-size: var(--edst-fs-display);
+	line-height: 1;
+	letter-spacing: -0.03em;
+}
+
+.edst .edst-h1 {
+	max-width: 20ch;
+	margin: 0;
+	font-size: var(--edst-fs-h1);
+	line-height: 1.03;
+	letter-spacing: -0.028em;
+}
+
+.edst .edst-h2 {
+	margin: 0;
+	font-size: var(--edst-fs-h2);
+	line-height: 1.06;
+	letter-spacing: -0.025em;
+}
+
+.edst .edst-h3 {
+	margin: 0 0 1rem;
+	font-size: var(--edst-fs-h3);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+}
+
+.edst .edst-lede {
+	max-width: 36rem;
+	margin: 1.5rem 0 0;
+	color: var(--edst-muted);
+	font-size: var(--edst-fs-lede);
+	line-height: 1.55;
+}
+
+.edst .edst-num {
+	color: var(--edst-accent);
+	font-family: var(--edst-font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.08em;
+}
+
+/* Section heading */
+.edst .edst-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 1.5rem 3rem;
+	margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+.edst .edst-head__main {
+	max-width: 46rem;
+}
+
+.edst .edst-head .edst-h2 {
+	margin-top: 1rem;
+}
+
+.edst .edst-head__intro {
+	max-width: 38rem;
+	margin: 1.15rem 0 0;
+	color: var(--edst-muted);
+	font-size: 1.0625rem;
+	line-height: 1.6;
+}
+
+.edst .edst-head--stack {
+	display: block;
+	margin-bottom: 0;
+}
+
+.edst .edst-head--stack .edst-head__aside {
+	margin-top: 2rem;
+}
+
+.edst .edst-admin-note {
+	max-width: 40rem;
+	margin: 1rem auto;
+	padding: 1rem 1.25rem;
+	border: 1px dashed var(--edst-line-strong);
+	border-radius: var(--edst-r-sm);
+	color: var(--edst-muted);
+	font-size: 0.875rem;
+}
+
+/* Grid helpers */
+.edst-cols-2,
+.edst-cols-3,
+.edst-cols-4 {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--edst-gap);
+}
+
+@media (min-width: 40rem) {
+	.edst-cols-2,
+	.edst-cols-3,
+	.edst-cols-4 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 64rem) {
+	.edst-cols-3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.edst-cols-4 {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+/* Stretched link: makes a whole card clickable from one real link. */
+.edst .edst-stretch::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+}

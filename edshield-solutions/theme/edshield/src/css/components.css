@@ -1,0 +1,386 @@
+/*
+ * Buttons, links, badges, chips, tags, checklists and illustrations.
+ */
+
+.edst .edst-btn {
+	--b-bg: var(--edst-blue);
+	--b-fg: #fff;
+	--b-line: transparent;
+
+	position: relative;
+	z-index: 3;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	min-height: 3rem;
+	padding: 0.75rem 1.3rem;
+	border: 1px solid var(--b-line);
+	border-radius: var(--edst-r-sm);
+	background: var(--b-bg);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 10px 24px -12px rgb(42 75 255 / 0.7);
+	color: var(--b-fg);
+	font-family: var(--edst-font-sans);
+	font-size: 0.9375rem;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.edst .edst-btn:hover,
+.edst .edst-btn:focus-visible {
+	--b-bg: var(--edst-blue-deep);
+	color: var(--b-fg);
+}
+
+.edst .edst-btn__icon {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.35s var(--edst-ease);
+}
+
+.edst .edst-btn:hover .edst-btn__icon {
+	transform: translate(2px, -2px);
+}
+
+.edst .edst-btn--ghost,
+.edst .edst-btn--outline {
+	--b-bg: transparent;
+	--b-fg: var(--edst-fg);
+	--b-line: var(--edst-line-strong);
+
+	box-shadow: none;
+}
+
+.edst .edst-btn--ghost:hover,
+.edst .edst-btn--ghost:focus-visible,
+.edst .edst-btn--outline:hover,
+.edst .edst-btn--outline:focus-visible {
+	--b-bg: var(--edst-fg);
+	--b-fg: var(--edst-bg);
+	--b-line: var(--edst-fg);
+}
+
+.edst .edst-btn--light {
+	--b-bg: #f3f1ec;
+	--b-fg: #0e1012;
+
+	box-shadow: none;
+}
+
+.edst .edst-btn--light:hover,
+.edst .edst-btn--light:focus-visible {
+	--b-bg: #fff;
+}
+
+.edst .edst-btn--sm {
+	min-height: 2.5rem;
+	padding: 0.5rem 0.95rem;
+	font-size: 0.875rem;
+}
+
+.edst .edst-btn--block {
+	width: 100%;
+}
+
+.edst .edst-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 2.25rem;
+}
+
+/* Text link with arrow */
+.edst .edst-more {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: auto;
+	padding-top: 0.5rem;
+	color: var(--edst-fg);
+	font-size: 0.9375rem;
+	font-weight: 500;
+	text-decoration: none;
+	transition: color 0.25s;
+}
+
+.edst .edst-more .edst-icon {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.35s var(--edst-ease);
+}
+
+.edst .edst-more:hover,
+.edst :is(.edst-card, .edst-post-card, .edst-case):hover .edst-more {
+	color: var(--edst-accent);
+}
+
+.edst .edst-more:hover .edst-icon,
+.edst :is(.edst-card, .edst-post-card, .edst-case):hover .edst-more .edst-icon {
+	transform: translateX(4px);
+}
+
+/* Badges, chips and tags */
+.edst .edst-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 0 0 1.75rem;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin: 0 0 1.5rem;
+	padding: 0.45rem 0.8rem;
+	border: 1px solid var(--edst-line);
+	border-radius: 999px;
+	background: rgb(255 255 255 / 0.04);
+	color: var(--edst-fg);
+	font-size: 0.8125rem;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+.edst .edst-badges .edst-badge {
+	margin: 0;
+}
+
+.edst .edst-badge__dot,
+.edst .edst-dot {
+	flex: none;
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 50%;
+	background: var(--edst-green);
+	box-shadow: 0 0 0 4px rgb(52 211 153 / 0.16);
+}
+
+.edst .edst-dot {
+	animation: edst-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes edst-pulse {
+	50% {
+		box-shadow: 0 0 0 7px rgb(52 211 153 / 0.06);
+	}
+}
+
+.edst .edst-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-chips li {
+	padding: 0.45rem 0.85rem;
+	border: 1px solid var(--edst-line-strong);
+	border-radius: 999px;
+	color: var(--edst-fg);
+	font-size: 0.8125rem;
+	font-weight: 500;
+}
+
+.edst .edst-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	margin: 1rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-tags li,
+.edst .edst-tags a {
+	padding: 0.4rem 0.65rem;
+	border: 1px solid var(--edst-line-strong);
+	border-radius: 6px;
+	color: var(--edst-muted);
+	font-family: var(--edst-font-mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.06em;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.edst .edst-tags li:has(a) {
+	padding: 0;
+	border: 0;
+}
+
+/* Checklists */
+.edst .edst-checks {
+	display: grid;
+	gap: 0.65rem 1.5rem;
+	margin: 0.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-checks li {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.65rem;
+	color: var(--edst-fg);
+	font-size: 0.9375rem;
+	line-height: 1.45;
+}
+
+.edst .edst-checks .edst-icon {
+	width: 1.15rem;
+	height: 1.15rem;
+	margin-top: 0.1rem;
+	color: var(--edst-accent);
+}
+
+@media (min-width: 40rem) {
+	.edst .edst-checks--cols {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+/* Frames and illustrations */
+.edst .edst-frame {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--edst-line);
+	border-radius: var(--edst-r-lg);
+	background: var(--edst-charcoal);
+}
+
+.edst :is(.edst-frame, .edst-card__media, .edst-svc-row__media, .edst-post-card__media, .edst-step__media, .edst-tile, .edst-case__media) > :is(.edst-art, img, .edst-img) {
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	margin: 0;
+	border-radius: 0;
+	object-fit: cover;
+}
+
+.edst-art {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
+	background:
+		linear-gradient(90deg, rgb(243 241 236 / 0.045) 1px, transparent 1px) 50% 50% / 26px 26px,
+		linear-gradient(0deg, rgb(243 241 236 / 0.045) 1px, transparent 1px) 50% 50% / 26px 26px,
+		radial-gradient(120% 90% at 85% 0%, rgb(42 75 255 / 0.24), transparent 60%),
+		#15181b;
+}
+
+.edst-art svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* Stroke-only shapes first, so fill classes win when both are applied. */
+.edst-art :is(.a-l, .a-m, .a-b, .a-p, .a-g, .a-g2, .a-i) {
+	fill: none;
+}
+
+.edst-art .a-g {
+	stroke: rgb(243 241 236 / 0.045);
+	stroke-width: 1;
+}
+
+.edst-art .a-g2 {
+	stroke: rgb(243 241 236 / 0.08);
+	stroke-width: 1;
+}
+
+.edst-art .a-l {
+	stroke: rgb(243 241 236 / 0.78);
+	stroke-width: 1.5;
+	stroke-linejoin: round;
+}
+
+.edst-art .a-m {
+	stroke: rgb(243 241 236 / 0.2);
+	stroke-width: 1.2;
+}
+
+.edst-art .a-b {
+	stroke: #7c93ff;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.edst-art .a-p {
+	stroke: #fff;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.edst-art .a-i {
+	stroke: #7c93ff;
+}
+
+.edst-art .a-f {
+	fill: #1e2226;
+	stroke: rgb(243 241 236 / 0.1);
+	stroke-width: 1;
+}
+
+.edst-art .a-f.a-l {
+	stroke: rgb(243 241 236 / 0.7);
+	stroke-width: 1.5;
+}
+
+.edst-art .a-f2 {
+	fill: #252a30;
+}
+
+.edst-art .a-fl {
+	fill: rgb(243 241 236 / 0.78);
+}
+
+.edst-art .a-fm {
+	fill: rgb(243 241 236 / 0.16);
+}
+
+.edst-art .a-fp {
+	fill: #fff;
+}
+
+.edst-art .a-fb {
+	fill: #2a4bff;
+}
+
+.edst-art .a-img {
+	fill: rgb(124 147 255 / 0.14);
+	stroke: rgb(124 147 255 / 0.32);
+}
+
+.edst-art .a-chip {
+	fill: rgb(42 75 255 / 0.18);
+	stroke: #7c93ff;
+	stroke-width: 1.5;
+}
+
+.edst-art .a-dash {
+	stroke-dasharray: 4 7;
+}
+
+.edst-art .a-thick {
+	stroke-width: 10;
+	stroke-linecap: round;
+}
+
+.edst-art .a-soft {
+	opacity: 0.45;
+}

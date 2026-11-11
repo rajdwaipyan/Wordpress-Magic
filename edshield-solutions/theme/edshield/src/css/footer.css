@@ -1,0 +1,221 @@
+/*
+ * Site footer: brand and call to action, three link columns, legal row and
+ * an oversized wordmark that sits on the bottom edge.
+ */
+
+.edst .edst-footer {
+	position: relative;
+	overflow: hidden;
+	padding-top: clamp(3.5rem, 7vw, 6rem);
+	background: var(--edst-bg);
+	color: var(--edst-fg);
+}
+
+.edst .edst-footer__top {
+	display: grid;
+	gap: 2rem;
+	padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+	border-bottom: 1px solid var(--edst-line);
+}
+
+@media (min-width: 48rem) {
+	.edst .edst-footer__top {
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: end;
+	}
+}
+
+.edst .edst-footer__tagline {
+	max-width: 30rem;
+	margin: 1.4rem 0 0;
+	color: var(--edst-muted);
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+.edst .edst-footer__cta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+@media (min-width: 48rem) {
+	.edst .edst-footer__cta {
+		align-items: flex-end;
+	}
+}
+
+.edst .edst-footer__status {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	margin: 0;
+	color: var(--edst-muted);
+	font-family: var(--edst-font-mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.edst .edst-social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-social a {
+	display: grid;
+	place-items: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	border: 1px solid var(--edst-line-strong);
+	border-radius: 50%;
+	color: var(--edst-fg);
+	transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+}
+
+.edst .edst-social a:hover {
+	border-color: var(--edst-fg);
+	background: var(--edst-fg);
+	color: var(--edst-bg);
+}
+
+.edst .edst-social .edst-icon {
+	width: 1.05rem;
+	height: 1.05rem;
+}
+
+.edst .edst-footer__cols {
+	display: grid;
+	gap: 2.5rem 2rem;
+	padding-block: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 40rem) {
+	.edst .edst-footer__cols {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.edst .edst-footer__col--wide {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (min-width: 64rem) {
+	.edst .edst-footer__cols {
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+	}
+
+	.edst .edst-footer__col--wide {
+		grid-column: auto;
+	}
+}
+
+.edst .edst-footer__links {
+	display: grid;
+	gap: 0.7rem;
+	margin: 1.25rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edst .edst-footer__col--wide .edst-footer__links {
+	grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+	gap: 0.7rem 1.5rem;
+}
+
+.edst .edst-footer__links a {
+	color: var(--edst-fg);
+	font-size: 0.9688rem;
+	text-decoration: none;
+	opacity: 0.86;
+	transition: color 0.2s, opacity 0.2s;
+}
+
+.edst .edst-footer__links a:hover {
+	color: var(--edst-accent);
+	opacity: 1;
+}
+
+.edst .edst-footer__address {
+	color: var(--edst-muted);
+	font-size: 0.9375rem;
+	line-height: 1.55;
+}
+
+.edst .edst-footer__bottom {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem 2rem;
+	padding-block: 1.5rem;
+	border-top: 1px solid var(--edst-line);
+	color: var(--edst-muted);
+	font-size: 0.875rem;
+}
+
+.edst .edst-footer__bottom p {
+	margin: 0;
+}
+
+.edst .edst-footer__bottom .edst-footer__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+	margin: 0;
+}
+
+.edst .edst-footer__bottom .edst-footer__links a {
+	color: var(--edst-muted);
+	font-size: 0.875rem;
+}
+
+.edst .edst-footer__top-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	margin-left: auto;
+	color: var(--edst-fg);
+	text-decoration: none;
+}
+
+.edst .edst-footer__top-link .edst-icon {
+	width: 0.95rem;
+	height: 0.95rem;
+	transform: rotate(-45deg);
+	transition: transform 0.35s var(--edst-ease);
+}
+
+.edst .edst-footer__top-link:hover .edst-icon {
+	transform: rotate(-45deg) translate(2px, -2px);
+}
+
+.edst .edst-footer__mark {
+	margin-top: -0.12em;
+	overflow: hidden;
+	line-height: 0.78;
+	pointer-events: none;
+	user-select: none;
+}
+
+.edst .edst-footer__mark span {
+	display: block;
+	padding-inline: var(--edst-gutter);
+	background: linear-gradient(180deg, rgb(243 241 236 / 0.12), rgb(243 241 236 / 0.02) 85%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	font-family: var(--edst-font-display);
+	font-size: clamp(4rem, 17.5vw, 18rem);
+	font-weight: 400;
+	letter-spacing: -0.045em;
+	text-align: center;
+	white-space: nowrap;
+	transform: translateY(0.14em);
+}
